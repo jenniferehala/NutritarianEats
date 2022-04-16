@@ -1,0 +1,604 @@
+    function onCheckedHandler(e) {
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        setForm({
+            ...form,
+            [e.target.name]: value
+        });
+    }
+
+Helped with dynamic react input field button:
+https://stackoverflow.com/questions/70185207/typeerror-inputlist-is-not-iterable
+https://www.youtube.com/watch?v=zgKH12s_95A&t=1221s
+
+helped with multiple inputs into single array:
+https://stackoverflow.com/questions/66623927/add-multiple-inputs-in-reacts-js-with-the-key-value
+https://stackoverflow.com/questions/66469913/how-to-add-input-field-dynamically-when-user-click-on-button-in-react-js
+https://bapunawarsaddam.medium.com/add-and-remove-form-fields-dynamically-using-react-and-react-hooks-3b033c3c0bf5
+
+                            <input type="checkbox" className="mx-auto py-2" name="tag" value="Athletic/Higher caloric" />
+
+                            <label> Athletic/Higher caloric </label>
+
+                            <input type="checkbox" className="mx-auto py-2" value="Aggresive Weight Loss" name="tag" />
+                            <label> Aggresive Weight Loss</label>
+
+                            <input type="checkbox" className="mx-auto py-2" name="Kid-Friendly" />
+                            <label> Kid-Friendly</label>
+
+                            <input type="checkbox" className="mx-auto py-2" name="Non-Vegan" />
+                            <label> Non-Vegan</label>
+
+                            <input type="checkbox" className="mx-auto py-2" name="Diabetes reversal" />
+                            <label> Diabetes reversal</label>
+
+                            <input type="checkbox" className="mx-auto py-2" name="Quick and Easy" />
+                            <label> Quick and Easy</label>
+
+class App extends React.Component {
+  constructor(props){
+    super(props); 
+    this.state = {
+      tag: [
+          { name: "Product A", isAdded: false }, 
+          { name: "Product B", isAdded: false }, 
+          { name: "Product C", isAdded: false }],
+      addedTags: []
+    }
+  }
+
+  onAddingItem = (item) => {
+    this.setState( prevState => (
+        { tags: 
+            prevState.tags.map
+                (tag => tag.name === item.target.value ? { ...tag, isAdded: item.target.checked } : 
+                tag) }));
+    if (item.target.checked)
+      this.setState(prevState => ({addedTags: [...prevState.addedTags, item.target.value] }));
+    else {
+      const newAddedTags = this.state.addedTags.filter(tags => tags !== item.target.value)
+      this.setState({ addedTags: newAddedTags });
+    }
+  }
+  
+  render() {
+    const { tag } = this.state;
+
+    const product_list = 
+    
+      this.state.map((tag, i) =>
+
+          <td>{tag.name}</td>
+            <div class="checkbox checkbox-circle checkbox-color-scheme">
+                <input 
+                  type="checkbox"
+                  value={tag.name}
+                  checked={this.state.tag[i].isAdded} 
+                  onChange={this.onAddingItem} /> 
+                  
+                  <span class="label-text">Add ?</span>
+
+            </div>
+          </td>
+      </tr>
+    );
+
+    return (
+      <div>
+        <table>
+          <tbody>
+            {product_list}
+          </tbody>
+        </table>
+        <div style={{ marginTop: "20px" }}>Added Products: {this.state.addedProducts.join(', ')}</div>
+      </div>
+    )
+  }
+}
+
+ReactDOM.render( <
+  App / > ,
+  document.getElementById('app')
+);
+
+https://stackoverflow.com/questions/47949446/how-to-control-dynamic-checkbox-in-reactjs
+
+
+        // console.log(e.target.value);
+        // const {name, checked} = e.target;
+        const { name, checked } = e.target;
+        // setForm( prevState => {
+        //     return {
+        //         form.tags.map((tag) => {
+        //             return i === tag.i === name ? { ...tag, isChecked: checked } : tag);
+        //            if (e.target.checked) {
+        //            [...form.tags] = [...form.tags, e.target.value]
+        // }
+        // console.log(form);
+        // form.tag[i] = e.target.value;
+        // console.log(form);
+        // setForm({ ...form });
+        // setForm(tempTag)
+
+                // console.log(form.tags.map((tag, i) =>
+        //     <div >
+        //         <div key={i}>{tag}</div>
+        //         <div key={i}>{i}</div>
+        //     </div>));
+
+
+
+        input tag checked={tag?.isChecked || false}
+
+
+
+
+*************************************************************************************
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      productsList :[
+        {name: 'USS Seawolf class', isChecked: false},
+        {name: 'USS Skipjack', isChecked: false},
+        {name: 'USS Lafayette', isChecked: false},
+        {name: 'USS Ohio class', isChecked: false},
+      ]
+    }
+  }
+  
+  onAddingItem = (i) => (event) => {
+    this.setState((state, props) => {
+      state.productsList[i].isChecked = !state.productsList[i].isChecked;
+      return {
+        productsList: state.productsList
+      }
+    })
+  }
+
+  render() {
+    let {productsList} =  this.state;
+    return (
+
+          { this.state.map((product, i) =>{
+            return(
+
+                <td>{product.name}</td>
+                    <div class="checkbox checkbox-circle checkbox-color-scheme">
+                            <input 
+                              type="checkbox" 
+                              value={product.name} 
+                              checked={product.isChecked} 
+                              onChange={this.onAddingItem(i)}/> 
+                              
+                              <span class="label-text">Add ?</span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            )
+          })}
+          
+        </tbody>
+      </table>
+    )
+  }
+}
+
+ReactDOM.render( <
+  App / > ,
+  document.getElementById('app')
+);
+
+
+************************
+
+        // console.log(form.tags[i])
+        // console.log(form.tags[i].isChecked)
+        // console.log("this is form.tags")
+        // console.log(form.tags)
+        // console.log("this is [...form.tags]");
+        // console.log([...form.tags.isChecked], form.tags[i].isChecked = !form.tags[i].isChecked)
+        // console.log({ ...form, tags: [...form.tags, form.tags[i].isChecked = !form.tags[i].isChecked] })
+        // const tags = { ...form.tags }
+        // tags[i].isChecked = !form.tags[i].isChecked
+        // setForm({ tags: tags })
+
+                // setForm(prevState => ({
+        //     ...prevState,
+        //     tags: {
+        //         ...prevState.tags, [e.target.name]: !form.tags[i].isChecked
+        //     }
+        // }))
+
+                // setForm({ ...form, tags: [...form.tags, form.tags[i].isChecked = !form.tags[i].isChecked] })
+****************
+
+        // const onCheckedHandler = (index) => {
+        //     const updatedTags =
+        //         form.tags.map((tag, i) => {
+        //             if (index === i) {
+        //                 form.tags[i].isChecked = !form.tags[i].isChecked;
+        //             }
+        //             console.log(tag)
+        //             // console.log(i)
+        //             return { tag };
+        //         });
+        //     console.log(updatedTags[index]);
+        // setForm(updatedTags[index])
+
+    }
+
+            setForm(prev => ({
+            ...prev,
+            tags: [prev?.tags?.map(({ isChecked, ...rest }, idx) =>
+                (idx === index ? { ...rest, isChecked: !isChecked } : { ...rest, isChecked })
+            )]
+        }));
+
+****** handle add ingredient
+first
+    // const handleAddIngredient = (e, i) => {
+    //     form.ingredients[i] = e.target.value;
+    //     setForm({ ...form })
+    // }
+
+trial error first
+    // setForm(prev => ({
+    //     ...prev, ingredientsList: [...prev?.ingredient?.map(
+
+    //                     ({ isChecked, ...rest }, idx) => (idx === index ? { ...rest, isChecked: !isChecked } : { ...rest, isChecked })
+    //         )]
+    // }));
+
+  ************
+
+  If I need a subdocument find code
+
+  // module.exports.findOneCuisine = (req, res) => {
+//     Recipe.findOne({ cuisine: { $elemMatch: { _id: request.params._id } } })
+//         .then(results => res.json({ results: results }))
+//         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+// }
+
+before 
+                    <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
+
+
+                        {
+                            cuisine.map((item, i) => {
+                                return <Categories key={i} cuisine={item} />
+                            })
+                        }
+
+
+
+
+                        <a href="/viewall" className="col text-center category__link">
+                            <div className="category__img shadow">
+                                <img src="/img/people_eating3.jpg" alt="People Eating" Loading="lazy" />
+                            </div>
+                            <div className="pt-1">
+                                View All
+                            </div>
+                        </a>
+                    </div>
+
+
+Pour 1/2 cup water over dates in a microwave safe bowl. (remove pits from dates). Microwave on high for 1 minute
+into a blender cup, pour date/water mixture and remaining ingredients and blend on high until smooth. Pour mixture into a mason jar and store in the fridge. Use in stir fry recipes, or Chinese Lettuce Wraps. DELISH.
+
+
+
+
+            {
+                "title": "Nutritarian Asian Quinoa Salad",
+                "description": "This recipe is AMAZING with Hello Nutritarian's Carrot Ginger Dressing.",
+                "instructions": "Mix ingredients. Toss with your favorite dressing. Optional – Edamame",
+                "serving": 4,
+                "email": "jane@jane.com",
+                "ingredientsList": [
+                    {
+                        "ingredient": "shredded Purple cabbage and/or green cabbage",
+                        "quantity": 6,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "Cooked quinoa",
+                        "quantity": 1,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "Shredded Carrots",
+                        "quantity": 1,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "Fresh Cilantro chopped",
+                        "quantity": 0.25,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "Cashews chopped, toasted",
+                        "quantity": 0.33,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "Black Sesame Seeds toasted",
+                        "quantity": 1,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "green onion sliced",
+                        "quantity": 2,
+                        "unit": "none"
+                    },
+                ],
+                "category": "Salads",
+                "cuisine": "Chinese",
+                "imgUrl": "https://eattolivedaily.com/wp-content/uploads/2017/06/Asian-Quinoa-Slaw-800x689.jpg",
+                "rating": 4,
+                "comment": "",
+                "source": "https://eattolivedaily.com/recipe/nutritarian-asian-quinoa-salad/",
+                "author": "Elisha, CNC",
+                "tags": [
+                    { "name": "Aggresive Weight Loss", "isChecked": true },],
+                "gbombs": [
+                    { "name": "Seeds", "isChecked": true },
+                    { "name": "Greens", "isChecked": true },
+                    { "name": "Onions", "isChecked": true },
+
+                ]
+            },
+
+            {
+                "title": "Spicy Thai Braised Kale and Tofu",
+                "description": "Thai peanut sauce made with peanut butter, lime juice, ginger, onion and a chili pepper gives a kick to this kale and baked tofu stir fry. Add an extra jalapeno pepper if you like it spicy.",
+                "instructions": "Preheat oven to 350 degrees F. Place tofu cubes on a lightly-oiled baking dish and bake for 30 minutes, turning after 15 minutes.Heat a large saute pan and add onion, ginger, and jalapeno. Cook until onion has softened, adding 1-2 teaspoons of water as needed to prevent sticking. Add chili powder and cook one more minute. Whisk in vegetable broth, peanut butter, tomato paste, MatoZest and bring to a boil. Gradually add kale a few handfuls at a time, stirring to let it wilt down. Add baked tofu, cover, reduce heat, and simmer for 15 minutes or until kale is tender. Stir in lime juice and top with sliced scallions. Note: Select tomato products packaged in glass or cartons. These materials do not contain BPA.",
+                "serving": 4,
+                "email": "jen@jen.com",
+                "ingredientsList": [
+                    {
+                        "ingredient": "firm tofu, drained well, cut into 1 inch cubes",
+                        "quantity": 16,
+                        "unit": "ounce(s)"
+                    },
+
+                    {
+                        "ingredient": "finely chopped onion",
+                        "quantity": 1,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "grated fresh ginger",
+                        "quantity": 1,
+                        "unit": "tablespoon(s)"
+                    },
+
+                    {
+                        "ingredient": "small jalapeno pepper, seeded and minced",
+                        "quantity": 1,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "chili powder",
+                        "quantity": 1,
+                        "unit": "teaspoon(s)"
+                    },
+
+                    {
+                        "ingredient": "no-salt-added or low-sodium vegetable broth",
+                        "quantity": 2,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "tomato paste (see note)",
+                        "quantity": 2,
+                        "unit": "tablespoon(s)"
+                    },
+
+                    {
+                        "ingredient": "Dr. Fuhrman's MatoZest (or other no-salt seasoning blend, adjusted to taste)",
+                        "quantity": 2,
+                        "unit": "tablespoon(s)"
+                    },
+
+                    {
+                        "ingredient": "bunch kale, tough stems and center ribs removed and leaves chopped",
+                        "quantity": 1,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "fresh lime juice",
+                        "quantity": 1,
+                        "unit": "tablespoon(s)"
+                    },
+
+                    {
+                        "ingredient": "scallions, thinly sliced",
+                        "quantity": 4,
+                        "unit": "none"
+                    },
+                ],
+                "category": "Main Dishes - Vegan",
+                "cuisine": "Thai",
+                "imgUrl": "https://www.drfuhrman.com/rollups/4eb7b611d6fe7dde5a97e6033d71d4b53060d6bf90c0a091bc62169770796544.jpg",
+                "rating": 4,
+                "comment": "",
+                "source": "https://www.drfuhrman.com/recipes/1716/spicy-thai-braised-kale-and-tofu",
+                "author": "www.DrFuhrman.com",
+                "tags": [],
+                "gbombs": [
+                    { "name": "Greens", "isChecked": true },
+                    { "name": "Beans", "isChecked": true },
+                    { "name": "Onions", "isChecked": true },
+
+                ]
+            },
+
+            {
+                "title": "Summertime Gazpacho Recipe",
+                "description": "A fantastic cold soup, gazpacho can be used as a salsa, salad dressing, or sauce as well!",
+                "instructions": "To a food processor, add all ingredients except the vinegars and lime and process until desired chunkiness. (I prefer chunky! You can do this in separate batches of ingredients at a time, and mix together at the end. Add the vinegar and lime juice and stir to combine. Store extra in airtight freezer containers, and thaw the night before when ready to eat.",
+                "serving": 5,
+                "email": "jen@jen.com",
+                "ingredientsList": [
+                    {
+                        "ingredient": "large European cucumber, chopped",
+                        "quantity": 1,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "large red bell pepper, deseeded and chopped",
+                        "quantity": 1,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "cloves garlic, smashed",
+                        "quantity": 4,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "large jalapeño, deseeded and chopped (add the seeds if you love heat!)",
+                        "quantity": 1,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "ripe tomatoes, chopped (any kind)",
+                        "quantity": 2,
+                        "unit": "pounds(s)"
+                    },
+
+                    {
+                        "ingredient": "white wine vinegar",
+                        "quantity": 2,
+                        "unit": "tablespoon(s)"
+                    },
+
+                    {
+                        "ingredient": "red wine vinegar",
+                        "quantity": 4,
+                        "unit": "tablespoon(s)"
+                    },
+
+                    {
+                        "ingredient": "juice of 1 lime",
+                        "quantity": 1,
+                        "unit": "none"
+                    },
+                ],
+                "category": "Soups and Stews",
+                "cuisine": "Spanish",
+                "imgUrl": "https://www.drfuhrman.com/rollups/4eb7b611d6fe7dde5a97e6033d71d4b53060d6bf90c0a091bc62169770796544.jpg",
+                "rating": 4,
+                "comment": "",
+                "source": "https://thewateringmouth.com/summertime-gazpacho-recipe-video/",
+                "author": "Cheri",
+                "tags": [
+                    { "name": "Aggresive Weight Loss", "isChecked": true }
+                ],
+                "gbombs": [
+                    { "name": "Greens", "isChecked": true },
+                    { "name": "Onions", "isChecked": true },
+
+                ]
+            },
+
+            {
+                "title": "Easy Black Beet Burgers",
+                "description": "You can't beat these Beet Burgers. Garnish them with baby lettuce, tomato, sliced red onion and maybe some avocado!",
+                "instructions": "Preheat oven to 350 degrees F. Add 2 tablespoons of water to a pan along with onions and garlic. Water saute until onions are softened. Set aside 1/2 cup of the black beans. Add cooked onion mixture, remaining black beans, beets, walnuts, oats, chili powder, smoked paprika, ketchup and coconut aminos to a food processor and pulse until mostly smooth with some texture. Scrape the mixture into a bowl and fold in the reserved 1/2 cup of beans. Line a baking sheet with parchment paper or Silpat. Form into 6 burgers. If desired, use an ice cream scoop and flatten mixture to make the burgers. Bake for 20 minutes, then flip burgers and bake for an additional 20 minutes.",
+                "serving": 6,
+                "email": "jen@jen.com",
+                "ingredientsList": [
+                    {
+                        "ingredient": "medium onion, finely chopped",
+                        "quantity": 0.5,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "cloves garlic, chopped",
+                        "quantity": 2,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "cooked or 1 (15 ounce) can no-salt-added or low sodium black beans, drained",
+                        "quantity": 1.5,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "beets, cooked, peeled and roughly chopped",
+                        "quantity": 2,
+                        "unit": "none"
+                    },
+
+                    {
+                        "ingredient": "walnuts",
+                        "quantity": 0.25,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "old fashioned rolled oats",
+                        "quantity": 0.5,
+                        "unit": "cup(s)"
+                    },
+
+                    {
+                        "ingredient": "chili powder",
+                        "quantity": 0.5,
+                        "unit": "teaspoon(s)"
+                    },
+
+                    {
+                        "ingredient": "smoked paprika",
+                        "quantity": 0.5,
+                        "unit": "teaspoon(s)"
+                    },
+
+                    {
+                        "ingredient": "Dr. Fuhrman's Ketchup or other no-salt, no-sugar-added ketchup",
+                        "quantity": 2,
+                        "unit": "teaspoon(s)"
+                    },
+
+                    {
+                        "ingredient": "coconut aminos",
+                        "quantity": 2,
+                        "unit": "teaspoon(s)"
+                    },
+                ],
+                "category": "Burgers, Pizza, Wraps and Chips",
+                "cuisine": "American",
+                "imgUrl": "https://www.drfuhrman.com/rollups/f356aab2bcaad4b3ae0941f067d41db9e82edc65e456f0a226d85b89b6030a8f.jpg",
+                "rating": 5,
+                "comment": "",
+                "source": "https://www.drfuhrman.com/recipes/3441/easy-black-beet-burgers",
+                "author": "Jenna Fuhrman",
+                "tags": [
+                    { "name": "Quick and Easy", "isChecked": true }
+                ],
+                "gbombs": [
+                    { "name": "Beans", "isChecked": true },
+                    { "name": "Onions", "isChecked": true },
+
+                ]
+            },
+
+
