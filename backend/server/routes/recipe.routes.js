@@ -15,8 +15,7 @@ module.exports = app => {
     app.get("/api/recipes/cuisine/findCuisine", RecipeController.findCuisine);
     app.get("/api/recipes/cuisine/findAllCuisine", RecipeController.findAllCuisine);
     app.post("/api/recipes/create/cuisine", RecipeController.createCuisine);
-    app.get("/api/recipes/cuisine/:_id", RecipeController.findOneCuisine);
+    app.get("/api/recipes/cuisine/:name", RecipeController.findOneCuisine);
     app.patch("/api/recipes/cuisine/:_id/update", RecipeController.updateOneCuisine);
-
     app.delete("/api/recipes/cuisine/:_id/delete", RecipeController.deleteCuisine);
 }

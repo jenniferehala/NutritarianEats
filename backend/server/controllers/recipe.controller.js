@@ -85,8 +85,10 @@ module.exports.createCuisine = (req, res) => {
             res.status(400).json({ message: "that didn't work", err }))
 }
 
+
 module.exports.findOneCuisine = (req, res) => {
-    Cuisine.findOne({ _id: req.params._id }).populate('name')
+    console.log('req.params.name', req.params.name)
+    Recipe.find({ cuisine: req.params.name })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }

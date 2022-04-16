@@ -6,29 +6,32 @@ import { Link } from 'react-router-dom';
 
 const SingleCuisine = (props) => {
 
-    const [cuisine, setCuisine] = useState([]);
-    const { _id } = useParams({})
+    const [recipe, setRecipe] = useState([]);
+    const { name } = useParams({})
 
     useEffect(() => {
         document.title = "NutritarianEats"
-        axios.get(`http://localhost:8000/api/recipes/cuisine/${_id}`)
+        console.log(name)
+        axios.get(`http://localhost:8000/api/recipes/cuisine/${name}`)
             .then(res => {
                 console.log(res.data.results);
-                setCuisine(res.data.results);
+                setRecipe(res.data.results);
             })
             .catch(err => console.log(err))
-    }, [_id]);
+    }, [name]);
 
     return (
         <div>
-            <h1>hi</h1>
-            {/* {
-                cuisine?.map((value, i) => {
-                    return <div value={value} key={i}>
-                        {cuisine._id}
+            <h1>Hello World</h1>
+            {
+                recipe?.map((value) => {
+                    return <div value={value} key={value._id}>
+                        {value.cuisine}
+                        {value.imgUrl}
+
                     </div>
                 })
-            } */}
+            }
         </div>
 
     )

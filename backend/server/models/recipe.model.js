@@ -27,7 +27,6 @@ const Cuisine = mongoose.model("Cuisine", CuisineSchema);
 
 
 const RecipeSchema = new mongoose.Schema({
-    _id: { type: String },
 
     title: {
 

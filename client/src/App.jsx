@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { Switch, Route, } from 'react-router-dom'
+import { Switch, Route, Link, } from 'react-router-dom'
 import Main from './views/Main';
 import Create from './views/Create';
 import Edit from './views/Edit';
@@ -14,6 +14,7 @@ function App() {
   return (
 
     <div className="App">
+
       <div className="container">
         <div className="container-xxl px-md-5 bg-white shadow-lg">
           {/* Beginning of Header */}
@@ -22,10 +23,14 @@ function App() {
               <img src="/img/logo.svg" width="147" height="147" alt="Nutritarian EatsLogo" Loading="lazy" />
             </a>
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="/" className="nav-link px-2 link-secondary">Home</a></li>
-              <li><a href="/recipes/create" className="nav-link px-2 link-dark">Create</a></li>
-              <li><a href="/recipes/:_id/edit" className="nav-link px-2 link-dark">Update</a></li>
-              <li><a href="/recipes/about" className="nav-link px-2 link-dark">About</a></li>
+              {/* <li><a href="/" >Home</a></li> */}
+              <Link className="nav-link px-2 link-secondary" to="/">Home</Link>
+              {/* <li><a href="" >Create</a></li> */}
+              <Link className="nav-link px-2 link-dark" to="/recipes/create">Create</Link>
+              {/* <li><a href="/recipes/:_id/edit" className="nav-link px-2 link-dark">Update</a></li> */}
+              < Link to="/recipes/:_id/edit" className="nav-link px-2 link-dark" >Update</Link>
+              {/* <li><a href="/recipes/about" className="nav-link px-2 link-dark">About</a></li> */}
+              <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
             </ul>
             <div className="col-md-3 text-end">
               <form action="/search">
@@ -57,7 +62,7 @@ function App() {
           <SingleRecipe />
         </Route>
 
-        <Route exact path="/recipes/cuisine/:_id" >
+        <Route exact path="/recipes/cuisine/:name" >
           <SingleCuisine />
         </Route>
 
