@@ -13,7 +13,6 @@ module.exports.findAllRecipe = (req, res) => {
 }
 
 
-
 module.exports.latestRecipe = (req, res) => {
     Recipe.find({}).sort({ _id: -1 }).limit(5)
         .then(results => res.json({ results: results }))
@@ -62,63 +61,54 @@ module.exports.searchRecipe = (req, res) => {
 
 // Cuisine Routes
 
-module.exports.findCuisine = (req, res) => {
-    Cuisine.find({}).limit(5)
+module.exports.findMainCuisine = (req, res) => {
+    Recipe.aggregate([
+        { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
+        { $project: { _id: 0, name: '$_id', image: 1 } }
+    ]).limit(5)
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
-
 
 
 module.exports.findAllCuisine = (req, res) => {
-    Cuisine.find({})
+    Recipe.aggregate([
+        { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
+        { $project: { _id: 0, name: '$_id', image: 1 } }
+    ])
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-module.exports.createCuisine = (req, res) => {
-    Cuisine.create(req.body)
-        .then(newCuisines =>
-            res.json({ results: newCuisines }))
+// module.exports.createCuisine = (req, res) => {
+//     Cuisine.create(req.body)
+//         .then(newCuisines =>
+//             res.json({ results: newCuisines }))
 
-        .catch(err =>
-            res.status(400).json({ message: "that didn't work", err }))
-}
+//         .catch(err =>
+//             res.status(400).json({ message: "that didn't work", err }))
+// }
 
 
 module.exports.findOneCuisine = (req, res) => {
-    console.log('req.params.name', req.params.name)
-    Recipe.find({ cuisine: req.params.name })
+    Recipe.find({ "cuisine": req.params.name })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-// Story.
-//     find().
-//     populate({
-//         path: 'fans',
-//         match: { age: { $gte: 21 } },
-//         // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
-//         select: 'name -_id'
-//     }).
-//     exec();
+// module.exports.updateOneCuisine = (req, res) => {
+//     Cuisine.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
+//         // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
+//         //3rd parameter
+//         .then(results => res.json({ results: results }))
+//         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+// }
 
-module.exports.updateOneCuisine = (req, res) => {
-    Cuisine.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
-        // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
-        //3rd parameter
-        .then(results => res.json({ results: results }))
-        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
-}
-
-
-
-
-module.exports.deleteCuisine = (req, res) => {
-    Cuisine.deleteOne({ _id: req.params._id })
-        .then(results => res.json({ results: results }))
-        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
-}
+// module.exports.deleteCuisine = (req, res) => {
+//     Cuisine.deleteOne({ _id: req.params._id })
+//         .then(results => res.json({ results: results }))
+//         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+// }
 // Give it the query, we tell it to increase something $inc: increase what? {'score'} : 1}
 //whats the query? whats the key you're increasing (score)?
 // inc operator will increase a value

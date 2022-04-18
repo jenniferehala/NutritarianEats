@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from '../src/img/logo.svg'
 import './App.css';
 import { Switch, Route, Link, } from 'react-router-dom'
 import Main from './views/Main';
@@ -19,17 +19,13 @@ function App() {
         <div className="container-xxl px-md-5 bg-white shadow-lg">
           {/* Beginning of Header */}
           <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-0 border-bottom">
-            <a href="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-              <img src="/img/logo.svg" width="147" height="147" alt="Nutritarian EatsLogo" Loading="lazy" />
-            </a>
+            <Link to="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+              <img src={logo} width="147" height="147" alt="Nutritarian EatsLogo" Loading="lazy" />
+            </Link>
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-              {/* <li><a href="/" >Home</a></li> */}
               <Link className="nav-link px-2 link-secondary" to="/">Home</Link>
-              {/* <li><a href="" >Create</a></li> */}
               <Link className="nav-link px-2 link-dark" to="/recipes/create">Create</Link>
-              {/* <li><a href="/recipes/:_id/edit" className="nav-link px-2 link-dark">Update</a></li> */}
               < Link to="/recipes/:_id/edit" className="nav-link px-2 link-dark" >Update</Link>
-              {/* <li><a href="/recipes/about" className="nav-link px-2 link-dark">About</a></li> */}
               <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
             </ul>
             <div className="col-md-3 text-end">

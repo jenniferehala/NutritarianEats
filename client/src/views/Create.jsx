@@ -192,7 +192,6 @@ const Create = (props) => {
                                         <input
                                             className="form-group col-sm-1 m-1"
                                             type="text"
-                                            // key={i}
                                             value={value.quantity}
                                             name="quantity"
                                             onChange={(event) => handleAddQuantity(event, i)}

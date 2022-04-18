@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import '../App.css'
 import axios from 'axios';
 import Cuisine from '../components/Cuisine'
@@ -7,16 +7,15 @@ import Recipes from '../components/Recipes';
 import LatestRecipe from '../components/LatestRecipe';
 
 const Main = (props) => {
-    const [cuisine, setCuisine] = useState([])
     const [recipe, setRecipe] = useState([])
+    const [cuisineRecipe, setCuisineRecipe] = useState([])
     const [latestRecipe, setLatestRecipe] = useState([])
 
     useEffect(() => {
-        document.title = "NutritarianEats"
-        axios.get("http://localhost:8000/api/recipes/cuisine/findCuisine")
+        axios.get("http://localhost:8000/api/recipes/cuisine/findMainCuisine")
             .then(res => {
-                // console.log(res.data.results);
-                setCuisine(res.data.results);
+                console.log(res.data.results);
+                setCuisineRecipe(res.data.results);
             })
             .catch(err => console.log(err))
     }, []);
@@ -24,7 +23,7 @@ const Main = (props) => {
     useEffect(() => {
         axios.get("http://localhost:8000/api/recipes/latest")
             .then(res => {
-                console.log(res.data.results);
+                // console.log(res.data.results);
                 setLatestRecipe(res.data.results);
             })
             .catch(err => console.log(err))
@@ -33,7 +32,7 @@ const Main = (props) => {
     useEffect(() => {
         axios.get("http://localhost:8000/api/recipes/findAll")
             .then(res => {
-                console.log(res.data.results);
+                // console.log(res.data.results);
                 setRecipe(res.data.results);
             })
             .catch(err => console.log(err))
@@ -48,7 +47,7 @@ const Main = (props) => {
                 <div className="container-xxl px-md-5 bg-white ">
                     <div className="row flex-lg-row-reverse align-items-center py-4 mb-4 ">
                         <div className="col-12 col-lg-6">
-                            <img src="/img/main.png" alt="photo" height="100" className="d-block mx-lg-auto img-fluid" Loading="lazy" />
+                            <img src={require("../img/main.png")} alt="photo" height="100" className="d-block mx-lg-auto img-fluid" Loading="lazy" />
                         </div>
                         <div className="col-12 col-lg-6">
                             <h1 className="display-5 fw-bold mb-3"> Delicious Nutritarian Recipes to support your optimal health.</h1>
@@ -67,20 +66,20 @@ const Main = (props) => {
 
 
                         {
-                            cuisine.map((item, i) => {
-                                return <Cuisine key={i} cuisine={item} />
+                            cuisineRecipe.map((item, i) => {
+                                return <Cuisine key={i} value={item} />
                             })
                         }
 
 
-                        <a href="/recipes/cuisine/findAllCuisine" className="col text-center category__link">
+                        <Link to="/recipes/cuisine/findAllCuisine" className="col text-center category__link">
                             <div className="category__img shadow">
-                                <img src="/img/people_eating3.jpg" alt="People Eating" Loading="lazy" />
+                                <img src={require("../img/people_eating3.jpg")} alt="People Eating" Loading="lazy" />
                             </div>
                             <div className="pt-1">
                                 View All
                             </div>
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Categories End */}
@@ -148,14 +147,14 @@ const Main = (props) => {
 
                     {/* Submit Start */}
                     <section className="px-4 py-5 my-5 text-center ">
-                        <img className="d-block mx-auto mb-4 img-fluid" src="/img/bottom2.png" alt="Publish your recipe for FREE today" width="566" height="208" Loading="lazy" />
+                        <img className="d-block mx-auto mb-4 img-fluid" src={require("../img/bottom2.png")} alt="Publish your recipe for FREE today" width="566" height="208" Loading="lazy" />
                         <h1 className="display-5 fw-bold">Publish your recipe for FREE today</h1>
                         <div className="col-lg-6 mx-auto">
                             <p className="lead mb-4">
                                 Publish your recipe for and join our thriving healthy community!
                             </p>
                             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                                <a href="/recipes/create" className="btn btn-primary btn-dark btn-lg">Submit Recipe </a>
+                                <Link to="/recipes/create" className="btn btn-primary btn-dark btn-lg">Submit Recipe </Link>
                             </div>
                         </div>
                     </section>

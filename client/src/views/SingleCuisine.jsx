@@ -11,7 +11,6 @@ const SingleCuisine = (props) => {
 
     useEffect(() => {
         document.title = "NutritarianEats"
-        console.log(name)
         axios.get(`http://localhost:8000/api/recipes/cuisine/${name}`)
             .then(res => {
                 console.log(res.data.results);
@@ -20,18 +19,51 @@ const SingleCuisine = (props) => {
             .catch(err => console.log(err))
     }, [name]);
 
+
+
     return (
         <div>
-            <h1>Hello World</h1>
-            {
-                recipe?.map((value) => {
-                    return <div value={value} key={value._id}>
-                        {value.cuisine}
-                        {value.imgUrl}
+            <div className="container ">
+                <div className="container-xxl px-md-5 bg-white ">
+                    <h1 className="py-4">{name} Cuisine</h1>
 
-                    </div>
-                })
-            }
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{name} Cuisine</li>
+                        </ol>
+                    </nav>
+
+                    <section className="pb-4 pt-4">
+                        <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
+                            {
+                                recipe.map((value, i) => {
+                                    return <>
+                                        <div>
+                                            <Link to={`/recipes/${value._id}`} className="col text-center category__link">
+                                                <div className="category__img category__img--large shadow">
+
+                                                    <img src={value.imgUrl} alt="food pic" Loading="lazy" />
+                                                </div>
+                                            </Link>
+
+
+                                            <div className="pt-1">
+                                                {value.title}
+                                            </div>
+
+
+
+                                        </div >
+                                    </>
+                                })
+                            }
+
+                        </div>
+
+                    </section>
+                </div>
+            </div>
         </div>
 
     )

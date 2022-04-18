@@ -12,10 +12,11 @@ module.exports = app => {
     app.patch("/api/recipes/:_id/upvote", RecipeController.upvoteRecipe);
     app.post("/api/recipes/search", RecipeController.searchRecipe);
     // Cuisine Routes
-    app.get("/api/recipes/cuisine/findCuisine", RecipeController.findCuisine);
+    app.get("/api/recipes/cuisine/findMainCuisine", RecipeController.findMainCuisine);
     app.get("/api/recipes/cuisine/findAllCuisine", RecipeController.findAllCuisine);
-    app.post("/api/recipes/create/cuisine", RecipeController.createCuisine);
     app.get("/api/recipes/cuisine/:name", RecipeController.findOneCuisine);
-    app.patch("/api/recipes/cuisine/:_id/update", RecipeController.updateOneCuisine);
-    app.delete("/api/recipes/cuisine/:_id/delete", RecipeController.deleteCuisine);
+    // app.get("/api/recipes/cuisine/findCuisine", RecipeController.findCuisine);
+    // app.post("/api/recipes/create/cuisine", RecipeController.createCuisine);
+    // app.patch("/api/recipes/cuisine/:_id/update", RecipeController.updateOneCuisine);
+    // app.delete("/api/recipes/cuisine/:_id/delete", RecipeController.deleteCuisine);
 }
