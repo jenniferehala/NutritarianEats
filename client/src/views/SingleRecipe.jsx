@@ -77,7 +77,7 @@ const SingleRecipe = (props) => {
                         <div className="row pt-4">
                             <div className="col-12">
                                 <h4 className="mb-2">Ingredients</h4>
-                                <ul className="list-group list-group-flush mb-5">
+                                <ul className="list-group list-group-flush mb-4">
 
                                     {recipe?.ingredientsList?.map((value, i) => {
                                         if (value.unit === "none") {
@@ -92,13 +92,23 @@ const SingleRecipe = (props) => {
 
                                 </ul>
                             </div>
-                            <div className="col-12"> Author: {recipe.author}</div>
+                            <div className="col-12 mb-4"> Author: {recipe.author}</div>
+
+                            <div>
+                                <Link to={`/recipes/${_id}/edit`} className="mb-4" >Update</Link>
+                            </div>
 
                         </div>
                     </div>
                 </div>
+                <footer className="py-5">
+                    Build by: Jen E.
+                </footer>
             </div>
+
         </div>
+
+
 
     )
 }
