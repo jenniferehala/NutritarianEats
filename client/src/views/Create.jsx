@@ -18,6 +18,8 @@ const Create = (props) => {
             { ingredient: "", quantity: 0, unit: units[0] },
         ],
         category: categories[0],
+        cuisine: cuisine[0],
+        cuisineImg: "",
         imgUrl: "",
         rating: null,
         comment: "",
@@ -45,6 +47,15 @@ const Create = (props) => {
             ...form,
             [e.target.name]: e.target.value
         })
+    }
+
+    const onSelectHandler = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+            cuisineImg: `${e.target.value}_food.jpg`
+        })
+
     }
 
     const handleAddIngredient = (e, index) => {
@@ -136,8 +147,8 @@ const Create = (props) => {
                         </div>
                         <span className="alert-danger">{errors.title && errors.title.message}</span>
 
-                        <select name="categories" className="form-select my-3" onChange={onChangeHandler}>
-                            <option disabled selected value> -- Select a Category -- </option>
+                        <select name="categories" defaultValue={'DEFAULT'} className="form-select my-3" onChange={onChangeHandler}>
+                            <option value="DEFAULT" disabled> -- Select a Category -- </option>
 
                             {
                                 categories.map((category, i) => {
@@ -149,8 +160,8 @@ const Create = (props) => {
                         <span className="alert-danger">{errors.category && errors.category.message}</span>
 
 
-                        <select name="cuisine" className="form-select my-3" onChange={onChangeHandler}>
-                            <option disabled selected value> -- Select a Cuisine -- </option>
+                        <select name="cuisine" defaultValue={'DEFAULT'} className="form-select my-3" onChange={(e) => onSelectHandler(e)}>
+                            <option value="DEFAULT" disabled> -- Select a Cuisine -- </option>
 
                             {
                                 cuisine.map((cuisine, i) => {
@@ -242,12 +253,12 @@ const Create = (props) => {
                         <span className="alert-danger">{errors.comment && errors.comment.message}</span>
 
                         <div className="form-group mb-5" >
-                            <input type="input" name="source" className="form-control" placeholder="source" onChange={onChangeHandler} />
+                            <input type="input" name="source" className="form-control" placeholder="source website" onChange={onChangeHandler} />
                         </div>
                         <span className="alert-danger">{errors.comment && errors.comment.message}</span>
 
                         <div className="form-group mb-5" >
-                            <input type="input" name="author" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                            <input type="input" name="author name" className="form-control" placeholder="author" onChange={onChangeHandler} />
                         </div>
                         <span className="alert-danger">{errors.comment && errors.comment.message}</span>
 

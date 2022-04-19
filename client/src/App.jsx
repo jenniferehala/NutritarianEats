@@ -8,7 +8,7 @@ import SingleRecipe from './views/SingleRecipe';
 import ExploreCuisine from './views/ExploreCuisine';
 import SingleCuisine from './views/SingleCuisine';
 import Search from './views/Search';
-
+import LatestRecipes from './views/LatestRecipes';
 
 function App() {
   return (
@@ -64,6 +64,10 @@ function App() {
 
         <Route exact path="/recipes/search" >
           <Search />
+        </Route>
+
+        <Route exact path="/recipes/explore/latest" >
+          <LatestRecipes />
         </Route>
 
       </Switch>
