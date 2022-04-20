@@ -44,18 +44,38 @@ const Edit = (props) => {
         ]
     })
 
+    // tags = {
+    //     'kids': {isChecked: true, name: 'Kid-Friendly'},
+    //     'weightloss': {isChecked: true, name: 'Aggressive Weight Loss'}
+    // }
+
     useEffect(() => {
         document.title = "NutritarianEats - Edit"
         axios.get(`http://localhost:8000/api/recipes/${_id}`)
             .then(res => {
-                console.log(res.data.results);
-                setForm(res.data.results);
+                console.log(res.data.results.tags)
+                console.log(form.tags)
+
+                const updatedTags = [...form.tags];
+                const result = res.data.results;
+
+                result.tags.map((tag, i) => {
+                    updatedTags.map((existingTag) => {
+                        if (existingTag.name === tag.name) {
+                            existingTag.isChecked = tag.isChecked
+                        }
+                    })
+                })
+                setForm({ ...result, tags: updatedTags });
+
             })
             .catch(err => {
                 console.log(err)
                 // setErrors(err)
             })
     }, [_id])
+
+
 
 
     const onChangeHandler = (e) => {
@@ -103,7 +123,6 @@ const Edit = (props) => {
     }
 
     const handleCheckedTags = (index) => {
-
         setForm(prev => ({
             ...prev,
             tags: [
@@ -115,6 +134,9 @@ const Edit = (props) => {
                 )]
         }));
     }
+
+    // for (let key in someObject) {
+    // }
 
 
     const handleCheckedGbombs = (index) => {
@@ -287,7 +309,7 @@ const Edit = (props) => {
                                         <label>{tag.name}</label>
                                         <input
                                             type="checkbox"
-                                            value={tag.name}
+                                            // value={tag.name}
                                             checked={tag.isChecked}
                                             onChange={(event) => handleCheckedTags(i)}
                                             key={i}
