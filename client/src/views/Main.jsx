@@ -47,7 +47,7 @@ const Main = (props) => {
                 <div className="container-xxl px-md-5 bg-white ">
                     <div className="row flex-lg-row-reverse align-items-center py-4 mb-4 ">
                         <div className="col-12 col-lg-6">
-                            <img src={require("../img/main.png")} alt="photo" height="100" className="d-block mx-lg-auto img-fluid" Loading="lazy" />
+                            <img src={require("../img/main.png")} alt="Main page" height="100" className="d-block mx-lg-auto img-fluid" />
                         </div>
                         <div className="col-12 col-lg-6">
                             <h1 className="display-5 fw-bold mb-3"> Delicious Nutritarian Recipes to support your optimal health.</h1>
@@ -55,8 +55,8 @@ const Main = (props) => {
                                 Get ready to change your life. Explore our wide variety of nutritarian recipes including: Breakfast, Burgers, Desserts, Vegan Main Dishes, Non-Vegan Main Dishes, Dressings, Salads, Smoothies, Soups, and Stews
                             </p>
                             <div className="d-grid gap-2 d-md-flex justify content-md-start">
-                                <a href="/explore" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Explore Latest</a>
-                                <a href="/random" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Random</a>
+                                <Link to="/explore" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Explore Latest</Link>
+                                <Link to="/random" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Random</Link>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ const Main = (props) => {
 
                         <Link to="/recipes/cuisine/findAllCuisine" className="col text-center category__link">
                             <div className="category__img shadow">
-                                <img src={require("../img/people_eating3.jpg")} alt="People Eating" Loading="lazy" />
+                                <img src={require("../img/people_eating3.jpg")} alt="People Eating" />
                             </div>
                             <div className="pt-1">
                                 View All
@@ -147,7 +147,7 @@ const Main = (props) => {
 
                     {/* Submit Start */}
                     <section className="px-4 py-5 my-5 text-center ">
-                        <img className="d-block mx-auto mb-4 img-fluid" src={require("../img/bottom2.png")} alt="Publish your recipe for FREE today" width="566" height="208" Loading="lazy" />
+                        <img className="d-block mx-auto mb-4 img-fluid" src={require("../img/bottom2.png")} alt="Publish your recipe for FREE today" width="566" height="208" />
                         <h1 className="display-5 fw-bold">Publish your recipe for FREE today</h1>
                         <div className="col-lg-6 mx-auto">
                             <p className="lead mb-4">

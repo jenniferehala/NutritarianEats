@@ -1,6 +1,4 @@
 const { Recipe } = require("../models/recipe.model");
-const { Cuisine } = require("../models/recipe.model");
-const recipeRoutes = require("../routes/recipe.routes");
 
 module.exports.testResponse = (req, res) => {
     res.json({ message: "hey its me" });
@@ -59,8 +57,11 @@ module.exports.upvoteRecipe = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
+// ***** SEARCH *** //
+
 module.exports.searchRecipe = (req, res) => {
-    Recipe.find({})
+    const recName = req.params.term;
+    Recipe.find({ $text: { $search: recName } })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }

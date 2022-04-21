@@ -11,7 +11,10 @@ module.exports = app => {
     app.delete("/api/recipes/:_id/delete", RecipeController.deleteRecipe);
     app.patch("/api/recipes/:_id/edit", RecipeController.updateOneRecipe);
     app.patch("/api/recipes/:_id/upvote", RecipeController.upvoteRecipe);
-    app.post("/api/recipes/search", RecipeController.searchRecipe);
+
+    // Get Search Route
+    app.get("/api/recipes/searchRecipes/:term", RecipeController.searchRecipe);
+
     // Cuisine Routes
     app.get("/api/recipes/cuisine/findMainCuisine", RecipeController.findMainCuisine);
     app.get("/api/recipes/cuisine/findAllCuisine", RecipeController.findAllCuisine);

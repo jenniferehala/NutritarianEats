@@ -25,9 +25,9 @@ const ExploreCuisine = (props) => {
                     <h1 className="py-4">Explore Cuisine</h1>
 
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Explore Cuisine</li>
+                        <ol className="breadcrumb">
+                            <li className="breadcrumb-item"><a href="/">Home</a></li>
+                            <li className="breadcrumb-item active" aria-current="page">Explore Cuisine</li>
                         </ol>
                     </nav>
 
@@ -37,10 +37,10 @@ const ExploreCuisine = (props) => {
                             recipe?.map((item, i) => {
 
                                 return (
-                                    <div>
-                                        <div className="category__img shadow" key={i}>
+                                    <div key={i}>
+                                        <div className="category__img shadow">
                                             <a href={`/cuisine/${item.name}`} className="col text-center category__link">
-                                                <img src={require(`../img/${item.image}`)} alt="People Eating" Loading="lazy" />
+                                                <img src={require(`../img/${item.image}`)} alt="People Eating" />
 
                                             </a>
 

@@ -13,7 +13,7 @@ const SingleRecipe = (props) => {
         document.title = "NutritarianEats"
         axios.get(`http://localhost:8000/api/recipes/${_id}`)
             .then(res => {
-                // console.log(res.data.results);
+                console.log(res.data.results);
                 setRecipe(res.data.results);
             })
             .catch(err => console.log(err))
@@ -42,19 +42,21 @@ const SingleRecipe = (props) => {
                         {/* first row */}
                         <div className="row">
                             <div className="col-12"><h1>{recipe.title}</h1></div>
-                            <div className="col-12 mb-4">
-                                <i className="bi bi-tag mx-2"></i>{recipe.cuisine}
-                                {recipe?.tags?.map((value, i) => {
-                                    return <div className="col-12 mb-4" value={value} key={i} >
-                                        <i className="bi bi-tag mx-2"></i>
-                                        {value.name}
-                                    </div>
-                                })
-                                }
+                            <div className="col-12 mb-2">
+                                <i className="bi bi-tag mx-2"></i>
+                                {recipe.cuisine}
                             </div>
-                            <div className="col-12 mb-4"><h4>Description</h4> {recipe.description}</div>
+                            {recipe?.tags?.map((value, i) => {
+                                return <div className="col-12 mb-2" value={value} key={i} >
+                                    <i className="bi bi-tag mx-2"></i>
+                                    {value.name}
+                                </div>
+                            })
+                            }
 
-                            <div className="col-12 mb-4"> Source: {recipe.source}</div>
+                            <div className="col-12 my-4"><h4>Description</h4> {recipe.description}</div>
+
+                            <div className="col-12 mb-4" > Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a></div>
                             <div className="col-12 mb-2">
                                 <h5>GBOMBS:</h5>
                                 <ul>
