@@ -13,7 +13,7 @@ module.exports = app => {
     app.patch("/api/recipes/:_id/upvote", RecipeController.upvoteRecipe);
 
     // Get Search Route
-    app.get("/api/recipes/searchRecipes/:term", RecipeController.searchRecipe);
+    app.get("/api/recipes/searchRecipes/:searchTerm", RecipeController.searchRecipe);
 
     // Cuisine Routes
     app.get("/api/recipes/cuisine/findMainCuisine", RecipeController.findMainCuisine);

@@ -59,12 +59,18 @@ module.exports.upvoteRecipe = (req, res) => {
 
 // ***** SEARCH *** //
 
+
+
 module.exports.searchRecipe = (req, res) => {
-    const recName = req.params.term;
-    Recipe.find({ $text: { $search: recName } })
+    console.log(req.params.searchTerm)
+    Recipe.find({ $text: { $search: req.params.searchTerm } })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
+
+
+
+
 
 // Cuisine Routes
 
