@@ -4,9 +4,6 @@ const port = 8000;
 const cors = require("cors");
 app.use(cors());
 
-// app.get("/api", (req,res)=>{
-//     res.json({message:"hey its me, the server"});
-// })
 
 require("./server/config/mongoose.config");
 

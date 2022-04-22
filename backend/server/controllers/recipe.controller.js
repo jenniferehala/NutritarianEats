@@ -10,7 +10,6 @@ module.exports.findAllRecipe = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-
 module.exports.latestRecipe = (req, res) => {
     Recipe.find({}).sort({ _id: -1 }).limit(5)
         .then(results => res.json({ results: results }))
@@ -57,28 +56,12 @@ module.exports.upvoteRecipe = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-// ***** SEARCH *** //
-
-
-// [
-//     {
-//       $search: {
-//         index: 'default',
-//         text: {
-//           query: 'thai',
-//           path: {
-//             'wildcard': '*'
-//           }
-//         }
-//       }
-//     }
-//   ]
 
 // User.find({"$or": [ { "fullname" : { $regex: criteria }}, { "email" : { $regex: criteria }}, { "login" : { $regex: criteria }}]});
 
 module.exports.searchRecipe = (req, res) => {
     const searchQuery = req.params.searchTerm
-    Recipe.find({ $text: { $search: searchQuery } })
+    Recipe.find({ title: { $regex: searchQuery, $options: "i" } })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }

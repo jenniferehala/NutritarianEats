@@ -14,7 +14,7 @@ const Main = (props) => {
     useEffect(() => {
         axios.get("http://localhost:8000/api/recipes/cuisine/findMainCuisine")
             .then(res => {
-                console.log(res.data.results);
+                // console.log(res.data.results);
                 setCuisineRecipe(res.data.results);
             })
             .catch(err => console.log(err))
@@ -81,8 +81,9 @@ const Main = (props) => {
                             </div>
                         </Link>
                     </div>
-
                     {/* Categories End */}
+
+
 
                     {/* Latest Start */}
 
