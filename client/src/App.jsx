@@ -1,6 +1,6 @@
 import logo from '../src/img/logo.svg'
 import './App.css';
-import { Switch, Route, Link, } from 'react-router-dom'
+import { Switch, Route, Link, useHistory, } from 'react-router-dom'
 import Main from './views/Main';
 import Create from './views/Create';
 import Edit from './views/Edit';
@@ -18,6 +18,8 @@ function App() {
 
   const [state, setState] = useState([])
 
+  const history = useHistory({})
+
   const onSubmitHandler = (event) => {
     event.preventDefault()
 
@@ -26,6 +28,7 @@ function App() {
     if (searchTerm !== "") {
       axios.get(encodeURI(`http://localhost:8000/api/recipes/searchRecipes/${searchTerm}`))
         .then(res => {
+          history.push("/recipes/searchRecipes");
           console.log(res.data.results);
           setState(res.data.results)
         })
@@ -50,7 +53,7 @@ function App() {
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
               <Link className="nav-link px-2 link-secondary" to="/">Home</Link>
               <Link className="nav-link px-2 link-dark" to="/recipes/create">Create</Link>
-              <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
+              <Link to="/recipes/about" className="nav-link px-2 link-dark">ßAbßout</Link>
               < Link to="/recipes/contact" className="nav-link px-2 link-dark" >Contact</Link>
             </ul>
             <div className="col-md-3 text-end">
@@ -70,12 +73,10 @@ function App() {
 
 
       {/* Results Start */}
-      <div className="container">
+      {/* <div className="container">
         <div className="container-xxl px-md-5 bg-white ">
           <div className="row row-cols-2 row-cols-sm-6 g-2 g-lg-3 py-4">
-
             {
-
               state?.map((item, i) => {
                 return <div>
                   <Link to={`/recipes/${item._id}`} className="col text-center category__link">
@@ -87,11 +88,10 @@ function App() {
                   </Link>
                 </div>
               })
-
             }
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Results End */}
 
 
