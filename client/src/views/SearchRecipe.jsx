@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const SearchRecipe = (props) => {
-
-    const [state, setState] = useState([])
+    const { results } = props
+    console.log(props.results);
 
 
     return (
@@ -15,8 +15,8 @@ const SearchRecipe = (props) => {
                 <div className="container-xxl px-md-5 bg-white ">
                     <div className="row row-cols-2 row-cols-sm-6 g-2 g-lg-3 py-4">
                         {
-                            state?.map((item) => {
-                                return <div>
+                            results?.map((item, i) => {
+                                return <div key={i}>
                                     <Link to={`/recipes/${item._id}`} className="col text-center category__link">
 
                                         <div className="category__img category__img--large shadow">

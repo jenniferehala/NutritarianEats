@@ -57,7 +57,6 @@ module.exports.upvoteRecipe = (req, res) => {
 }
 
 
-// User.find({"$or": [ { "fullname" : { $regex: criteria }}, { "email" : { $regex: criteria }}, { "login" : { $regex: criteria }}]});
 
 module.exports.searchRecipe = (req, res) => {
     const searchQuery = req.params.searchTerm

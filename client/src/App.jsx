@@ -17,7 +17,6 @@ import { useState } from 'react';
 function App() {
 
   const [state, setState] = useState([])
-
   const history = useHistory({})
 
   const onSubmitHandler = (event) => {
@@ -108,8 +107,8 @@ function App() {
           <About />
         </Route>
 
-        <Route exact path="/recipes/searchRecipes" >
-          <SearchRecipe />
+        <Route exact path="/recipes/:searchRecipes" >
+          <SearchRecipe results={state} />
         </Route>
 
 
