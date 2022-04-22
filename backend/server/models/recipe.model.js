@@ -126,5 +126,4 @@ module.exports = { Recipe: Recipe }
 // pass in a string so mongoose has some info about the name of
 // of our collection which is "Recipe", and we are going to pass over the schema "RecipeSchema"
 
-
 //means any file that imports this, like the controller is going to import it, we will definitely have access to our collection
