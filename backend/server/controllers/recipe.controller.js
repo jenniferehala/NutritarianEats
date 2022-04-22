@@ -77,17 +77,8 @@ module.exports.upvoteRecipe = (req, res) => {
 // User.find({"$or": [ { "fullname" : { $regex: criteria }}, { "email" : { $regex: criteria }}, { "login" : { $regex: criteria }}]});
 
 module.exports.searchRecipe = (req, res) => {
-    // const searchQuery = req.body.searchTerm
-    Recipe.find({
-        $or: [
-            {
-                "title": { $search: "thai" },
-            },
-            {
-                "description": { $search: "thai" },
-            }
-        ]
-    })
+    const searchQuery = req.params.searchTerm
+    Recipe.find({ $text: { $search: searchQuery } })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
