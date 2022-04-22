@@ -12,10 +12,6 @@ import LatestRecipes from './views/LatestRecipes';
 import About from './views/About';
 
 function App() {
-
-  const onSubmitHandler = ({})
-  const handleSearch = ({})
-
   return (
 
     <div className="App">
@@ -30,22 +26,17 @@ function App() {
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
               <Link className="nav-link px-2 link-secondary" to="/">Home</Link>
               <Link className="nav-link px-2 link-dark" to="/recipes/create">Create</Link>
-              <Link to="/recipes/searchRecipes" className="nav-link px-2 link-dark">Search</Link>
-              <Link to="/recipes/contact" className="nav-link px-2 link-dark" >Contact</Link>
+              <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
+              < Link to="/recipes/contact" className="nav-link px-2 link-dark" >Contact</Link>
             </ul>
             <div className="col-md-3 text-end">
-              <form onSubmit={onSubmitHandler} >
-                <input
-                  type="text"
-                  onChange={handleSearch}
-                  className="form-control"
-                  placeholder="Search"
-                  aria-label="Search" />
+              <form action="">
+                <input type="search" name="searchTerm" className="form-control" placeholder="Search" aria-label="Search" />
               </form>
             </div>
           </header>
         </div>
-      </div>z
+      </div>
       {/* End of Header */}
       <Switch>
         <Route exact path="/" >

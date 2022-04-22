@@ -116,7 +116,7 @@ const RecipeSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-RecipeSchema.index({ title: "text", text: true });
+RecipeSchema.index({ title: "text", description: "text" });
 
 const Recipe = mongoose.model("Recipe", RecipeSchema);
 
