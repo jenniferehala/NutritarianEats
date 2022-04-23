@@ -22,6 +22,12 @@ module.exports.allLatestRecipes = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
+module.exports.randomRecipe = (req, res) => {
+    Recipe.aggregate([{ $sample: { size: 1 } }])
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
 module.exports.createRecipe = (req, res) => {
     req.body.rating = 0;
     Recipe.create(req.body)

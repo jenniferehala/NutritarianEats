@@ -1,13 +1,16 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 const Create = (props) => {
-
     const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
-    const cuisine = ['Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese'];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese'];
     const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
+
+    const history = useHistory();
     const [errors, setErrors] = useState({});
+
     const [form, setForm] = useState({
         title: "",
         description: "",
@@ -23,6 +26,8 @@ const Create = (props) => {
         imgUrl: "",
         rating: null,
         comment: "",
+        source: "",
+        author: "",
         tags: [
             { name: "Athletic/Higher caloric", isChecked: false },
             { name: "Aggressive Weight Loss", isChecked: false },
@@ -40,6 +45,25 @@ const Create = (props) => {
             { name: "Seeds", isChecked: false }
         ]
     })
+
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        console.log(form)
+        axios.post("http://localhost:8000/api/recipes/create", form)
+            .then(res => {
+                console.log(res);
+                history.push("/")
+            })
+            .catch(err => {
+                console.log(err.response.data.err.errors);
+                setErrors(err.response.data.err.errors)
+            });
+
+    }
+
+    useEffect(() => {
+        document.title = "NutritarianEats - Create"
+    }, [])
 
 
     const onChangeHandler = (e) => {
@@ -73,11 +97,9 @@ const Create = (props) => {
         setForm({ ...form })
     }
 
-
     const handleAddField = () => {
         setForm(prev => ({
             ...prev, ingredientsList: [...prev.ingredientsList, { ingredient: "", quantity: 0, unit: units[0] }]
-
         }))
     }
 
@@ -87,7 +109,6 @@ const Create = (props) => {
     }
 
     const handleCheckedTags = (index) => {
-
         setForm(prev => ({
             ...prev,
             tags: [
@@ -100,7 +121,6 @@ const Create = (props) => {
         }));
     }
 
-
     const handleCheckedGbombs = (index) => {
         setForm(prev => ({
             ...prev,
@@ -112,27 +132,8 @@ const Create = (props) => {
                             { ...rest, isChecked })
                 )]
         }));
-
     }
 
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
-        console.log(form)
-        axios.post("http://localhost:8000/api/recipes/create", form)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err.response.data.err.errors);
-                setErrors(err.response.data.err.errors)
-            });
-
-    }
-
-
-    useEffect(() => {
-        document.title = "NutritarianEats - Create"
-    }, [])
 
     return (
         <div className="App">
@@ -144,8 +145,8 @@ const Create = (props) => {
 
                         <div className="form-group mb-3">
                             <input type="text" name="title" className="form-control" placeholder="title" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.title && errors.title.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.title && errors.title.message}</span>
 
                         <select name="categories" defaultValue={'DEFAULT'} className="form-select my-3" onChange={onChangeHandler}>
                             <option value="DEFAULT" disabled> -- Select a Category -- </option>
@@ -174,24 +175,24 @@ const Create = (props) => {
 
 
                         <div className="form-group mb-3" >
-                            <input type="text" name="description" className="form-control my-3" placeholder="description" onChange={onChangeHandler} />
+                            <textarea type="text" name="description" className="form-control" placeholder="description" onChange={onChangeHandler} row="3" />
+                            <span className="alert-danger">{errors.description && errors.description.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.description && errors.description.message}</span>
 
                         <div className="form-group mb-3" >
-                            <input type="text" name="instructions" className="form-control my-3" placeholder="instructions" onChange={onChangeHandler} />
+                            <textarea type="text" name="instructions" className="form-control" placeholder="instructions" onChange={onChangeHandler} row="3" />
+                            <span className="alert-danger">{errors.instructions && errors.instructions.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.instructions && errors.instructions.message}</span>
 
                         <div className="form-group mb-3" >
-                            <input type="number" name="serving" className="form-control my-3" placeholder="serving" onChange={onChangeHandler} />
+                            <input type="number" name="serving" className="form-control" placeholder="serving" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.serving && errors.serving.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.serving && errors.serving.message}</span>
 
                         <div className="form-group mb-3" >
-                            <input type="text" name="email" className="form-control my-3" placeholder="email" onChange={onChangeHandler} />
+                            <input type="text" name="email" className="form-control" placeholder="email" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.email && errors.email.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.email && errors.email.message}</span>
 
                         {/* ********** Ingredients Start ********** */}
                         <div className="form-group mb-3 mx-3">
@@ -239,28 +240,27 @@ const Create = (props) => {
 
                         <div className="form-group mb-3" >
                             <input type="text" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
 
                         <div className="form-group mb-3" >
                             <input type="number" name="rating" className="form-control" placeholder="rating" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.rating && errors.rating.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.rating && errors.rating.message}</span>
 
-                        <div className="form-group mb-5" >
+                        <div className="form-group mb-3" >
                             <textarea type="textarea" name="comment" className="form-control" placeholder="comment" onChange={onChangeHandler} />
                         </div>
-                        <span className="alert-danger">{errors.comment && errors.comment.message}</span>
 
-                        <div className="form-group mb-5" >
+                        <div className="form-group mb-3" >
                             <input type="input" name="source" className="form-control" placeholder="source website" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.source && errors.source.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.comment && errors.comment.message}</span>
 
-                        <div className="form-group mb-5" >
-                            <input type="input" name="author name" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                        <div className="form-group mb-3" >
+                            <input type="input" name="author" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                            <span className="alert-danger ">{errors.author && errors.author.message}</span>
                         </div>
-                        <span className="alert-danger">{errors.comment && errors.comment.message}</span>
 
 
                         {/* ******* Checkbox TAGS ******* */}

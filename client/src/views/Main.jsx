@@ -45,7 +45,7 @@ const Main = (props) => {
             {/* Beginning of Container */}
             <div className="container ">
                 <div className="container-xxl px-md-5 bg-white ">
-                    <div className="row flex-lg-row-reverse align-items-center py-4 mb-4 ">
+                    <div className="row flex-lg-row-reverse align-items-center pb-4 mb-4 ">
                         <div className="col-12 col-lg-6">
                             <img src={require("../img/main.png")} alt="Main page" height="100" className="d-block mx-lg-auto img-fluid" />
                         </div>
@@ -55,8 +55,8 @@ const Main = (props) => {
                                 Get ready to change your life. Explore our wide variety of nutritarian recipes including: Breakfast, Burgers, Desserts, Vegan Main Dishes, Non-Vegan Main Dishes, Dressings, Salads, Smoothies, Soups, and Stews
                             </p>
                             <div className="d-grid gap-2 d-md-flex justify content-md-start">
-                                <Link to="/explore" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Explore Latest</Link>
-                                <Link to="/random" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Random</Link>
+                                <Link to="/recipes/explore/latest" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Explore Latest</Link>
+                                <Link to="/recipes/explore/random" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Random</Link>
                             </div>
                         </div>
                     </div>
@@ -125,7 +125,7 @@ const Main = (props) => {
                     </section>
                     {/* Thai End */}
 
-                    {/* Indian Start */}
+                    {/* American Start */}
 
                     <section className="pb-4 pt-4">
                         <div className="d-flex mb-2 align-items-center">
@@ -136,6 +136,26 @@ const Main = (props) => {
 
                             {
                                 recipe.filter(recipe => recipe.cuisine === "American").slice(0, 5).map((item, i) => {
+                                    return <Recipes key={i} recipe={item} />
+                                })
+                            }
+
+                        </div>
+
+                    </section>
+                    {/* American End */}
+
+                    {/* Indian Start */}
+
+                    <section className="pb-4 pt-4">
+                        <div className="d-flex mb-2 align-items-center">
+                            <h2>Indian Recipes</h2>
+                            <Link to="/recipes/cuisine/Indian" className="ms-auto">View More</Link>
+                        </div>
+                        <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
+
+                            {
+                                recipe.filter(recipe => recipe.cuisine === "Indian").slice(0, 5).map((item, i) => {
                                     return <Recipes key={i} recipe={item} />
                                 })
                             }

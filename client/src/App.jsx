@@ -9,6 +9,7 @@ import ExploreCuisine from './views/ExploreCuisine';
 import SingleCuisine from './views/SingleCuisine';
 import SearchRecipe from './views/SearchRecipe';
 import LatestRecipes from './views/LatestRecipes';
+import RandomRecipe from './views/RandomRecipe';
 import About from './views/About';
 import axios from 'axios';
 import { useState } from 'react';
@@ -21,13 +22,11 @@ function App() {
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
-
     const searchTerm = event.target.getElementsByTagName("input")[0].value
-
     if (searchTerm !== "") {
       axios.get(encodeURI(`http://localhost:8000/api/recipes/searchRecipes/${searchTerm}`))
         .then(res => {
-          history.push("/recipes/searchRecipes");
+          history.push("/recipes/searchRecipes/:searchTerm");
           console.log(res.data.results);
           setState(res.data.results)
         })
@@ -52,7 +51,7 @@ function App() {
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
               <Link className="nav-link px-2 link-secondary" to="/">Home</Link>
               <Link className="nav-link px-2 link-dark" to="/recipes/create">Create</Link>
-              <Link to="/recipes/about" className="nav-link px-2 link-dark">ßAbßout</Link>
+              <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
               < Link to="/recipes/contact" className="nav-link px-2 link-dark" >Contact</Link>
             </ul>
             <div className="col-md-3 text-end">
@@ -99,6 +98,11 @@ function App() {
           <Main />
         </Route >
 
+        <Route exact path="/recipes/searchRecipes/:searchTerm" >
+          <SearchRecipe results={state} />
+        </Route>
+
+
         <Route exact path="/recipes/create" >
           <Create />
         </Route>
@@ -107,9 +111,6 @@ function App() {
           <About />
         </Route>
 
-        <Route exact path="/recipes/:searchRecipes" >
-          <SearchRecipe results={state} />
-        </Route>
 
 
         <Route exact path="/recipes/cuisine/findAllCuisine" >
@@ -132,6 +133,10 @@ function App() {
 
         <Route exact path="/recipes/explore/latest" >
           <LatestRecipes />
+        </Route>
+
+        <Route exact path="/recipes/explore/random" >
+          <RandomRecipe />
         </Route>
 
       </Switch>

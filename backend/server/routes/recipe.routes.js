@@ -5,6 +5,7 @@ module.exports = app => {
     app.get("/api/test", RecipeController.testResponse);
     app.get("/api/recipes/findAll", RecipeController.findAllRecipe);
     app.get("/api/recipes/latest", RecipeController.latestRecipe);
+    app.get("/api/recipes/explore/random", RecipeController.randomRecipe);
     app.get("/api/recipes/explore/latestRecipes", RecipeController.allLatestRecipes);
     app.post("/api/recipes/create", RecipeController.createRecipe);
     app.get("/api/recipes/:_id", RecipeController.findOneRecipe);

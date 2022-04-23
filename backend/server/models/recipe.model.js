@@ -84,7 +84,7 @@ const RecipeSchema = new mongoose.Schema({
 
     author: {
         type: String,
-        required: [2, 'This source field is required']
+        required: [2, 'This author field is required']
     },
 
     tags:

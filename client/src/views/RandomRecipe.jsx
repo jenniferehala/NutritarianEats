@@ -1,23 +1,20 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 
-const SingleRecipe = (props) => {
+const RandomRecipe = (props) => {
 
-    const [recipe, setRecipe] = useState([]);
-    const { _id } = useParams({})
-    // const history = useHistory();
+    const [random, setRandom] = useState([]);
 
     useEffect(() => {
         document.title = "NutritarianEats"
-        axios.get(`http://localhost:8000/api/recipes/${_id}`)
+        axios.get(`http://localhost:8000/api/recipes/explore/random`)
             .then(res => {
-                console.log(res.data.results);
-                setRecipe(res.data.results);
+                console.log(res.data.results[0]);
+                setRandom(res.data.results[0]);
             })
             .catch(err => console.log(err))
-    }, [_id]);
+    }, []);
 
     return (
 
@@ -28,25 +25,25 @@ const SingleRecipe = (props) => {
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item"><Link to="/">Home</Link></li>
-                        <li className="breadcrumb-item active" aria-current="page">{recipe.title}</li>
+                        <li className="breadcrumb-item active" aria-current="page">{random.title}</li>
                     </ol>
                 </nav>
 
                 <div className="row">
 
                     <div className="col-12 col-md-4">
-                        <img src={`${recipe.imgUrl}`} alt="recipe" className="img-fluid sticky-top " style={{ top: "20px", }} />
+                        <img src={`${random.imgUrl}`} alt="random" className="img-fluid sticky-top " style={{ top: "20px", }} />
                     </div>
 
                     <div className="col-12 col-md-8">
                         {/* first row */}
                         <div className="row">
-                            <div className="col-12"><h1>{recipe.title}</h1></div>
+                            <div className="col-12"><h1>{random.title}</h1></div>
                             <div className="col-12 mb-2">
                                 <i className="bi bi-tag mx-2"></i>
-                                {recipe.cuisine}
+                                {random.cuisine}
                             </div>
-                            {recipe?.tags?.map((value, i) => {
+                            {random?.tags?.map((value, i) => {
                                 return <div className="col-12 mb-2" value={value} key={i} >
                                     <i className="bi bi-tag mx-2"></i>
                                     {value.name}
@@ -54,13 +51,13 @@ const SingleRecipe = (props) => {
                             })
                             }
 
-                            <div className="col-12 my-4"><h4>Description</h4> {recipe.description}</div>
+                            <div className="col-12 my-4"><h4>Description</h4> {random.description}</div>
 
-                            <div className="col-12 mb-4" > Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a></div>
+                            <div className="col-12 mb-4" > Source: <a href={random.source} target="_blank" rel="noreferrer">{random.source}</a></div>
                             <div className="col-12 mb-2">
                                 <h5>GBOMBS:</h5>
                                 <ul>
-                                    {recipe?.gbombs?.map((value, i) => {
+                                    {random?.gbombs?.map((value, i) => {
                                         return <div className="row" value={value} key={i}>· {value.name} </div>
                                     })
                                     }
@@ -69,7 +66,7 @@ const SingleRecipe = (props) => {
 
 
                             <div className="row pt-2">
-                                <div className="col-12"><h4>Instructions</h4> {recipe.instructions}</div>
+                                <div className="col-12"><h4>Instructions</h4> {random.instructions}</div>
                             </div>
 
                         </div>
@@ -81,7 +78,7 @@ const SingleRecipe = (props) => {
                                 <h4 className="mb-2">Ingredients</h4>
                                 <ul className="list-group list-group-flush mb-4">
 
-                                    {recipe?.ingredientsList?.map((value, i) => {
+                                    {random?.ingredientsList?.map((value, i) => {
                                         if (value.unit === "none") {
                                             value.unit = "";
                                         }
@@ -94,10 +91,10 @@ const SingleRecipe = (props) => {
 
                                 </ul>
                             </div>
-                            <div className="col-12 mb-4"> Author: {recipe.author}</div>
+                            <div className="col-12 mb-4"> Author: {random.author}</div>
 
                             <div>
-                                <Link to={`/recipes/${_id}/edit`} className="mb-4" >Update</Link>
+                                <Link to={`/recipes/${random._id}/edit`} className="mb-4" >Update</Link>
                             </div>
 
                         </div>
@@ -115,4 +112,4 @@ const SingleRecipe = (props) => {
     )
 }
 
-export default SingleRecipe;
+export default RandomRecipe;

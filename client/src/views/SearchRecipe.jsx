@@ -9,11 +9,19 @@ const SearchRecipe = (props) => {
 
     return (
         <div>
-            <h1>Hello World</h1>
-            <div>Search</div>
-            <div className="container">
+            {/* Beginning of Container */}
+            <div className="container ">
                 <div className="container-xxl px-md-5 bg-white ">
-                    <div className="row row-cols-2 row-cols-sm-6 g-2 g-lg-3 py-4">
+                    <h1 className="py-4">Search Results</h1>
+
+                    <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb">
+                            <li className="breadcrumb-item"><a href="/">Home</a></li>
+                            <li className="breadcrumb-item active" aria-current="page">Search Results</li>
+                        </ol>
+                    </nav>
+
+                    <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 mb-4">
                         {
                             results?.map((item, i) => {
                                 return <div key={i}>
