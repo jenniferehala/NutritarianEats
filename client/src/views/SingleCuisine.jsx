@@ -43,7 +43,7 @@ const SingleCuisine = (props) => {
                                             <Link to={`/recipes/${value._id}`} className="col text-center category__link">
                                                 <div className="category__img category__img--large shadow">
 
-                                                    <img src={value.imgUrl} alt="food pic" Loading="lazy" />
+                                                    <img src={value.imgUrl} alt="food pic" />
                                                 </div>
                                             </Link>
 

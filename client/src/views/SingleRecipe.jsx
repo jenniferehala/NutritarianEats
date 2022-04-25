@@ -1,10 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
-
+import { Link, useHistory } from 'react-router-dom';
 const SingleRecipe = (props) => {
-
+    const history = useHistory({})
     const [recipe, setRecipe] = useState([]);
     const { _id } = useParams({})
     // const history = useHistory();
@@ -18,6 +17,21 @@ const SingleRecipe = (props) => {
             })
             .catch(err => console.log(err))
     }, [_id]);
+
+    const onDeleteHandler = (_id) => {
+        // console.log(_id);
+        // console.log(idx);
+        if (window.confirm(`Are you sure you want to delete ${recipe.title}?`)) {
+            axios.delete(`http://localhost:8000/api/recipes/${_id}/delete`)
+                .then(res => {
+                    console.log(res)
+                    history.push("/")
+
+                })
+                .catch(err => console.log(err))
+        }
+
+    }
 
     return (
 
@@ -47,10 +61,14 @@ const SingleRecipe = (props) => {
                                 {recipe.cuisine}
                             </div>
                             {recipe?.tags?.map((value, i) => {
-                                return <div className="col-12 mb-2" value={value} key={i} >
-                                    <i className="bi bi-tag mx-2"></i>
-                                    {value.name}
-                                </div>
+                                if (value.isChecked === true) {
+                                    return <div className="col-12 mb-2" value={value} key={i} >
+                                        <i className="bi bi-tag mx-2"></i>
+                                        {value.name}
+                                    </div>
+
+                                }
+
                             })
                             }
 
@@ -61,7 +79,9 @@ const SingleRecipe = (props) => {
                                 <h5>GBOMBS:</h5>
                                 <ul>
                                     {recipe?.gbombs?.map((value, i) => {
-                                        return <div className="row" value={value} key={i}>· {value.name} </div>
+                                        if (value.isChecked === true) {
+                                            return <div className="row" value={value} key={i}>· {value.name} </div>
+                                        }
                                     })
                                     }
                                 </ul>
@@ -96,8 +116,11 @@ const SingleRecipe = (props) => {
                             </div>
                             <div className="col-12 mb-4"> Author: {recipe.author}</div>
 
-                            <div>
-                                <Link to={`/recipes/${_id}/edit`} className="mb-4" >Update</Link>
+                            <div className="">
+                                <Link to={`/recipes/${_id}/edit`} className="">
+                                    <button className=" btn btn-success mx-2">Update</button>
+                                </Link>
+                                <button onClick={(e) => onDeleteHandler(_id)} className="btn btn-danger mx-2" >Delete</button>
                             </div>
 
                         </div>

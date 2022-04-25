@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Edit = (props) => {
 
@@ -55,6 +56,7 @@ const Edit = (props) => {
             .then(res => {
                 console.log(res.data.results)
                 const updatedTags = [...form.tags];
+                const updatedGbombs = [...form.gbombs];
                 const result = res.data.results;
 
                 result.tags.map((tag, i) => {
@@ -63,8 +65,17 @@ const Edit = (props) => {
                             existingTag.isChecked = tag.isChecked
                         }
                     })
+
                 })
-                setForm({ ...result, tags: updatedTags });
+
+                result.gbombs.map((gbomb, i) => {
+                    updatedGbombs.map((existingGbomb) => {
+                        if (existingGbomb.name === gbomb.name) {
+                            existingGbomb.isChecked = gbomb.isChecked
+                        }
+                    })
+                })
+                setForm({ ...result, tags: updatedTags, gbombs: updatedGbombs });
 
             })
             .catch(err => {
@@ -133,8 +144,6 @@ const Edit = (props) => {
         }));
     }
 
-    // for (let key in someObject) {
-    // }
 
 
     const handleCheckedGbombs = (index) => {
@@ -151,13 +160,15 @@ const Edit = (props) => {
 
     }
 
+
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
         console.log(form)
         axios.patch(`http://localhost:8000/api/recipes/${_id}/edit`, form)
             .then(res => {
                 console.log(res);
-                history.push("/");
+                history.push(`/recipes/${_id}`);
             })
             .catch(err => {
                 console.log(err.response.data.err.errors);
@@ -348,9 +359,19 @@ const Edit = (props) => {
                                         />
                                     </div>))}
                         </div>
-                        <input type="submit" className="btn btn-success my-3" />
+                        <div className="d-flex justify-content-md-center align-items-center">
+                            <input type="submit" className="btn btn-success mx-2 mt-4" />
+                            <Link to={`/recipes/${_id}`}><button className="btn btn-primary mx-2 mt-4">Back</button></Link>
+                        </div>
+
                     </form>
+
                     {/* **********  Form End ********** */}
+
+                    <footer className="py-5">
+
+                    </footer>
+
                 </div>
             </div>
         </div>

@@ -149,7 +149,7 @@ module.exports.findOneCuisine = (req, res) => {
 //         await Recipe.insertMany([
 
 //             {
-//                 "title": "Chocolate Pecan Smoothie",
+//                 "title": "Chocolate Pecan Smoothie 2",
 //                 "description": "This smoothie sounds decadent and tastes wonderful, but it is also packed with good-for-you, nutrient-dense ingredients.",
 //                 "instructions": "Blend ingredients in a high-powered blender until smooth.",
 //                 "serving": 2,
@@ -216,9 +216,15 @@ module.exports.findOneCuisine = (req, res) => {
 //                 "comment": "",
 //                 "source": "https://www.drfuhrman.com/recipes/553/chocolate-pecan-smoothie",
 //                 "author": "www.DrFuhrman.com",
-//                 "tags": [
-//                     { "name": "Athletic/Higher caloric", "isChecked": true }
-//                 ],
+//                 "tags": {
+//                     'athhc': { name: "Athletic/Higher caloric", isChecked: true },
+//                     'aggwl': { name: 'Aggressive Weight Loss', isChecked: false },
+//                     'kids': { name: 'Kid-Friendly', isChecked: true },
+//                     'nonveg': { name: 'Non-Vegan', isChecked: false },
+//                     'dbrv': { name: 'Diabetes reversal', isChecked: true },
+//                     'qae': { name: 'Quick and Easy', isChecked: false },
+//                 },
+
 //                 "gbombs": [
 //                     { "name": "Greens", "isChecked": true },
 //                     // { "name": "Beans", "isChecked": true },

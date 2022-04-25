@@ -601,4 +601,28 @@ into a blender cup, pour date/water mixture and remaining ingredients and blend 
                 ]
             },
 
+                            {
+
+                                Object.keys(form.tags).map((tag, i) => (
+                                    <div className="form-inline mx-3" key={i}>
+                                        <label>{form.tags[tag].name}</label>
+                                        <input
+                                            type="checkbox"
+                                            value={form.tags[tag].name}
+                                            checked={form.tags[tag].isChecked}
+                                            onChange={(event) => handleCheckedTags(i)}
+                                            key={i}
+                                        />
+                                    </div>
+                                ))}
+
+        tags: {
+            'athhc': { name: 'Athletic/Higher caloric', isChecked: false },
+            'aggwl': { name: 'Aggressive Weight Loss', isChecked: false },
+            'kids': { name: 'Kid-Friendly', isChecked: false },
+            'nonveg': { name: 'Non-Vegan', isChecked: false },
+            'dbrv': { name: 'Diabetes reversal', isChecked: false },
+            'qae': { name: 'Quick and Easy', isChecked: false },
+        },
+
 
