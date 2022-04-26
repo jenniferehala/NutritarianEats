@@ -55,7 +55,7 @@ const Create = (props) => {
                 history.push("/")
             })
             .catch(err => {
-                console.log(err.response.data.err.errors);
+                console.log(err.response.data);
                 setErrors(err.response.data.err.errors)
             });
 
@@ -71,18 +71,20 @@ const Create = (props) => {
             ...form,
             [e.target.name]: e.target.value
         })
+        if (e.target.name === 'cuisineImg') {
+            setForm({ ...form, [e.target.name]: e.target.files[0] })
+        }
     }
 
     const onSelectHandler = (e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
-            cuisineImg: `${e.target.value}_food.jpg`
+            cuisineImg: `${e.target.value}.jpg`
         });
         if (e.target.value === 'Other') {
             setShowOption(true);
         }
-
     }
 
     const handleAddIngredient = (e, index) => {
@@ -105,11 +107,6 @@ const Create = (props) => {
             ...prev, ingredientsList: [...prev.ingredientsList, { ingredient: "", quantity: 0, unit: units[0] }]
         }))
     }
-
-    // const handleAddCuisineField = (e) => {
-    //     console.log("this worked")
-    //     setForm(prev => ({ ...prev, cuisine: [""] }))
-    // }
 
     const handleRemoveField = (i) => {
         form.ingredientsList.splice(i, 1);

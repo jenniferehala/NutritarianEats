@@ -8,6 +8,7 @@ app.use(cors());
 require("./server/config/mongoose.config");
 
 app.use(express.json(), express.urlencoded({ extended: true }));
+app.use('/Users/jenniferehala/Desktop/CodingDojo/MERN/Projects/nutritarianeats/client/src/img/', express.static('/Users/jenniferehala/Desktop/CodingDojo/MERN/Projects/nutritarianeats/client/src/img/'));
 
 require("./server/routes/recipe.routes")(app);
 

@@ -1,5 +1,7 @@
 const { Recipe } = require("../models/recipe.model");
 
+
+
 module.exports.testResponse = (req, res) => {
     res.json({ message: "hey its me" });
 }
@@ -30,6 +32,7 @@ module.exports.randomRecipe = (req, res) => {
 
 module.exports.createRecipe = (req, res) => {
     req.body.rating = 0;
+    req.body.cuisineImg = req.file.path
     Recipe.create(req.body)
         .then(newRecipes => res.json({ results: newRecipes }))
         .catch(err => res.status(400).json({ message: "that didn't work", err }))
@@ -37,7 +40,7 @@ module.exports.createRecipe = (req, res) => {
 
 module.exports.findOneRecipe = (req, res) => {
     Recipe.findOne({ _id: req.params._id })
-        .then(results => res.json({ results: results }))
+        .then(results => res.json({ results: results, cuisineImg: req.body.file }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
