@@ -1,17 +1,17 @@
 const RecipeController = require("../controllers/recipe.controller");
 const multer = require('multer');
-// How we want to store file
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '/Users/jenniferehala/Desktop/CodingDojo/MERN/Projects/nutritarianeats/client/src/img/');
+        cb(null, './uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, new Date().toISOString() + file.originalname);
+
+        cb(null, file.originalname);
     }
 });
 
 const fileFilter = (req, file, cb) => {
-    // reject file
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
         cb(null, true)
     } else {
@@ -28,12 +28,11 @@ const upload = multer({
 
 
 module.exports = app => {
-    app.get("/api/test", RecipeController.testResponse);
     app.get("/api/recipes/findAll", RecipeController.findAllRecipe);
     app.get("/api/recipes/latest", RecipeController.latestRecipe);
     app.get("/api/recipes/explore/random", RecipeController.randomRecipe);
     app.get("/api/recipes/explore/latestRecipes", RecipeController.allLatestRecipes);
-    app.post("/api/recipes/create", upload.single('cuisineImg'), RecipeController.createRecipe);
+    app.post("/api/recipes/create", upload.fields([{ name: 'cuisineImg', maxCount: 1 }, { name: 'imgUrl', maxCount: 1 }]), RecipeController.createRecipe);
     app.get("/api/recipes/:_id", RecipeController.findOneRecipe);
     app.delete("/api/recipes/:_id/delete", RecipeController.deleteRecipe);
     app.patch("/api/recipes/:_id/edit", RecipeController.updateOneRecipe);

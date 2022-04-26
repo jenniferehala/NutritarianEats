@@ -626,3 +626,18 @@ into a blender cup, pour date/water mixture and remaining ingredients and blend 
         },
 
 
+        formData.append('title', form.cuisineImg)
+        formData.append('description', form.description)
+        formData.append('serving', form.serving)
+        formData.append('email', form.email)
+        formData.append('ingredientsList', form.ingredientsList)
+        formData.append('category', form.category)
+        formData.append('cuisine', form.cuisine)
+        formData.append('cuisineImg', form.cuisineImg)
+        formData.append('imgUrl', form.imgUrl)
+        formData.append('rating', form.rating)
+        formData.append('comment', form.comment)
+        formData.append('source', form.source)
+        formData.append('author', form.author)
+        formData.append('tags', form.tags)
+        formData.append('gbombs', form.gbombs)

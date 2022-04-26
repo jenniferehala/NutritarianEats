@@ -46,16 +46,30 @@ const Create = (props) => {
         ]
     })
 
+
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
         console.log(form)
-        axios.post("http://localhost:8000/api/recipes/create", form)
+        const formData = new FormData();
+        for (let i = 0; i < form.length; i++) {
+            formData.append('uploadedFile', form[i])
+        }
+        console.log(formData.get('uploadedFile'))
+
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            },
+        }
+
+        axios.post("http://localhost:8000/api/recipes/create", formData, config)
             .then(res => {
                 console.log(res);
                 history.push("/")
             })
             .catch(err => {
-                console.log(err.response.data);
+                console.log(err.response.data.err.errors);
                 setErrors(err.response.data.err.errors)
             });
 
@@ -72,7 +86,8 @@ const Create = (props) => {
             [e.target.name]: e.target.value
         })
         if (e.target.name === 'cuisineImg') {
-            setForm({ ...form, [e.target.name]: e.target.files[0] })
+            setForm({ ...form, cuisineImg: e.target.files[0] })
+
         }
     }
 
@@ -80,7 +95,7 @@ const Create = (props) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
-            cuisineImg: `${e.target.value}.jpg`
+            // cuisineImg: e.target.files[0]
         });
         if (e.target.value === 'Other') {
             setShowOption(true);
@@ -150,7 +165,7 @@ const Create = (props) => {
                         <p className="lead">Share your amazing nutritarian recipe with thousands of people across the world. Fill your form to get started.</p>
                     </div>
                     {/* **********  Form Start ********** */}
-                    <form action="" className="mt-5 w-50 mx-auto" onSubmit={onSubmitHandler}>
+                    <form action="" className="mt-5 w-50 mx-auto" onSubmit={onSubmitHandler} encType='multipart/form-data'>
 
                         <div className="form-group mb-3">
                             <input type="text" name="title" className="form-control" placeholder="title" onChange={onChangeHandler} />
@@ -191,7 +206,7 @@ const Create = (props) => {
                                     onChange={onChangeHandler}
                                     placeholder="Cuisine" />
                                 <label className="form-label"> Add Cuisine Image</label>
-                                <input type="file" className="form-control" name="cuisineImg" onChange={onChangeHandler} required />
+                                <input type="file" className="form-control" name="cuisineImg" onChange={onChangeHandler} />
                             </div>
                         }
                         <span className="alert-danger">{errors.category && errors.category.message}</span>
@@ -261,10 +276,18 @@ const Create = (props) => {
 
                         {/* ********** Ingredients End ********** */}
 
-                        <div className="form-group mb-3" >
+                        <div className="form-group mb-3 mt-4" >
+                            <label className="form-label">Recipe Image URL: </label>
                             <input type="text" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
                             <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
                         </div>
+
+                        <div className="form-group mb-3" >
+                            <label className="form-label">Or Image Upload:</label>
+                            <input type="file" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
+                        </div>
+
 
                         <div className="form-group mb-3" >
                             <input type="number" name="rating" className="form-control" placeholder="rating" onChange={onChangeHandler} />

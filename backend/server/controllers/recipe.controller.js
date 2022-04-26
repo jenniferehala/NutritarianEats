@@ -1,13 +1,50 @@
 const { Recipe } = require("../models/recipe.model");
 
 
+// ************ CREATE ***************** //
 
-module.exports.testResponse = (req, res) => {
-    res.json({ message: "hey its me" });
+module.exports.createRecipe = (req, res) => {
+    console.log("this is req.file " + req.file)
+    console.log("this is req " + req)
+    console.log("this is req.baseUrl " + req.baseUrl)
+    console.log("this is req.path " + req.path)
+    console.log("this is req.route.path " + req.route.path)
+    console.log("this is req.header " + req.header)
+
+    req.body.rating = 0;
+
+    req.body.cuisineImg = req.file.path
+    req.body.imgUrl = req.file.path
+
+    Recipe.create(req.body)
+        .then(newRecipes => res.json({ results: newRecipes }))
+        .catch(err => res.status(400).json({ message: "that didn't work", err }))
 }
+
+
+
+// ************ READ ***************** //
 
 module.exports.findAllRecipe = (req, res) => {
     Recipe.find({})
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+// ************ UPDATE ***************** //
+
+module.exports.updateOneRecipe = (req, res) => {
+    Recipe.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
+        // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
+        //3rd parameter
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+// ************ DELETE ***************** //
+
+module.exports.deleteRecipe = (req, res) => {
+    Recipe.deleteOne({ _id: req.params._id })
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
@@ -30,13 +67,7 @@ module.exports.randomRecipe = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-module.exports.createRecipe = (req, res) => {
-    req.body.rating = 0;
-    req.body.cuisineImg = req.file.path
-    Recipe.create(req.body)
-        .then(newRecipes => res.json({ results: newRecipes }))
-        .catch(err => res.status(400).json({ message: "that didn't work", err }))
-}
+
 
 module.exports.findOneRecipe = (req, res) => {
     Recipe.findOne({ _id: req.params._id })
@@ -45,19 +76,8 @@ module.exports.findOneRecipe = (req, res) => {
 }
 
 
-module.exports.deleteRecipe = (req, res) => {
-    Recipe.deleteOne({ _id: req.params._id })
-        .then(results => res.json({ results: results }))
-        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
-}
 
-module.exports.updateOneRecipe = (req, res) => {
-    Recipe.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
-        // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
-        //3rd parameter
-        .then(results => res.json({ results: results }))
-        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
-}
+
 
 module.exports.upvoteRecipe = (req, res) => {
     Recipe.findOneAndUpdate({ _id: req.params._id }, { $inc: { rating: 1 } })
