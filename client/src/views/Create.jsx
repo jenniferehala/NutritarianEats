@@ -5,12 +5,12 @@ import axios from 'axios'
 
 const Create = (props) => {
     const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
-    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese'];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Other'];
     const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
 
     const history = useHistory();
     const [errors, setErrors] = useState({});
-
+    const [showOption, setShowOption] = useState(false);
     const [form, setForm] = useState({
         title: "",
         description: "",
@@ -78,7 +78,10 @@ const Create = (props) => {
             ...form,
             [e.target.name]: e.target.value,
             cuisineImg: `${e.target.value}_food.jpg`
-        })
+        });
+        if (e.target.value === 'Other') {
+            setShowOption(true);
+        }
 
     }
 
@@ -102,6 +105,11 @@ const Create = (props) => {
             ...prev, ingredientsList: [...prev.ingredientsList, { ingredient: "", quantity: 0, unit: units[0] }]
         }))
     }
+
+    // const handleAddCuisineField = (e) => {
+    //     console.log("this worked")
+    //     setForm(prev => ({ ...prev, cuisine: [""] }))
+    // }
 
     const handleRemoveField = (i) => {
         form.ingredientsList.splice(i, 1);
@@ -136,10 +144,14 @@ const Create = (props) => {
 
 
     return (
-        <div className="App">
-            <div className="container ">
-                <div className="container-xxl px-md-5 bg-white p-4">
-                    <h1 className="text-center pt-3"> Create a New Recipe</h1>
+
+        <div className="container ">
+            <div className="container-xxl px-md-5 bg-white p-4">
+                <div className="px-4 py-5 text-center">
+                    <h1 className="display-5 fw-bold"> Submit Your Recipe</h1>
+                    <div className="col-lg-6 mx-auto">
+                        <p className="lead">Share your amazing nutritarian recipe with thousands of people across the world. Fill your form to get started.</p>
+                    </div>
                     {/* **********  Form Start ********** */}
                     <form action="" className="mt-5 w-50 mx-auto" onSubmit={onSubmitHandler}>
 
@@ -171,6 +183,20 @@ const Create = (props) => {
                                 })
                             }
                         </select>
+                        {/* Cuisine Option */}
+                        {
+                            showOption && <div className="form-group mb-3">
+                                <label className="form-label">Add New Cuisine</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="cuisine"
+                                    onChange={onChangeHandler}
+                                    placeholder="Cuisine" />
+                                <label className="form-label"> Add Cuisine Image</label>
+                                <input type="file" className="form-control" name="cuisineImg" onChange={onChangeHandler} required />
+                            </div>
+                        }
                         <span className="alert-danger">{errors.category && errors.category.message}</span>
 
 
