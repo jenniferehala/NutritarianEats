@@ -38,6 +38,9 @@ const Main = (props) => {
             .catch(err => console.log(err))
     }, []);
 
+    useEffect(() => {
+        document.title = "NutritarianEats - Home"
+    }, [])
 
     return (
         <>
@@ -47,7 +50,7 @@ const Main = (props) => {
                 <div className="container-xxl px-md-5 bg-white ">
                     <div className="row flex-lg-row-reverse align-items-center pb-4 mb-4 ">
                         <div className="col-12 col-lg-6">
-                            <img src={require("../img/main.png")} alt="Main page" height="100" className="d-block mx-lg-auto img-fluid" />
+                            <img src={require("../img/main3.png")} alt="Main page" height="100" className="d-block mx-lg-auto img-fluid mt-4" />
                         </div>
                         <div className="col-12 col-lg-6">
                             <h1 className="display-5 fw-bold mb-3"> Delicious Nutritarian Recipes to support your optimal health.</h1>

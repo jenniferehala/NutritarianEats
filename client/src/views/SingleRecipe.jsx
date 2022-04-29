@@ -88,6 +88,7 @@ const SingleRecipe = (props) => {
                             </div>
 
 
+
                             <div className="row pt-2">
                                 <div className="col-12"><h4>Instructions</h4> {recipe.instructions}</div>
                             </div>
@@ -114,7 +115,14 @@ const SingleRecipe = (props) => {
 
                                 </ul>
                             </div>
+
+                            <div className="col-12 mb-4">
+                                <h5 className="">Serving: {recipe.serving}</h5>
+                            </div>
+
                             <div className="col-12 mb-4"> Author: {recipe.author}</div>
+
+
 
                             <div className="">
                                 <Link to={`/recipes/${_id}/edit`} className="">

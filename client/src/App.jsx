@@ -11,6 +11,7 @@ import SearchRecipe from './views/SearchRecipe';
 import LatestRecipes from './views/LatestRecipes';
 import RandomRecipe from './views/RandomRecipe';
 import About from './views/About';
+import Contact from './views/Contact';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -44,8 +45,8 @@ function App() {
       <div className="container">
         <div className="container-xxl bg-white shadow-lg">
           {/* Beginning of Header */}
-          <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-0 border-bottom">
-            <Link to="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+          <header className="d-flex flex-wrap align-items-center justify-content-md-between py-3 mb-0 border-bottom">
+            <Link to="/" className="d-flex align-items-center justify-content-center  offset-md-0 col-md-2 mb-2 mb-md-0 text-dark text-decoration-none">
               <img src={logo} width="147" height="147" alt="Nutritarian EatsLogo" />
             </Link>
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -59,7 +60,7 @@ function App() {
               <form action="" onSubmit={onSubmitHandler}>
                 <div className="form-group row">
                   <input type="search" name="searchTerm" className="form-control col-sm mx-2" placeholder="Search..." aria-label="Search" />
-                  <input type="submit" className="btn btn-success col-sm-3" value="Search" />
+                  <input type="submit" className="btn btn-success col-sm-3 mx-3" value="Search" />
                 </div>
               </form>
 
@@ -69,28 +70,6 @@ function App() {
       </div>
       {/* End of Header */}
 
-
-      {/* Results Start */}
-      {/* <div className="container">
-        <div className="container-xxl px-md-5 bg-white ">
-          <div className="row row-cols-2 row-cols-sm-6 g-2 g-lg-3 py-4">
-            {
-              state?.map((item, i) => {
-                return <div>
-                  <Link to={`/recipes/${item._id}`} className="col text-center category__link">
-
-                    <div className="category__img category__img--large shadow">
-                      <img src={`${item.imgUrl}`} alt="results recipe" />
-                    </div>
-                    {item.title}
-                  </Link>
-                </div>
-              })
-            }
-          </div>
-        </div>
-      </div> */}
-      {/* Results End */}
 
 
       <Switch>
@@ -111,6 +90,9 @@ function App() {
           <About />
         </Route>
 
+        <Route exact path="/recipes/contact" >
+          <Contact />
+        </Route>
 
 
         <Route exact path="/recipes/cuisine/findAllCuisine" >

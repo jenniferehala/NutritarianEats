@@ -625,7 +625,597 @@ into a blender cup, pour date/water mixture and remaining ingredients and blend 
             'qae': { name: 'Quick and Easy', isChecked: false },
         },
 
+Recipe validation failed: ingredientsList: Cast to embedded failed for value \"[object Object]\" (type string) at path \"ingredientsList\" because of \"ObjectParameterError\",tags: Cast to embedded failed for value \"[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]\" (type string) at path \"tags\" because of \"ObjectParameterError\", gbombs: Cast to embedded failed for value \"[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]\" (type string) at path \"gbombs\" because of \"ObjectParameterError\""
+name: "ValidationError"
 
+        const oldList = ingredientsList;
+        oldList.quantity = e.target.value;
+        setIngredientList(oldList);
+@Michael-Tong-10
+
+
+
+
+
+const { Recipe } = require("../models/recipe.model");
+
+
+// ************ CREATE ***************** //
+
+module.exports.createRecipe = (req, res) => {
+
+    /*console.log("this is req.path " + req.path)
+    console.log("this is req.route.path " + req.route.path)
+    console.log("this is req.header " + req.header)
+    */
+    req.body.rating = 0;
+    req.body.cuisineImg = req.files["cuisineImg"][0].path
+    req.body.imgUrl = req.files["imgUrl"][0].path
+    console.log("req body: ", req.body);
+    for (let i = 0; i < req.body.ingredientList.length; i++) {
+        console.log("cur val: ", req.body.ingredientList[i]);
+    }
+    Recipe.create(req.body)
+        .then(newRecipes => {
+            res.json({ results: newRecipes });
+        })
+        .catch(err => res.status(400).json({ message: "that didn't work", err }))
+}
+
+
+
+// ************ READ ***************** //
+
+module.exports.findAllRecipe = (req, res) => {
+    Recipe.find({})
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+// ************ UPDATE ***************** //
+
+module.exports.updateOneRecipe = (req, res) => {
+    Recipe.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
+        // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
+        //3rd parameter
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+// ************ DELETE ***************** //
+
+module.exports.deleteRecipe = (req, res) => {
+    Recipe.deleteOne({ _id: req.params._id })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+module.exports.latestRecipe = (req, res) => {
+    Recipe.find({}).sort({ _id: -1 }).limit(5)
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+module.exports.allLatestRecipes = (req, res) => {
+    Recipe.find({}).sort({ _id: -1 })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+module.exports.randomRecipe = (req, res) => {
+    Recipe.aggregate([{ $sample: { size: 1 } }])
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+
+module.exports.findOneRecipe = (req, res) => {
+    Recipe.findOne({ _id: req.params._id })
+        .then(results => res.json({ results: results, cuisineImg: req.body.file }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+
+
+
+module.exports.upvoteRecipe = (req, res) => {
+    Recipe.findOneAndUpdate({ _id: req.params._id }, { $inc: { rating: 1 } })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+
+module.exports.searchRecipe = (req, res) => {
+    const searchQuery = req.params.searchTerm
+    Recipe.find({ title: { $regex: searchQuery, $options: "i" } })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+// Cuisine Routes
+
+module.exports.findMainCuisine = (req, res) => {
+    Recipe.aggregate([
+        { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
+        { $project: { _id: 0, name: '$_id', image: 1 } }
+    ]).limit(5)
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+module.exports.findAllCuisine = (req, res) => {
+    Recipe.aggregate([
+        { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
+        { $project: { _id: 0, name: '$_id', image: 1 } }
+    ])
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+module.exports.findOneCuisine = (req, res) => {
+    Recipe.find({ "cuisine": req.params.name })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+// Give it the query, we tell it to increase something $inc: increase what? {'score'} : 1}
+//whats the query? whats the key you're increasing (score)?
+// inc operator will increase a value
+// 
+
+
+
+
+// async function insertDummyRecipeData() {
+//     try {
+//         await Recipe.insertMany([
+
+//             {
+//                 "title": "Chocolate Pecan Smoothie 2",
+//                 "description": "This smoothie sounds decadent and tastes wonderful, but it is also packed with good-for-you, nutrient-dense ingredients.",
+//                 "instructions": "Blend ingredients in a high-powered blender until smooth.",
+//                 "serving": 2,
+//                 "email": "jen@jen.com",
+//                 "ingredientsList": [
+//                     {
+//                         "ingredient": "chopped kale",
+//                         "quantity": 2,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "unsweetened soy, hemp or almond milk",
+//                         "quantity": 0.5,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "pomegranate juice",
+//                         "quantity": 0.5,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "unsweetened soy, hemp or almond milk",
+//                         "quantity": 1,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "frozen cherries",
+//                         "quantity": 2,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "banana",
+//                         "quantity": 1,
+//                         "unit": "none"
+//                     },
+
+//                     {
+//                         "ingredient": "pecans",
+//                         "quantity": 0.25,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "natural, unsweetened cocoa powder",
+//                         "quantity": 3,
+//                         "unit": "tablespoon(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "ground flax seeds",
+//                         "quantity": 1,
+//                         "unit": "tablespoon(s)"
+//                     },
+//                 ],
+//                 "category": "Smoothies, Blended Salads and Juices",
+//                 "cuisine": "American",
+//                 "imgUrl": "https://www.drfuhrman.com/rollups/c394071fc4985fa4efc617dbd20f602209de6cc6025b42385e96197c7b6b1d83.jpg",
+//                 "rating": 4,
+//                 "comment": "",
+//                 "source": "https://www.drfuhrman.com/recipes/553/chocolate-pecan-smoothie",
+//                 "author": "www.DrFuhrman.com",
+//                 "tags": {
+//                     'athhc': { name: "Athletic/Higher caloric", isChecked: true },
+//                     'aggwl': { name: 'Aggressive Weight Loss', isChecked: false },
+//                     'kids': { name: 'Kid-Friendly', isChecked: true },
+//                     'nonveg': { name: 'Non-Vegan', isChecked: false },
+//                     'dbrv': { name: 'Diabetes reversal', isChecked: true },
+//                     'qae': { name: 'Quick and Easy', isChecked: false },
+//                 },
+
+//                 "gbombs": [
+//                     { "name": "Greens", "isChecked": true },
+//                     // { "name": "Beans", "isChecked": true },
+//                     // { "name": "Onions", "isChecked": true },
+//                     // { "name": "Mushrooms", "isChecked": true },
+//                     // { "name": "Berries", "isChecked": true },
+//                     { "name": "Seeds", "isChecked": true },
+
+//                 ]
+//             },
+            //             {
+            //                 "title": "Thai Vegetable Curry",
+            //                 "description": "No description",
+            //                 "instructions": "Place the garlic, ginger, basil, cilantro, carrot juice, bell pepper, eggplant, green beans, mushrooms, bamboo shoots, crushed red pepper, curry powder, and 1 cup of the watercress in a wok or large skillet. Bring to a boil, cover, and simmer, stirring occasionally, until all the vegetables are tender. Mix in the peanut butter. Add the tofu, bring to a simmer, and toss until hot. Add the coconut milk and heat through. Top with the remaining 1 cup watercress. Garnish with basil or cilantro leaves, if desired. May be served over brown rice or quinoa.",
+            //                 "serving": 6,
+            //                 "email": "jen@jen.com",
+            //                 "ingredientsList": [
+            //                     {
+            //                         "ingredient": "garlic, finely chopped",
+            //                         "quantity": 4,
+            //                         "unit": "clove(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "finely chopped fresh ginger",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "chopped fresh basil",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "chopped fresh cilantro",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "Ccarrot juice (2 pounds carrots, juiced)",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "red bell pepper, seeded and thinly sliced",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "large eggplant, peeled, if desired, and cut into 1-inch cubes",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "green beans, cut in 2-inch pieces",
+            //                         "quantity": 2,
+            //                         "unit": "dash"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "sliced shiitake mushrooms",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "(8-ounce) can bamboo shoots, drained",
+            //                         "quantity": 1,
+            //                         "unit": "can(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "crushed red pepper flakes, or adjusted to taste",
+            //                         "quantity": 0.25,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "garlic",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "curry powder",
+            //                         "quantity": 1,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "watercress leaves, divided",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "unsalted, natural, chunky peanut butter",
+            //                         "quantity": 3,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "firm tofu, cut into ¼-inch-thick slices",
+            //                         "quantity": 2,
+            //                         "unit": "pound(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "light coconut milk",
+            //                         "quantity": 0.5,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "Basil or cilantro leaves, for garnish",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+            //                 ],
+            //                 "category": "Main Dishes - Vegan",
+            //                 "cuisine": "Thai",
+            //                 "imgUrl": "https://www.drfuhrman.com/rollups/77618598628854a0c3a07b12fa10d9a6050b2a0c30e22af90cff9c522f4dd051.jpg",
+            //                 "rating": 4,
+            //                 "comment": "",
+            //                 "source": "https://www.drfuhrman.com/recipes/372/thai-vegetable-curry",
+            //                 "author": "www.DrFuhrman.com",
+            //                 "tags": [
+            //                     { "name": "Aggressive Weight Loss", "isChecked": true },
+            //                     { "name": "Diabetes Reversal", "isChecked": true }
+            //                 ],
+            //                 "gbombs": [
+            //                     { "name": "Greens", "isChecked": true },
+            //                     { "name": "Beans", "isChecked": true },
+            //                     { "name": "Onions", "isChecked": true },
+            //                     // { "name": "Seeds", "isChecked": true },
+
+            //                 ]
+            //             },
+            //             {
+            //                 "title": "Bean Pasta and Vegetables with Thai Coconut Sauce",
+            //                 "description": "Bean pastas are a great alternative way to get your daily serving of beans. In this flavor-packed dish, bean pasta and Asian vegetables are combined with a sauce made with coconut, lemon grass and ginger.",
+            //                 "instructions": "Place coconut milk beverage, lemongrass, lime peel, and ginger in a saucepan. Bring to a boil, remove from heat, cover and let steep for 30 minutes. Mash lemongrass, lime peel, and ginger into mixture with a wooden spoon. Pour through a fine-mesh strainer to remove fibers. Add coconut milk to a high-powered blender along with shredded coconut, dates, lime juice, and cayenne pepper. Blend until smooth and creamy.In a large wok or skillet, heat water or white wine, add garlic, broccoli, carrots, and baby corn, and stir-fry for 2 minutes, adding more water as needed. Add mushrooms and bok choy and continue to cook until vegetables start to soften, about 4 minutes. Add coconut sauce, cover, and cook for 2 to 3 minutes until vegetables are crisp-tender.Meanwhile, cook spaghetti according to package directions.Serve pasta topped with vegetables and sauce. Sprinkle with lightly toasted nuts.",
+            //                 "serving": 6,
+            //                 "email": "jen@jen.com",
+            //                 "ingredientsList": [
+            //                     {
+            //                         "ingredient": "coconut milk beverage",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "(4-inch) stalks lemongrass, broken up into small pieces",
+            //                         "quantity": 4,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "Peel of 1 organic lime, with pith removed",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "1-inch piece ginger, peeled and minced",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "unsweetened shredded coconut",
+            //                         "quantity": 0.75,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "dates, pitted",
+            //                         "quantity": 6,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "lime juice",
+            //                         "quantity": 0.5,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "cayenne pepper, or more to taste",
+            //                         "quantity": 0.125,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "water or white wine",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "garlic",
+            //                         "quantity": 2,
+            //                         "unit": "clove(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "broccoli florets, cut into bite-size pieces",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "carrots, sliced into 1/4-inch pieces",
+            //                         "quantity": 0.5,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "baby corn ears",
+            //                         "quantity": 8,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "mushrooms, sliced",
+            //                         "quantity": 10,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "sliced bok choy",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "1 (7 ounce) package black bean spaghetti",
+            //                         "quantity": 1,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "raw macadamia nuts, raw cashews, or raw Spanish peanuts, lightly toasted",
+            //                         "quantity": 0.25,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                 ],
+            //                 "category": "Main Dishes - Vegan",
+            //                 "cuisine": "Thai",
+            //                 "imgUrl": "https://www.drfuhrman.com/rollups/eb9c3a1e84ea0e3231e714684c45d5e5aef356d134a4aa1ab166e73416809914.jpg",
+            //                 "rating": 5,
+            //                 "comment": "",
+            //                 "source": "https://likeabubblingbrook.com/vegan-thai-beans-curry/https://www.drfuhrman.com/recipes/2011/bean-pasta-and-vegetables-with-thai-coconut-sauce",
+            //                 "author": "James Rohrbacher",
+            //                 "tags": [
+            //                     { "name": "Athletic/Higher caloric", "isChecked": true }
+            //                 ],
+            //                 "gbombs": [
+            //                     { "name": "Greens", "isChecked": true },
+            //                     { "name": "Beans", "isChecked": true },
+            //                     { "name": "Onions", "isChecked": true },
+            //                     { "name": "Mushrooms", "isChecked": true },
+
+            //                 ]
+            //             },
+
+//         ])
+//     }
+//     catch (error) {
+//         console.log('err', + error.response)
+//     }
+// }
+
+// insertDummyRecipeData();
+
+
+// async function insertDummyCuisineData() {
+//     try {
+//         await Cuisine.insertMany([
+//             {
+//                 "name": "American",
+//                 "image": "American_food.jpg"
+//             },
+//             {
+//                 "name": "Thai",
+//                 "image": "Thai_food.jpg"
+//             },
+//             {
+//                 "name": "Chinese",
+//                 "image": "Chinese_food.jpg"
+//             },
+//             {
+//                 "name": "Mexican",
+//                 "image": "Mexican_food.jpg"
+//             },
+//             {
+//                 "name": "Spanish",
+//                 "image": "Spanish_food.jpg"
+//             }
+//         ])
+//     }
+//     catch (error) {
+//     console.log('err', + error)
+// }
+// }
+
+// insertDummyCuisineData();
+
+
+
+
+**** New Version of Create ****
+
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import axios from 'axios'
+
+const Create = (props) => {
+    const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Other'];
+    const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
+
+    const history = useHistory();
+    const [errors, setErrors] = useState({});
+    const [showOption, setShowOption] = useState(false);
+    const [ingredientsList, setIngredientList] = useState([{ ingredient: "", quantity: "0", unit: units[0] }]);
+    const [form, setForm] = useState({
+        title: "",
+        description: "",
+        instructions: "",
+        serving: null,
+        email: "",
+        category: categories[0],
+        cuisine: cuisine[0],
+        cuisineImg: "",
+        imgUrl: "",
+        rating: null,
+        comment: "",
+        source: "",
+        author: "",
+        tags: [
+            { name: "Athletic/Higher caloric", isChecked: false },
+            { name: "Aggressive Weight Loss", isChecked: false },
+            { name: "Kid-Friendly", isChecked: false },
+            { name: "Non-Vegan", isChecked: false },
+            { name: "Diabetes reversal", isChecked: false },
+            { name: "Quick and Easy", isChecked: false },
+        ],
+        gbombs: [
+            { name: "Greens", isChecked: false },
+            { name: "Beans", isChecked: false },
+            { name: "Onions", isChecked: false },
+            { name: "Mushrooms", isChecked: false },
+            { name: "Berries", isChecked: false },
+            { name: "Seeds", isChecked: false }
+        ]
+    })
+
+
+
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        console.log(form)
+        const formData = new FormData();
+
+        for (const [key, value] of Object.entries(form)) {
+            formData.append(key, value);
+        }
+        formData.append("ingredientsList", ingredientsList);
+        /*
         formData.append('title', form.cuisineImg)
         formData.append('description', form.description)
         formData.append('serving', form.serving)
@@ -641,3 +1231,1667 @@ into a blender cup, pour date/water mixture and remaining ingredients and blend 
         formData.append('author', form.author)
         formData.append('tags', form.tags)
         formData.append('gbombs', form.gbombs)
+        */
+        for (const pair of Object.entries(formData)) {
+            console.log("key: ", pair[0]);
+            console.log("value: ", pair[1]);
+        }
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data'
+            },
+        }
+
+        axios.post("http://localhost:8000/api/recipes/create", formData, config)
+            .then(res => {
+                console.log(res);
+                history.push("/")
+            })
+            .catch(err => {
+                console.log("err: ", err);
+                console.log(err.response.data.err.errors);
+                setErrors(err.response.data.err.errors)
+            });
+
+    }
+
+    useEffect(() => {
+        document.title = "NutritarianEats - Create"
+    }, [])
+
+
+    const onChangeHandler = (e) => {
+
+        if (e.target.name === 'cuisineImg' || e.target.name === 'imgUrl') {
+            setForm({ ...form, [e.target.name]: e.target.files[0] })
+
+        } else {
+            setForm({
+                ...form,
+                [e.target.name]: e.target.value
+            })
+        }
+    }
+
+    const onSelectHandler = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+            // cuisineImg: e.target.files[0]
+        });
+        if (e.target.value === 'Other') {
+            setShowOption(true);
+        }
+    }
+
+    const handleAddIngredient = (e, index) => {
+        const oldList = ingredientsList;
+        oldList[index].ingredient = e.target.value;
+        setIngredientList([...oldList]);
+
+        /*form.ingredientsList[index].ingredient = e.target.value;
+        setForm({ ...form })*/
+    }
+
+    const handleAddQuantity = (e, index) => {
+        const oldList = ingredientsList;
+        oldList[index].quantity = e.target.value;
+        setIngredientList([...oldList]);
+
+    }
+
+    const handleAddUnit = (e, index) => {
+        const oldList = ingredientsList;
+        oldList[index].unit = e.target.value;
+        setIngredientList([...oldList]);
+
+    }
+
+    const handleAddField = () => {
+        const oldList = ingredientsList;
+        setIngredientList([...oldList, { ingredient: "", quantity: "0", unit: units[0] }]);
+    }
+
+    const handleRemoveField = (i) => {
+        form.ingredientsList.splice(i, 1);
+        setForm({ ...form });
+    }
+
+    const handleCheckedTags = (index) => {
+        setForm(prev => ({
+            ...prev,
+            tags: [
+                ...prev?.tags?.map(
+                    ({ isChecked, ...rest }, idx) => (
+                        idx === index ?
+                            { ...rest, isChecked: !isChecked } :
+                            { ...rest, isChecked })
+                )]
+        }));
+    }
+
+    const handleCheckedGbombs = (index) => {
+        setForm(prev => ({
+            ...prev,
+            gbombs: [
+                ...prev?.gbombs?.map(
+                    ({ isChecked, ...rest }, idx) => (
+                        idx === index ?
+                            { ...rest, isChecked: !isChecked } :
+                            { ...rest, isChecked })
+                )]
+        }));
+    }
+    return (
+
+        <div className="container ">
+            <div className="container-xxl px-md-5 bg-white p-4">
+                <div className="px-4 py-5 text-center">
+                    <h1 className="display-5 fw-bold"> Submit Your Recipe</h1>
+                    <div className="col-lg-6 mx-auto">
+                        <p className="lead">Share your amazing nutritarian recipe with thousands of people across the world. Fill your form to get started.</p>
+                    </div>
+                    {/* **********  Form Start ********** */}
+                    <form action="" className="mt-5 w-50 mx-auto" onSubmit={onSubmitHandler} encType='multipart/form-data'>
+
+                        <div className="form-group mb-3">
+                            <input type="text" name="title" className="form-control" placeholder="title" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.title && errors.title.message}</span>
+                        </div>
+
+                        <select name="categories" defaultValue={'DEFAULT'} className="form-select my-3" onChange={onChangeHandler}>
+                            <option value="DEFAULT" disabled> -- Select a Category -- </option>
+
+                            {
+                                categories.map((category, i) => {
+                                    return <option value={category} key={i}> {category} </option>
+
+                                })
+                            }
+                        </select>
+                        <span className="alert-danger">{errors.category && errors.category.message}</span>
+
+
+                        <select name="cuisine" defaultValue={'DEFAULT'} className="form-select my-3" onChange={(e) => onSelectHandler(e)}>
+                            <option value="DEFAULT" disabled> -- Select a Cuisine -- </option>
+
+                            {
+                                cuisine.map((cuisine, i) => {
+                                    return <option value={cuisine} key={i}> {cuisine} </option>
+
+                                })
+                            }
+                        </select>
+                        {/* Cuisine Option */}
+                        {
+                            showOption && <div className="form-group mb-3">
+                                <label className="form-label">Add New Cuisine</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="cuisine"
+                                    onChange={onChangeHandler}
+                                    placeholder="Cuisine" />
+                                <label className="form-label"> Add Cuisine Image</label>
+                                <input type="file" className="form-control" name="cuisineImg" onChange={onChangeHandler} />
+                            </div>
+                        }
+                        <span className="alert-danger">{errors.category && errors.category.message}</span>
+
+
+                        <div className="form-group mb-3" >
+                            <textarea type="text" name="description" className="form-control" placeholder="description" onChange={onChangeHandler} row="3" />
+                            <span className="alert-danger">{errors.description && errors.description.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <textarea type="text" name="instructions" className="form-control" placeholder="instructions" onChange={onChangeHandler} row="3" />
+                            <span className="alert-danger">{errors.instructions && errors.instructions.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="number" name="serving" className="form-control" placeholder="serving" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.serving && errors.serving.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="text" name="email" className="form-control" placeholder="email" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.email && errors.email.message}</span>
+                        </div>
+
+                        {/* ********** Ingredients Start ********** */}
+                        <div className="form-group mb-3 mx-3">
+
+                            {
+                                ingredientsList.map((value, i) => {
+
+                                    console.log("value: ", value);
+                                    return (
+                                        <div className="form-group" key={i}>
+                                            <label className="mx-1">Quantity:</label>
+                                            <input
+                                                className="form-group col-sm-1 m-1"
+                                                type="text"
+                                                value={value.quantity}
+                                                name="quantity"
+                                                onChange={(event) => handleAddQuantity(event, i)}
+                                            />
+
+                                            <label className="mx-2">Unit:</label>
+                                            <select name="categories" className="form-group col-md-2" onChange={(event) => handleAddUnit(event, i)}>
+                                                {
+                                                    units.map((unit, i) => {
+                                                        return <option value={unit} key={i}> {unit} </option>
+                                                    })
+                                                }
+                                            </select>
+
+                                            <label className="mx-2">Ingredient:</label>
+                                            <input
+                                                className="form-group col-sm-3 m-2"
+                                                type="text"
+                                                key={i}
+                                                value={value.ingredient}
+                                                name="ingredients"
+                                                onChange={event => handleAddIngredient(event, i)}
+                                            />
+
+                                            {i ? <button type="button" className="btn btn-outline-danger m-3" onClick={() => handleRemoveField(i)}>Remove</button>
+                                                : null
+                                            }
+                                        </div>);
+                                })}
+                        </div>
+                        <button className="btn btn-outline-primary mb-3" type="button" onClick={() => handleAddField()} >+ Ingredient</button>
+
+
+                        {/* ********** Ingredients End ********** */}
+                        {/* 
+                        <div className="form-group mb-3 mt-4" >
+                            <label className="form-label">Recipe Image URL: </label>
+                            <input type="text" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
+                        </div> */}
+
+                        <div className="form-group mb-3" >
+                            <label className="form-label">Or Image Upload:</label>
+                            <input type="file" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
+                        </div>
+
+
+                        <div className="form-group mb-3" >
+                            <input type="number" name="rating" className="form-control" placeholder="rating" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.rating && errors.rating.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <textarea type="textarea" name="comment" className="form-control" placeholder="comment" onChange={onChangeHandler} />
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="input" name="source" className="form-control" placeholder="source website" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.source && errors.source.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="input" name="author" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                            <span className="alert-danger ">{errors.author && errors.author.message}</span>
+                        </div>
+
+
+                        {/* ******* Checkbox TAGS ******* */}
+
+                        <div className="d-flex flex-row mb-5" >
+
+                            {
+                                form.tags.map((tag, i) => (
+                                    <div className="form-inline mx-3" key={i}>
+                                        <label>{tag.name}</label>
+                                        <input
+                                            type="checkbox"
+                                            value={tag.name}
+                                            checked={tag.isChecked}
+                                            onChange={(event) => handleCheckedTags(i)}
+                                            key={i}
+                                        />
+                                    </div>
+                                ))}
+
+                        </div>
+
+                        {/* ******* Checkbox GBOMBS ******* */}
+                        <div className="d-flex flex-row my-3" name="gbombs">
+
+                            {
+                                form.gbombs.map((gbomb, i) => (
+                                    <div className="form-inline mx-3" key={i}>
+                                        <label>{gbomb.name}</label>
+                                        <input
+                                            type="checkbox"
+                                            value={gbomb.name}
+                                            checked={gbomb.isChecked}
+                                            onChange={(event) => handleCheckedGbombs(i)}
+                                            key={i}
+                                        />
+                                    </div>))}
+                        </div>
+                        <input type="submit" className="btn btn-success my-3" />
+                    </form>
+                    {/* **********  Form End ********** */}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Create;
+
+
+
+**** Form Data ****
+
+        formData.append('title', form.title)
+        formData.append('description', form.description)
+        formData.append('serving', form.serving)
+        formData.append('email', form.email)
+        formData.append('ingredientsList', form.ingredientsList)
+        formData.append('category', form.category)
+        formData.append('cuisine', form.cuisine)
+        formData.append('cuisineImg', form.cuisineImg)
+        formData.append('imgUrl', form.imgUrl)
+        formData.append('rating', form.rating)
+        formData.append('comment', form.comment)
+        formData.append('source', form.source)
+        formData.append('author', form.author)
+        formData.append('tags', form.tags)
+        formData.append('gbombs', form.gbombs)
+
+
+Last try:
+
+const { Recipe } = require("../models/recipe.model");
+
+
+// ************ CREATE ***************** //
+
+module.exports.createRecipe = (req, res) => {
+    req.body.rating = 0;
+    console.log(JSON.stringify(req.body))
+    console.log((req.body))
+    // console.log('req.files: ' + req.files)
+    // const ingredientsList = req.body.ingredientsList.map(json => JSON.parse(json))
+    // req.body.ingredientsList = ingredientsList
+
+    console.log(req.body.title)
+    Recipe.create((req.body))
+        .then(newRecipes => {
+            res.json({ results: newRecipes });
+        })
+        .catch(err => res.status(400).json({ message: "that didn't work", err }))
+}
+
+
+
+// ************ READ ***************** //
+
+module.exports.findAllRecipe = (req, res) => {
+    Recipe.find({})
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+// ************ UPDATE ***************** //
+
+module.exports.updateOneRecipe = (req, res) => {
+    Recipe.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
+        // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
+        //3rd parameter
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+// ************ DELETE ***************** //
+
+module.exports.deleteRecipe = (req, res) => {
+    Recipe.deleteOne({ _id: req.params._id })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+module.exports.latestRecipe = (req, res) => {
+    Recipe.find({}).sort({ _id: -1 }).limit(5)
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+module.exports.allLatestRecipes = (req, res) => {
+    Recipe.find({}).sort({ _id: -1 })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+module.exports.randomRecipe = (req, res) => {
+    Recipe.aggregate([{ $sample: { size: 1 } }])
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+
+module.exports.findOneRecipe = (req, res) => {
+    Recipe.findOne({ _id: req.params._id })
+        .then(results => res.json({ results: results, cuisineImg: req.body.file }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+
+
+
+module.exports.upvoteRecipe = (req, res) => {
+    Recipe.findOneAndUpdate({ _id: req.params._id }, { $inc: { rating: 1 } })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+
+module.exports.searchRecipe = (req, res) => {
+    const searchQuery = req.params.searchTerm
+    Recipe.find({ title: { $regex: searchQuery, $options: "i" } })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+// Cuisine Routes
+
+module.exports.findMainCuisine = (req, res) => {
+    Recipe.aggregate([
+        { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
+        { $project: { _id: 0, name: '$_id', image: 1 } }
+    ]).limit(5)
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+module.exports.findAllCuisine = (req, res) => {
+    Recipe.aggregate([
+        { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
+        { $project: { _id: 0, name: '$_id', image: 1 } }
+    ])
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+module.exports.findOneCuisine = (req, res) => {
+    Recipe.find({ "cuisine": req.params.name })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+
+// Give it the query, we tell it to increase something $inc: increase what? {'score'} : 1}
+//whats the query? whats the key you're increasing (score)?
+// inc operator will increase a value
+// 
+
+
+
+
+// async function insertDummyRecipeData() {
+//     try {
+//         await Recipe.insertMany([
+
+//             {
+//                 "title": "Chocolate Pecan Smoothie 2",
+//                 "description": "This smoothie sounds decadent and tastes wonderful, but it is also packed with good-for-you, nutrient-dense ingredients.",
+//                 "instructions": "Blend ingredients in a high-powered blender until smooth.",
+//                 "serving": 2,
+//                 "email": "jen@jen.com",
+//                 "ingredientsList": [
+//                     {
+//                         "ingredient": "chopped kale",
+//                         "quantity": 2,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "unsweetened soy, hemp or almond milk",
+//                         "quantity": 0.5,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "pomegranate juice",
+//                         "quantity": 0.5,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "unsweetened soy, hemp or almond milk",
+//                         "quantity": 1,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "frozen cherries",
+//                         "quantity": 2,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "banana",
+//                         "quantity": 1,
+//                         "unit": "none"
+//                     },
+
+//                     {
+//                         "ingredient": "pecans",
+//                         "quantity": 0.25,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "natural, unsweetened cocoa powder",
+//                         "quantity": 3,
+//                         "unit": "tablespoon(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "ground flax seeds",
+//                         "quantity": 1,
+//                         "unit": "tablespoon(s)"
+//                     },
+//                 ],
+//                 "category": "Smoothies, Blended Salads and Juices",
+//                 "cuisine": "American",
+//                 "imgUrl": "https://www.drfuhrman.com/rollups/c394071fc4985fa4efc617dbd20f602209de6cc6025b42385e96197c7b6b1d83.jpg",
+//                 "rating": 4,
+//                 "comment": "",
+//                 "source": "https://www.drfuhrman.com/recipes/553/chocolate-pecan-smoothie",
+//                 "author": "www.DrFuhrman.com",
+//                 "tags": {
+//                     'athhc': { name: "Athletic/Higher caloric", isChecked: true },
+//                     'aggwl': { name: 'Aggressive Weight Loss', isChecked: false },
+//                     'kids': { name: 'Kid-Friendly', isChecked: true },
+//                     'nonveg': { name: 'Non-Vegan', isChecked: false },
+//                     'dbrv': { name: 'Diabetes reversal', isChecked: true },
+//                     'qae': { name: 'Quick and Easy', isChecked: false },
+//                 },
+
+//                 "gbombs": [
+//                     { "name": "Greens", "isChecked": true },
+//                     // { "name": "Beans", "isChecked": true },
+//                     // { "name": "Onions", "isChecked": true },
+//                     // { "name": "Mushrooms", "isChecked": true },
+//                     // { "name": "Berries", "isChecked": true },
+//                     { "name": "Seeds", "isChecked": true },
+
+//                 ]
+//             },
+            //             {
+            //                 "title": "Thai Vegetable Curry",
+            //                 "description": "No description",
+            //                 "instructions": "Place the garlic, ginger, basil, cilantro, carrot juice, bell pepper, eggplant, green beans, mushrooms, bamboo shoots, crushed red pepper, curry powder, and 1 cup of the watercress in a wok or large skillet. Bring to a boil, cover, and simmer, stirring occasionally, until all the vegetables are tender. Mix in the peanut butter. Add the tofu, bring to a simmer, and toss until hot. Add the coconut milk and heat through. Top with the remaining 1 cup watercress. Garnish with basil or cilantro leaves, if desired. May be served over brown rice or quinoa.",
+            //                 "serving": 6,
+            //                 "email": "jen@jen.com",
+            //                 "ingredientsList": [
+            //                     {
+            //                         "ingredient": "garlic, finely chopped",
+            //                         "quantity": 4,
+            //                         "unit": "clove(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "finely chopped fresh ginger",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "chopped fresh basil",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "chopped fresh cilantro",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "Ccarrot juice (2 pounds carrots, juiced)",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "red bell pepper, seeded and thinly sliced",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "large eggplant, peeled, if desired, and cut into 1-inch cubes",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "green beans, cut in 2-inch pieces",
+            //                         "quantity": 2,
+            //                         "unit": "dash"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "sliced shiitake mushrooms",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "(8-ounce) can bamboo shoots, drained",
+            //                         "quantity": 1,
+            //                         "unit": "can(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "crushed red pepper flakes, or adjusted to taste",
+            //                         "quantity": 0.25,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "garlic",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "curry powder",
+            //                         "quantity": 1,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "watercress leaves, divided",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "unsalted, natural, chunky peanut butter",
+            //                         "quantity": 3,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "firm tofu, cut into ¼-inch-thick slices",
+            //                         "quantity": 2,
+            //                         "unit": "pound(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "light coconut milk",
+            //                         "quantity": 0.5,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "Basil or cilantro leaves, for garnish",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+            //                 ],
+            //                 "category": "Main Dishes - Vegan",
+            //                 "cuisine": "Thai",
+            //                 "imgUrl": "https://www.drfuhrman.com/rollups/77618598628854a0c3a07b12fa10d9a6050b2a0c30e22af90cff9c522f4dd051.jpg",
+            //                 "rating": 4,
+            //                 "comment": "",
+            //                 "source": "https://www.drfuhrman.com/recipes/372/thai-vegetable-curry",
+            //                 "author": "www.DrFuhrman.com",
+            //                 "tags": [
+            //                     { "name": "Aggressive Weight Loss", "isChecked": true },
+            //                     { "name": "Diabetes Reversal", "isChecked": true }
+            //                 ],
+            //                 "gbombs": [
+            //                     { "name": "Greens", "isChecked": true },
+            //                     { "name": "Beans", "isChecked": true },
+            //                     { "name": "Onions", "isChecked": true },
+            //                     // { "name": "Seeds", "isChecked": true },
+
+            //                 ]
+            //             },
+            //             {
+            //                 "title": "Bean Pasta and Vegetables with Thai Coconut Sauce",
+            //                 "description": "Bean pastas are a great alternative way to get your daily serving of beans. In this flavor-packed dish, bean pasta and Asian vegetables are combined with a sauce made with coconut, lemon grass and ginger.",
+            //                 "instructions": "Place coconut milk beverage, lemongrass, lime peel, and ginger in a saucepan. Bring to a boil, remove from heat, cover and let steep for 30 minutes. Mash lemongrass, lime peel, and ginger into mixture with a wooden spoon. Pour through a fine-mesh strainer to remove fibers. Add coconut milk to a high-powered blender along with shredded coconut, dates, lime juice, and cayenne pepper. Blend until smooth and creamy.In a large wok or skillet, heat water or white wine, add garlic, broccoli, carrots, and baby corn, and stir-fry for 2 minutes, adding more water as needed. Add mushrooms and bok choy and continue to cook until vegetables start to soften, about 4 minutes. Add coconut sauce, cover, and cook for 2 to 3 minutes until vegetables are crisp-tender.Meanwhile, cook spaghetti according to package directions.Serve pasta topped with vegetables and sauce. Sprinkle with lightly toasted nuts.",
+            //                 "serving": 6,
+            //                 "email": "jen@jen.com",
+            //                 "ingredientsList": [
+            //                     {
+            //                         "ingredient": "coconut milk beverage",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "(4-inch) stalks lemongrass, broken up into small pieces",
+            //                         "quantity": 4,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "Peel of 1 organic lime, with pith removed",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "1-inch piece ginger, peeled and minced",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "unsweetened shredded coconut",
+            //                         "quantity": 0.75,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "dates, pitted",
+            //                         "quantity": 6,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "lime juice",
+            //                         "quantity": 0.5,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "cayenne pepper, or more to taste",
+            //                         "quantity": 0.125,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "water or white wine",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "garlic",
+            //                         "quantity": 2,
+            //                         "unit": "clove(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "broccoli florets, cut into bite-size pieces",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "carrots, sliced into 1/4-inch pieces",
+            //                         "quantity": 0.5,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "baby corn ears",
+            //                         "quantity": 8,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "mushrooms, sliced",
+            //                         "quantity": 10,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "sliced bok choy",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "1 (7 ounce) package black bean spaghetti",
+            //                         "quantity": 1,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "raw macadamia nuts, raw cashews, or raw Spanish peanuts, lightly toasted",
+            //                         "quantity": 0.25,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                 ],
+            //                 "category": "Main Dishes - Vegan",
+            //                 "cuisine": "Thai",
+            //                 "imgUrl": "https://www.drfuhrman.com/rollups/eb9c3a1e84ea0e3231e714684c45d5e5aef356d134a4aa1ab166e73416809914.jpg",
+            //                 "rating": 5,
+            //                 "comment": "",
+            //                 "source": "https://likeabubblingbrook.com/vegan-thai-beans-curry/https://www.drfuhrman.com/recipes/2011/bean-pasta-and-vegetables-with-thai-coconut-sauce",
+            //                 "author": "James Rohrbacher",
+            //                 "tags": [
+            //                     { "name": "Athletic/Higher caloric", "isChecked": true }
+            //                 ],
+            //                 "gbombs": [
+            //                     { "name": "Greens", "isChecked": true },
+            //                     { "name": "Beans", "isChecked": true },
+            //                     { "name": "Onions", "isChecked": true },
+            //                     { "name": "Mushrooms", "isChecked": true },
+
+            //                 ]
+            //             },
+
+//         ])
+//     }
+//     catch (error) {
+//         console.log('err', + error.response)
+//     }
+// }
+
+// insertDummyRecipeData();
+
+
+// async function insertDummyCuisineData() {
+//     try {
+//         await Cuisine.insertMany([
+//             {
+//                 "name": "American",
+//                 "image": "American_food.jpg"
+//             },
+//             {
+//                 "name": "Thai",
+//                 "image": "Thai_food.jpg"
+//             },
+//             {
+//                 "name": "Chinese",
+//                 "image": "Chinese_food.jpg"
+//             },
+//             {
+//                 "name": "Mexican",
+//                 "image": "Mexican_food.jpg"
+//             },
+//             {
+//                 "name": "Spanish",
+//                 "image": "Spanish_food.jpg"
+//             }
+//         ])
+//     }
+//     catch (error) {
+//     console.log('err', + error)
+// }
+// }
+
+// insertDummyCuisineData();
+
+** LAst try Create package
+
+import React from 'react'
+import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import axios from 'axios'
+import { serialize } from 'object-to-formdata';
+
+
+const Create = (props) => {
+    const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Other'];
+    const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
+
+    const history = useHistory();
+    const [errors, setErrors] = useState({});
+    const [showOption, setShowOption] = useState(false);
+    const [form, setForm] = useState({
+        title: "",
+        description: "",
+        instructions: "",
+        serving: null,
+        email: "",
+        ingredientsList: [
+            { ingredient: "", quantity: 0, unit: units[0] },
+        ],
+        category: categories[0],
+        cuisine: cuisine[0],
+        cuisineImg: "",
+        imgUrl: "",
+        rating: null,
+        comment: "",
+        source: "",
+        author: "",
+        tags: [
+            { name: "Athletic/Higher caloric", isChecked: false },
+            { name: "Aggressive Weight Loss", isChecked: false },
+            { name: "Kid-Friendly", isChecked: false },
+            { name: "Non-Vegan", isChecked: false },
+            { name: "Diabetes reversal", isChecked: false },
+            { name: "Quick and Easy", isChecked: false },
+        ],
+        gbombs: [
+            { name: "Greens", isChecked: false },
+            { name: "Beans", isChecked: false },
+            { name: "Onions", isChecked: false },
+            { name: "Mushrooms", isChecked: false },
+            { name: "Berries", isChecked: false },
+            { name: "Seeds", isChecked: false }
+        ]
+    })
+
+
+
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        console.log(form)
+        const formData = new FormData();
+
+        // console.log(Object.entries(form))
+        // console.log(Object.keys(form))
+        // console.log(Object.values(form))
+        // console.log(form)
+        // for (const [key, value] of Object.entries(form)) {
+        //     formData.append(key, value);
+        // }
+
+        for (let i in form) {
+            if (typeof (form[i]) === 'object') {
+                for (let j in form[i]) {
+                    formData.append(`${i}.${j}`, JSON.stringify(form[i][j]));
+                }
+            }
+            else {
+                formData.append(i, form[i])
+            }
+        }
+
+        for (let i of formData.entries()) {
+            console.log(i[0] + ' : ' + i[1])
+        }
+        console.log("form url: ", form.ingredientsList[0]);
+
+        // form.ingredientsList.forEach(ingredient => {
+        //     form.data.append()
+        // })
+
+
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        }
+
+        axios.post("http://localhost:8000/api/recipes/create", formData, config)
+            .then(res => {
+                console.log(res);
+                history.push("/")
+            })
+            .catch(err => {
+                console.log("err: ", err);
+                console.log(err.response.data.err.errors);
+                setErrors(err.response.data.err.errors)
+            });
+
+    }
+
+    useEffect(() => {
+        document.title = "NutritarianEats - Create"
+    }, [])
+
+
+    const onChangeHandler = (e) => {
+
+        if (e.target.name === 'cuisineImg' || e.target.name === 'imgUrl') {
+            setForm({ ...form, [e.target.name]: e.target.files[0] })
+
+        } else {
+            setForm({
+                ...form,
+                [e.target.name]: e.target.value
+            })
+        }
+    }
+
+    const onSelectHandler = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+            // cuisineImg: e.target.files[0]
+        });
+        if (e.target.value === 'Other') {
+            setShowOption(true);
+        }
+    }
+
+    const handleAddIngredient = (e, index) => {
+        form.ingredientsList[index].ingredient = e.target.value;
+        setForm({ ...form })
+    }
+
+    const handleAddQuantity = (e, index) => {
+        form.ingredientsList[index].quantity = e.target.value;
+        setForm({ ...form })
+    }
+
+    const handleAddUnit = (e, index) => {
+        form.ingredientsList[index].unit = e.target.value;
+        setForm({ ...form })
+    }
+
+    const handleAddField = () => {
+        setForm(prev => ({
+            ...prev, ingredientsList: [...prev.ingredientsList, { ingredient: "", quantity: 0, unit: units[0] }]
+        }))
+    }
+
+    const handleRemoveField = (i) => {
+        form.ingredientsList.splice(i, 1);
+        setForm({ ...form });
+    }
+
+    const handleCheckedTags = (index) => {
+        setForm(prev => ({
+            ...prev,
+            tags: [
+                ...prev?.tags?.map(
+                    ({ isChecked, ...rest }, idx) => (
+                        idx === index ?
+                            { ...rest, isChecked: !isChecked } :
+                            { ...rest, isChecked })
+                )]
+        }));
+    }
+
+    const handleCheckedGbombs = (index) => {
+        setForm(prev => ({
+            ...prev,
+            gbombs: [
+                ...prev?.gbombs?.map(
+                    ({ isChecked, ...rest }, idx) => (
+                        idx === index ?
+                            { ...rest, isChecked: !isChecked } :
+                            { ...rest, isChecked })
+                )]
+        }));
+    }
+
+
+    return (
+
+        <div className="container ">
+            <div className="container-xxl px-md-5 bg-white p-4">
+                <div className="px-4 py-5 text-center">
+                    <h1 className="display-5 fw-bold"> Submit Your Recipe</h1>
+                    <div className="col-lg-6 mx-auto">
+                        <p className="lead">Share your amazing nutritarian recipe with thousands of people across the world. Fill your form to get started.</p>
+                    </div>
+                    {/* **********  Form Start ********** */}
+                    <form action="" className="mt-5 w-50 mx-auto" onSubmit={onSubmitHandler} encType='multipart/form-data'>
+
+                        <div className="form-group mb-3">
+                            <input type="text" name="title" className="form-control" placeholder="title" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.title && errors.title.message}</span>
+                        </div>
+
+                        <select name="categories" defaultValue={'DEFAULT'} className="form-select my-3" onChange={onChangeHandler}>
+                            <option value="DEFAULT" disabled> -- Select a Category -- </option>
+
+                            {
+                                categories.map((category, i) => {
+                                    return <option value={category} key={i}> {category} </option>
+
+                                })
+                            }
+                        </select>
+                        <span className="alert-danger">{errors.category && errors.category.message}</span>
+
+
+                        <select name="cuisine" defaultValue={'DEFAULT'} className="form-select my-3" onChange={(e) => onSelectHandler(e)}>
+                            <option value="DEFAULT" disabled> -- Select a Cuisine -- </option>
+
+                            {
+                                cuisine.map((cuisine, i) => {
+                                    return <option value={cuisine} key={i}> {cuisine} </option>
+
+                                })
+                            }
+                        </select>
+                        {/* Cuisine Option */}
+                        {
+                            showOption && <div className="form-group mb-3">
+                                <label className="form-label">Add New Cuisine</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="cuisine"
+                                    onChange={onChangeHandler}
+                                    placeholder="Cuisine" />
+                                <label className="form-label"> Add Cuisine Image</label>
+                                <input type="file" className="form-control" name="cuisineImg" onChange={onChangeHandler} />
+                            </div>
+                        }
+                        <span className="alert-danger">{errors.category && errors.category.message}</span>
+
+
+                        <div className="form-group mb-3" >
+                            <textarea type="text" name="description" className="form-control" placeholder="description" onChange={onChangeHandler} row="3" />
+                            <span className="alert-danger">{errors.description && errors.description.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <textarea type="text" name="instructions" className="form-control" placeholder="instructions" onChange={onChangeHandler} row="3" />
+                            <span className="alert-danger">{errors.instructions && errors.instructions.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="number" name="serving" className="form-control" placeholder="serving" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.serving && errors.serving.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="text" name="email" className="form-control" placeholder="email" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.email && errors.email.message}</span>
+                        </div>
+
+                        {/* ********** Ingredients Start ********** */}
+                        <div className="form-group mb-3 mx-3">
+
+                            {
+                                form.ingredientsList.map((value, i) => (
+                                    <div className="form-group" key={i}>
+                                        <label className="mx-1">Quantity:</label>
+                                        <input
+                                            className="form-group col-sm-1 m-1"
+                                            type="number"
+                                            value={value.quantity}
+                                            name="quantity"
+                                            onChange={(event) => handleAddQuantity(event, i)}
+                                        />
+
+                                        <label className="mx-2">Unit:</label>
+                                        <select name="categories" className="form-group col-md-2" onChange={(event) => handleAddUnit(event, i)}>
+                                            {
+                                                units.map((unit, i) => {
+                                                    return <option value={unit} key={i}> {unit} </option>
+                                                })
+                                            }
+                                        </select>
+
+                                        <label className="mx-2">Ingredient:</label>
+                                        <input
+                                            className="form-group col-sm-3 m-2"
+                                            type="text"
+                                            key={i}
+                                            value={value.ingredient}
+                                            name="ingredients"
+                                            onChange={event => handleAddIngredient(event, i)}
+                                        />
+
+                                        {i ? <button type="button" className="btn btn-outline-danger m-3" onClick={() => handleRemoveField(i)}>Remove</button>
+                                            : null
+                                        }
+                                    </div>))}
+                        </div>
+                        <button className="btn btn-outline-primary mb-3" type="button" onClick={() => handleAddField()} >+ Ingredient</button>
+
+
+                        {/* ********** Ingredients End ********** */}
+                        {/* 
+                        <div className="form-group mb-3 mt-4" >
+                            <label className="form-label">Recipe Image URL: </label>
+                            <input type="text" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
+                        </div> */}
+
+                        <div className="form-group mb-3" >
+                            <label className="form-label">Or Image Upload:</label>
+                            <input type="file" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
+                        </div>
+
+
+                        <div className="form-group mb-3" >
+                            <input type="number" name="rating" className="form-control" placeholder="rating" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.rating && errors.rating.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <textarea type="textarea" name="comment" className="form-control" placeholder="comment" onChange={onChangeHandler} />
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="input" name="source" className="form-control" placeholder="source website" onChange={onChangeHandler} />
+                            <span className="alert-danger">{errors.source && errors.source.message}</span>
+                        </div>
+
+                        <div className="form-group mb-3" >
+                            <input type="input" name="author" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                            <span className="alert-danger ">{errors.author && errors.author.message}</span>
+                        </div>
+
+
+                        {/* ******* Checkbox TAGS ******* */}
+
+                        <div className="d-flex flex-row mb-5" >
+
+                            {
+                                form.tags.map((tag, i) => (
+                                    <div className="form-inline mx-3" key={i}>
+                                        <label>{tag.name}</label>
+                                        <input
+                                            type="checkbox"
+                                            value={tag.name}
+                                            checked={tag.isChecked}
+                                            onChange={(event) => handleCheckedTags(i)}
+                                            key={i}
+                                        />
+                                    </div>
+                                ))}
+
+                        </div>
+
+                        {/* ******* Checkbox GBOMBS ******* */}
+                        <div className="d-flex flex-row my-3" name="gbombs">
+
+                            {
+                                form.gbombs.map((gbomb, i) => (
+                                    <div className="form-inline mx-3" key={i}>
+                                        <label>{gbomb.name}</label>
+                                        <input
+                                            type="checkbox"
+                                            value={gbomb.name}
+                                            checked={gbomb.isChecked}
+                                            onChange={(event) => handleCheckedGbombs(i)}
+                                            key={i}
+                                        />
+                                    </div>))}
+                        </div>
+                        <input type="submit" className="btn btn-success my-3" />
+                    </form>
+                    {/* **********  Form End ********** */}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Create;
+
+
+*** routes ***
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function (req, file, cb) {
+
+        cb(null, file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+        cb(null, true)
+    } else {
+        cb(null, false);
+    }
+}
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
+
+** retired routes ****
+
+module.exports.upvoteRecipe = (req, res) => {
+    Recipe.findOneAndUpdate({ _id: req.params._id }, { $inc: { rating: 1 } })
+        .then(results => res.json({ results: results }))
+        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+}
+
+    app.patch("/api/recipes/:_id/upvote", RecipeController.upvoteRecipe);
+
+
+
+// async function insertDummyRecipeData() {
+//     try {
+//         await Recipe.insertMany([
+
+//             {
+//                 "title": "Chocolate Pecan Smoothie 2",
+//                 "description": "This smoothie sounds decadent and tastes wonderful, but it is also packed with good-for-you, nutrient-dense ingredients.",
+//                 "instructions": "Blend ingredients in a high-powered blender until smooth.",
+//                 "serving": 2,
+//                 "email": "jen@jen.com",
+//                 "ingredientsList": [
+//                     {
+//                         "ingredient": "chopped kale",
+//                         "quantity": 2,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "unsweetened soy, hemp or almond milk",
+//                         "quantity": 0.5,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "pomegranate juice",
+//                         "quantity": 0.5,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "unsweetened soy, hemp or almond milk",
+//                         "quantity": 1,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "frozen cherries",
+//                         "quantity": 2,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "banana",
+//                         "quantity": 1,
+//                         "unit": "none"
+//                     },
+
+//                     {
+//                         "ingredient": "pecans",
+//                         "quantity": 0.25,
+//                         "unit": "cup(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "natural, unsweetened cocoa powder",
+//                         "quantity": 3,
+//                         "unit": "tablespoon(s)"
+//                     },
+
+//                     {
+//                         "ingredient": "ground flax seeds",
+//                         "quantity": 1,
+//                         "unit": "tablespoon(s)"
+//                     },
+//                 ],
+//                 "category": "Smoothies, Blended Salads and Juices",
+//                 "cuisine": "American",
+//                 "imgUrl": "https://www.drfuhrman.com/rollups/c394071fc4985fa4efc617dbd20f602209de6cc6025b42385e96197c7b6b1d83.jpg",
+//                 "rating": 4,
+//                 "comment": "",
+//                 "source": "https://www.drfuhrman.com/recipes/553/chocolate-pecan-smoothie",
+//                 "author": "www.DrFuhrman.com",
+//                 "tags": {
+//                     'athhc': { name: "Athletic/Higher caloric", isChecked: true },
+//                     'aggwl': { name: 'Aggressive Weight Loss', isChecked: false },
+//                     'kids': { name: 'Kid-Friendly', isChecked: true },
+//                     'nonveg': { name: 'Non-Vegan', isChecked: false },
+//                     'dbrv': { name: 'Diabetes reversal', isChecked: true },
+//                     'qae': { name: 'Quick and Easy', isChecked: false },
+//                 },
+
+//                 "gbombs": [
+//                     { "name": "Greens", "isChecked": true },
+//                     // { "name": "Beans", "isChecked": true },
+//                     // { "name": "Onions", "isChecked": true },
+//                     // { "name": "Mushrooms", "isChecked": true },
+//                     // { "name": "Berries", "isChecked": true },
+//                     { "name": "Seeds", "isChecked": true },
+
+//                 ]
+//             },
+            //             {
+            //                 "title": "Thai Vegetable Curry",
+            //                 "description": "No description",
+            //                 "instructions": "Place the garlic, ginger, basil, cilantro, carrot juice, bell pepper, eggplant, green beans, mushrooms, bamboo shoots, crushed red pepper, curry powder, and 1 cup of the watercress in a wok or large skillet. Bring to a boil, cover, and simmer, stirring occasionally, until all the vegetables are tender. Mix in the peanut butter. Add the tofu, bring to a simmer, and toss until hot. Add the coconut milk and heat through. Top with the remaining 1 cup watercress. Garnish with basil or cilantro leaves, if desired. May be served over brown rice or quinoa.",
+            //                 "serving": 6,
+            //                 "email": "jen@jen.com",
+            //                 "ingredientsList": [
+            //                     {
+            //                         "ingredient": "garlic, finely chopped",
+            //                         "quantity": 4,
+            //                         "unit": "clove(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "finely chopped fresh ginger",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "chopped fresh basil",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "chopped fresh cilantro",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "Ccarrot juice (2 pounds carrots, juiced)",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "red bell pepper, seeded and thinly sliced",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "large eggplant, peeled, if desired, and cut into 1-inch cubes",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "green beans, cut in 2-inch pieces",
+            //                         "quantity": 2,
+            //                         "unit": "dash"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "sliced shiitake mushrooms",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "(8-ounce) can bamboo shoots, drained",
+            //                         "quantity": 1,
+            //                         "unit": "can(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "crushed red pepper flakes, or adjusted to taste",
+            //                         "quantity": 0.25,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "garlic",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "curry powder",
+            //                         "quantity": 1,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "watercress leaves, divided",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "unsalted, natural, chunky peanut butter",
+            //                         "quantity": 3,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "firm tofu, cut into ¼-inch-thick slices",
+            //                         "quantity": 2,
+            //                         "unit": "pound(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "light coconut milk",
+            //                         "quantity": 0.5,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "Basil or cilantro leaves, for garnish",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+            //                 ],
+            //                 "category": "Main Dishes - Vegan",
+            //                 "cuisine": "Thai",
+            //                 "imgUrl": "https://www.drfuhrman.com/rollups/77618598628854a0c3a07b12fa10d9a6050b2a0c30e22af90cff9c522f4dd051.jpg",
+            //                 "rating": 4,
+            //                 "comment": "",
+            //                 "source": "https://www.drfuhrman.com/recipes/372/thai-vegetable-curry",
+            //                 "author": "www.DrFuhrman.com",
+            //                 "tags": [
+            //                     { "name": "Aggressive Weight Loss", "isChecked": true },
+            //                     { "name": "Diabetes Reversal", "isChecked": true }
+            //                 ],
+            //                 "gbombs": [
+            //                     { "name": "Greens", "isChecked": true },
+            //                     { "name": "Beans", "isChecked": true },
+            //                     { "name": "Onions", "isChecked": true },
+            //                     // { "name": "Seeds", "isChecked": true },
+
+            //                 ]
+            //             },
+            //             {
+            //                 "title": "Bean Pasta and Vegetables with Thai Coconut Sauce",
+            //                 "description": "Bean pastas are a great alternative way to get your daily serving of beans. In this flavor-packed dish, bean pasta and Asian vegetables are combined with a sauce made with coconut, lemon grass and ginger.",
+            //                 "instructions": "Place coconut milk beverage, lemongrass, lime peel, and ginger in a saucepan. Bring to a boil, remove from heat, cover and let steep for 30 minutes. Mash lemongrass, lime peel, and ginger into mixture with a wooden spoon. Pour through a fine-mesh strainer to remove fibers. Add coconut milk to a high-powered blender along with shredded coconut, dates, lime juice, and cayenne pepper. Blend until smooth and creamy.In a large wok or skillet, heat water or white wine, add garlic, broccoli, carrots, and baby corn, and stir-fry for 2 minutes, adding more water as needed. Add mushrooms and bok choy and continue to cook until vegetables start to soften, about 4 minutes. Add coconut sauce, cover, and cook for 2 to 3 minutes until vegetables are crisp-tender.Meanwhile, cook spaghetti according to package directions.Serve pasta topped with vegetables and sauce. Sprinkle with lightly toasted nuts.",
+            //                 "serving": 6,
+            //                 "email": "jen@jen.com",
+            //                 "ingredientsList": [
+            //                     {
+            //                         "ingredient": "coconut milk beverage",
+            //                         "quantity": 2,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "(4-inch) stalks lemongrass, broken up into small pieces",
+            //                         "quantity": 4,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "Peel of 1 organic lime, with pith removed",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "1-inch piece ginger, peeled and minced",
+            //                         "quantity": 1,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "unsweetened shredded coconut",
+            //                         "quantity": 0.75,
+            //                         "unit": "cup(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "dates, pitted",
+            //                         "quantity": 6,
+            //                         "unit": "none"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "lime juice",
+            //                         "quantity": 0.5,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "cayenne pepper, or more to taste",
+            //                         "quantity": 0.125,
+            //                         "unit": "teaspoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "water or white wine",
+            //                         "quantity": 2,
+            //                         "unit": "tablespoon(s)"
+            //                     },
+
+            //                     {
+            //                         "ingredient": "garlic",
+            //                         "quantity": 2,
+            //                         "unit": "clove(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "broccoli florets, cut into bite-size pieces",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "carrots, sliced into 1/4-inch pieces",
+            //                         "quantity": 0.5,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "baby corn ears",
+            //                         "quantity": 8,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "mushrooms, sliced",
+            //                         "quantity": 10,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "sliced bok choy",
+            //                         "quantity": 3,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "1 (7 ounce) package black bean spaghetti",
+            //                         "quantity": 1,
+            //                         "unit": "ounce(s)"
+            //                     },
+            //                     {
+            //                         "ingredient": "raw macadamia nuts, raw cashews, or raw Spanish peanuts, lightly toasted",
+            //                         "quantity": 0.25,
+            //                         "unit": "cup(s)"
+            //                     },
+            //                 ],
+            //                 "category": "Main Dishes - Vegan",
+            //                 "cuisine": "Thai",
+            //                 "imgUrl": "https://www.drfuhrman.com/rollups/eb9c3a1e84ea0e3231e714684c45d5e5aef356d134a4aa1ab166e73416809914.jpg",
+            //                 "rating": 5,
+            //                 "comment": "",
+            //                 "source": "https://likeabubblingbrook.com/vegan-thai-beans-curry/https://www.drfuhrman.com/recipes/2011/bean-pasta-and-vegetables-with-thai-coconut-sauce",
+            //                 "author": "James Rohrbacher",
+            //                 "tags": [
+            //                     { "name": "Athletic/Higher caloric", "isChecked": true }
+            //                 ],
+            //                 "gbombs": [
+            //                     { "name": "Greens", "isChecked": true },
+            //                     { "name": "Beans", "isChecked": true },
+            //                     { "name": "Onions", "isChecked": true },
+            //                     { "name": "Mushrooms", "isChecked": true },
+
+            //                 ]
+            //             },
+
+//         ])
+//     }
+//     catch (error) {
+//         console.log('err', + error.response)
+//     }
+// }
+
+// insertDummyRecipeData();
+
+
+// async function insertDummyCuisineData() {
+//     try {
+//         await Cuisine.insertMany([
+//             {
+//                 "name": "American",
+//                 "image": "American_food.jpg"
+//             },
+//             {
+//                 "name": "Thai",
+//                 "image": "Thai_food.jpg"
+//             },
+//             {
+//                 "name": "Chinese",
+//                 "image": "Chinese_food.jpg"
+//             },
+//             {
+//                 "name": "Mexican",
+//                 "image": "Mexican_food.jpg"
+//             },
+//             {
+//                 "name": "Spanish",
+//                 "image": "Spanish_food.jpg"
+//             }
+//         ])
+//     }
+//     catch (error) {
+//     console.log('err', + error)
+// }
+// }
+
+// insertDummyCuisineData();
