@@ -26,7 +26,7 @@ const ExploreCuisine = (props) => {
 
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><a href="/">Home</a></li>
+                            <li className="breadcrumb-item"><a href="/dahsboard">Home</a></li>
                             <li className="breadcrumb-item active" aria-current="page">Explore Cuisine</li>
                         </ol>
                     </nav>

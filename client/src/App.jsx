@@ -12,6 +12,7 @@ import LatestRecipes from './views/LatestRecipes';
 import RandomRecipe from './views/RandomRecipe';
 import About from './views/About';
 import Contact from './views/Contact';
+import SignIn from './components/SignIn';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -46,11 +47,11 @@ function App() {
         <div className="container-xxl bg-white shadow-lg">
           {/* Beginning of Header */}
           <header className="d-flex flex-wrap align-items-center justify-content-md-between py-3 mb-0 border-bottom">
-            <Link to="/" className="d-flex align-items-center justify-content-center  offset-md-0 col-md-2 mb-2 mb-md-0 text-dark text-decoration-none">
+            <Link to="/dahsboard" className="d-flex align-items-center justify-content-center  offset-md-0 col-md-2 mb-2 mb-md-0 text-dark text-decoration-none">
               <img src={logo} width="147" height="147" alt="Nutritarian EatsLogo" />
             </Link>
             <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-              <Link className="nav-link px-2 link-secondary" to="/">Home</Link>
+              <Link className="nav-link px-2 link-secondary" to="/dahsboard">Home</Link>
               <Link className="nav-link px-2 link-dark" to="/recipes/create">Create</Link>
               <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
               < Link to="/recipes/contact" className="nav-link px-2 link-dark" >Contact</Link>
@@ -73,9 +74,13 @@ function App() {
 
 
       <Switch>
-        <Route exact path="/" >
+        <Route exact path="/dashboard" >
           <Main />
         </Route >
+
+        <Route exact path="/">
+          <SignIn></SignIn>
+        </Route>
 
         <Route exact path="/recipes/searchRecipes/:searchTerm" >
           <SearchRecipe results={state} />
@@ -120,6 +125,7 @@ function App() {
         <Route exact path="/recipes/explore/random" >
           <RandomRecipe />
         </Route>
+
 
       </Switch>
     </div >
