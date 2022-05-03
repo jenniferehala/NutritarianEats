@@ -23,6 +23,7 @@ contactEmail.verify((error) => {
 //******* MESSAGE ROUTE *******//
 
 module.exports.contactUs = (req, res) => {
+
     console.log('message body', req.body)
     Message.create(req.body)
         .then(newUser => {
