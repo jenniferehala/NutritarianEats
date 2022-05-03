@@ -2895,3 +2895,227 @@ module.exports.upvoteRecipe = (req, res) => {
 // }
 
 // insertDummyCuisineData();
+
+***** User Controller ****
+
+const User = require("../models/user.model");
+const Message = require("../models/user.model");
+const nodemailer = require("nodemailer");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+// const contactEmail = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: "jennifer.ehala@gmail.com",
+//         pass: "Charlie7",
+//     },
+// });
+
+// contactEmail.verify((error) => {
+//     if (error) {
+//         console.log(error);
+//     } else {
+//         console.log("Ready to Send");
+//     }
+// });
+
+
+class UserController {
+
+    // ******* MESSAGE *******//
+
+    // contactUs = (req, res) => {
+    //     Message.create(req.body)
+    //         .then(newUser => {
+    //             res.json({ results: newUser })
+    //             const name = req.body.name;
+    //             const email = req.body.email;
+    //             const message = req.body.message;
+    //             const mail = {
+    //                 from: name,
+    //                 to: "jennifer.ehala@gmail.com",
+    //                 subject: "Contact Form Submission",
+    //                 html: `<p>Name: ${name}</p>
+    //             <p>Email: ${email}</p>
+    //             <p>Message: ${message}</p>`,
+    //             };
+    //             contactEmail.sendMail(mail, (error) => {
+    //                 if (error) {
+    //                     res.json({ status: "ERROR" });
+    //                 } else {
+    //                     res.json({ status: "Message Sent" });
+    //                 }
+    //             });
+    //         })
+    //         .catch(err => res.status(400).json({ message: "that didn't work", err }))
+    // };
+
+    // ******* FIND USERS *******//
+
+    getAllUsers = (req, res) => {
+        User.find()
+            .then(allUsers => {
+                res.json({ results: allUsers })
+            })
+            .catch(err => {
+                res.json({ error: err })
+            })
+    };
+
+
+    // ******* LOGIN *******//
+    login = (req, res) => {
+        User.find()
+            .then(allUsers => {
+                res.json({ results: allUsers })
+            })
+            .catch(err => {
+                res.json({ error: err })
+            })
+    }
+
+
+    // ******* REGISTER *******//
+    registerUser = (req, res) => {
+        User.find({ email: req.body.email })   //nested promise
+            .then(userWithEmail => {
+                console.log("response when finding user: ", userWithEmail)
+                if (userWithEmail.length === 0) {
+                    User.create(req.body)
+                        .then(user => {
+                            const userToken = jwt.sign({
+                                id: user._id
+                            }, process.env.SECRET_KEY);
+                            res
+                                .cookie("usertoken", userToken, process.env.SECRET_KEY, {
+                                    httpOnly: true
+                                })
+                                .json({ msg: "successfully created user", user: user });
+                        })
+                        .catch(err => res.json(err))
+                } else {
+                    res.json({ errors: { email: { message: "Email is taken!" } } })
+                }
+            })
+            .catch(err => console.log("errr!  ", err))
+    };
+
+
+    // ******* LOGOUT *******//
+
+    logoutUser = (req, res) => {
+        res.clearCookie('usertoken');
+        res.sendStatus(200);
+    };
+
+    // ******* USER DELETE *******//
+
+    deleteUser = (req, res) => {
+        User.deleteOne({ _id: req.params._id })
+            .then(results => res.json({ results: results }))
+            .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+    };
+
+}
+
+module.exports = new UserController();
+
+
+**** ? schema ***
+const mongoose = require("mongoose");
+const bcrypt = require('bcrypt');
+
+const UserSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: [true, "First name is required"]
+    },
+    lastName: {
+        type: String,
+        required: [true, "Last name is required"]
+
+    },
+    email: {
+        type: String,
+        required: [true, "Email is required"],
+        validate: {
+            validator: val => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val),
+            message: "Please enter a valid email"
+        }
+
+    },
+    password: {
+        type: String,
+        required: [true, "Password is required"],
+        minlength: [3, 'Password must be 3 characters or longer']
+
+    },
+}, { timestamps: true });
+
+// add this after UserSchema is defined
+UserSchema.virtual('confirmPassword')
+    .get(() => this._confirmPassword)
+    .set(value => this._confirmPassword = value);
+// create a virtual field called "confirm" that is used just to validate the password matches confirm ---> 
+// the getter and setter above are just creating temporary fields for _confirm
+
+
+// before (pre) running the other validations on the model, validate the user objects password matches
+//if they don't match, this.invalidate() will create validation error message
+UserSchema.pre('validate', function (next) {
+    if (this.password !== this.confirmPassword) {
+        this.invalidate('confirmPassword', 'Password must match confirm password');
+    }
+    next(); // after the above process is done, go to next usual step
+});
+
+
+//before saving user to the db (this means we have passed the validations), hash the users password (encrypt it)
+UserSchema.pre('save', function (next) {
+    bcrypt.hash(this.password, 10)
+        .then(hash => {
+            this.password = hash;
+            next();
+        });
+});
+
+
+
+// const MessageSchema = new mongoose.Schema({
+//     email: {
+//         type: String
+//     },
+//     name: {
+//         type: String
+//     },
+//     message: {
+//         type: String
+//     }
+// }, { timestamps: true });
+
+
+
+
+module.exports = mongoose.model("User", UserSchema)
+// module.exports = mongoose.model("Message", MessageSchema)
+
+
+**** routes* ***
+
+
+const UserController = require("../controllers/user.controller");
+
+module.exports = app => {
+
+    // app.post("/api/recipes/contact", UserController.contactUs);
+    app.post("/api/users/register", UserController.registerUser);
+    // login
+    app.post("/api/users/login", UserController.login);
+
+    app.post("/api/users/logout", UserController.logoutUser);
+    app.get("/api/users", UserController.getAllUsers);
+    app.delete("/api/users/:_id/delete", UserController.deleteUser);
+
+
+}

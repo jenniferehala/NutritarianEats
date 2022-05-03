@@ -1,5 +1,7 @@
 const { Recipe } = require("../models/recipe.model");
 const nodemailer = require("nodemailer");
+const jwt = require('jsonwebtoken');
+
 
 
 // ************ CREATE ***************** //
@@ -71,7 +73,9 @@ module.exports.searchRecipe = (req, res) => {
     const searchQuery = req.params.searchTerm
     Recipe.find({ title: { $regex: searchQuery, $options: "i" } })
         .then(results => res.json({ results: results }))
-        .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
+        .catch(err => {
+            res.status(400).json({ message: "that didn't quite work.", err })
+        });
 }
 
 

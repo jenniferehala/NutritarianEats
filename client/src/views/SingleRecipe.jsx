@@ -25,7 +25,7 @@ const SingleRecipe = (props) => {
             axios.delete(`http://localhost:8000/api/recipes/${_id}/delete`)
                 .then(res => {
                     console.log(res)
-                    history.push("/")
+                    history.push("/dashboard")
 
                 })
                 .catch(err => console.log(err))
@@ -41,7 +41,7 @@ const SingleRecipe = (props) => {
 
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
-                        <li className="breadcrumb-item"><Link to="/dahsboard">Home</Link></li>
+                        <li className="breadcrumb-item"><Link to="/dashboard">Home</Link></li>
                         <li className="breadcrumb-item active" aria-current="page">{recipe.title}</li>
                     </ol>
                 </nav>

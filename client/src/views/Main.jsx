@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import '../App.css'
 import axios from 'axios';
 import Cuisine from '../components/Cuisine'
@@ -10,6 +10,8 @@ const Main = (props) => {
     const [recipe, setRecipe] = useState([])
     const [cuisineRecipe, setCuisineRecipe] = useState([])
     const [latestRecipe, setLatestRecipe] = useState([])
+    const [loggedInUser, setLoggedInUser] = useState({})
+    const history = useHistory();
 
     useEffect(() => {
         axios.get("http://localhost:8000/api/recipes/cuisine/findMainCuisine")
@@ -25,6 +27,7 @@ const Main = (props) => {
             .then(res => {
                 // console.log(res.data.results);
                 setLatestRecipe(res.data.results);
+
             })
             .catch(err => console.log(err))
     }, []);
@@ -40,6 +43,21 @@ const Main = (props) => {
 
     useEffect(() => {
         document.title = "NutritarianEats - Home"
+        axios.get("http://localhost:8000/api/users/getloggedinuser", { withCredentials: true })
+            .then(res => {
+                console.log("response for getloggedinuser function: ", res)
+                if (res.data.result) {
+                    //this means their logged in
+                    // console.log("this worked")
+                    setLoggedInUser(res.data.result)
+                    // console.log("this is first name of user: ", loggedInUser.firstName)
+
+                }
+            })
+            .catch(err => {
+                history.push("/")
+                console.log("err when geting logged in user: ", err)
+            })
     }, [])
 
     return (
@@ -53,7 +71,8 @@ const Main = (props) => {
                             <img src={require("../img/main3.png")} alt="Main page" height="100" className="d-block mx-lg-auto img-fluid mt-4" />
                         </div>
                         <div className="col-12 col-lg-6">
-                            <h1 className="display-5 fw-bold mb-3"> Delicious Nutritarian Recipes to support your optimal health.</h1>
+                            <h3 className="mb-3">Welcome {loggedInUser.firstName}!</h3>
+                            <h1 className="display-5 fw-bold mt-3"> Delicious Nutritarian Recipes to support your optimal health.</h1>
                             <p className="lead">
                                 Get ready to change your life. Explore our wide variety of nutritarian recipes including: Breakfast, Burgers, Desserts, Vegan Main Dishes, Non-Vegan Main Dishes, Dressings, Salads, Smoothies, Soups, and Stews
                             </p>
@@ -170,7 +189,7 @@ const Main = (props) => {
 
 
                     {/* Submit Start */}
-                    <section className="px-4 py-5 my-5 text-center ">
+                    <section className="px-2 py-3 my-3 text-center ">
                         <img className="d-block mx-auto mb-4 img-fluid" src={require("../img/bottom2.png")} alt="Publish your recipe for FREE today" width="566" height="208" />
                         <h1 className="display-5 fw-bold">Publish your recipe for FREE today</h1>
                         <div className="col-lg-6 mx-auto">

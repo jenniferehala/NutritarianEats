@@ -1,35 +1,39 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 8000;
-const cors = require("cors");
-const bodyParser = require('body-parser');
-const fileUpload = require('express-fileUpload');
+
+// const fileUpload = require('express-fileUpload');
+// app.use(fileUpload());
+
 const session = require('express-session');
 const cookieParser = require('cookie-parser'); // so that server can understand the cookie info coming in from client (browser)
-const nodemailer = require("nodemailer");
-const jwt = require("jsonwebtoken");
+// const flash = require('express-flash');
 
 
 app.use(cookieParser());
-// Change the app.use(cors()) to the one below
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 require('dotenv').config();
-// console.log("SECRET_KEY : " + process.env.SECRET_KEY)
 
 
 
-app.use(express.json(), express.urlencoded({ extended: true }),);
-app.use('/uploads', express.static('uploads'));
+app.use(express.json(), express.urlencoded({ extended: true }));
+// app.use('/uploads', express.static('uploads'));
 app.use(session({
-    secret: 'NutritarianBlocSecureSession',
+    secret: 'NutritarianBlogSecureSession',
     saveUninitialized: true,
     resave: true
 }))
-app.use(fileUpload());
+// const flash = require('connect-flash');
+
+// app.use(require(flash()));
+
 
 require("./server/routes/recipe.routes")(app);
 require("./server/routes/user.routes")(app);
+
 require("./server/config/mongoose.config");
+
 
 
 

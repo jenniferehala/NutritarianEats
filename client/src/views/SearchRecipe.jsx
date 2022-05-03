@@ -16,7 +16,7 @@ const SearchRecipe = (props) => {
 
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><a href="/dahsboard">Home</a></li>
+                            <li className="breadcrumb-item"><a href="/dashboard">Home</a></li>
                             <li className="breadcrumb-item active" aria-current="page">Search Results</li>
                         </ol>
                     </nav>

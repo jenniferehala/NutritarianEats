@@ -21,7 +21,7 @@ const RecipeSchema = new mongoose.Schema({
 
     serving: {
         type: Number,
-        min: [1, "you need at least one serving!"]
+        // min: [1, "you need at least one serving!"]
     },
 
     email: {
@@ -50,7 +50,7 @@ const RecipeSchema = new mongoose.Schema({
 
     category: {
         type: String,
-        // required: [true, "This category field is required!"],
+        required: [true, "This category field is required!"],
         minLength: [2, "you need at least 2 characters!"],
         enum: ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews']
     },

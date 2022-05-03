@@ -25,9 +25,9 @@ const RegistrationForm = () => {
                 console.log("res after register: ", res)
                 if (res.data.errors) {
                     setFormErrors(res.data.errors);
+                } else {
+                    history.push("/dashboard")
                 }
-                // history.push("/dashboard")
-
             })
             .catch(err => {
                 console.log("error after register: ", err)

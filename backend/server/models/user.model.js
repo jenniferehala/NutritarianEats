@@ -71,8 +71,9 @@ const MessageSchema = new mongoose.Schema({
 
 
 const User = mongoose.model("User", UserSchema);
-const Message = mongoose.model("Message", MessageSchema);
+// const Message = mongoose.model("Message", MessageSchema);
+// const Message = mongoose.model("Message", MessageSchema);
 
-module.exports = { Message: Message }
 module.exports = { User: User }
-
+// module.exports = User;
+// module.exports = Message;

@@ -9,7 +9,7 @@ const Edit = (props) => {
     const { _id } = useParams({})
     const history = useHistory();
     const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
-    const cuisine = ['Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese'];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish"];
     const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
     const [errors, setErrors] = useState({});
     const [form, setForm] = useState({
@@ -45,10 +45,6 @@ const Edit = (props) => {
         ]
     })
 
-    // tags = {
-    //     'kids': {isChecked: true, name: 'Kid-Friendly'},
-    //     'weightloss': {isChecked: true, name: 'Aggressive Weight Loss'}
-    // }
 
     useEffect(() => {
         document.title = "NutritarianEats - Edit"
@@ -98,16 +94,9 @@ const Edit = (props) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
-            cuisineImg: `${e.target.value}_food.jpg`
-        })
-
+        });
     }
 
-    const handleAddCuisineField = () => {
-        setForm(prev => ({
-            ...prev, cuisine: ""
-        }))
-    }
 
     const handleAddIngredient = (e, index) => {
         form.ingredientsList[index].ingredient = e.target.value;
@@ -125,10 +114,9 @@ const Edit = (props) => {
     }
 
 
-    const handleAddIngredientField = () => {
+    const handleAddField = () => {
         setForm(prev => ({
             ...prev, ingredientsList: [...prev.ingredientsList, { ingredient: "", quantity: 0, unit: units[0] }]
-
         }))
     }
 
@@ -167,8 +155,6 @@ const Edit = (props) => {
 
     }
 
-
-
     const onSubmitHandler = (event) => {
         event.preventDefault();
         console.log(form)
@@ -185,180 +171,190 @@ const Edit = (props) => {
     }
 
 
-
-
     return (
         <div className="container ">
             <div className="container-xxl px-md-5 bg-white p-4">
                 <div className="px-4 py-5 text-center">
                     <h1 className="display-5 fw-bold"> Edit Your Recipe</h1>
-                    <div className="col-lg-6 mx-auto mb-5">
+                    <div className="col-lg-6 mx-auto">
                         <h4 className="lead">Update form below.</h4>
                     </div>
-                    {/* **********  Form Start ********** */}
-                    <form action="" className="mt-5 w-50 mx-auto" onSubmit={onSubmitHandler}>
-                        <div className="form-group mb-3">
-                            <label className="form-label">Title: </label>
-                            <input type="text" value={form.title} name="title" className="form-control" placeholder="title" onChange={onChangeHandler} />
-                        </div>
+                </div>
+                {/* **********  Form Start ********** */}
+                <div className="row justify-content-center">
+                    <div className="col-9">
+                        <form action="" className="" onSubmit={onSubmitHandler}>
+                            <div className="row g-3">
+                                <div className="col-12 mb-3">
+                                    <label className="form-label">Title: </label>
+                                    <input type="text" value={form.title} name="title" className="form-control" placeholder="title" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.title && errors.title.message}</span>
+                                </div>
 
-                        <span className="alert-danger">{errors.title && errors.title.message}</span>
-                        {/* CATEGORIES */}
-                        <div className="form-group mb-3">
-                            <label className="">Categories: </label>
-                            <select name="categories" value={form.category} className="" onChange={onChangeHandler}>
-                                {
-                                    categories.map((category, i) => {
-                                        return <option value={category} key={i}> {category} </option>
-                                    })
-                                }
-                            </select>
-                            <span className="alert-danger">{errors.category && errors.category.message}</span>
-                        </div>
-                        {/* CUISINE*/}
-                        <div className="form-group mb-3">
-                            <label className="">Cuisine: </label>
-                            <select name="cuisine" value={form.cuisine} className="col-md-3" onChange={(e) => onSelectHandler(e)}>
-                                {
-                                    cuisine.map((cuisine, i) => {
-                                        return <option value={cuisine} key={i}> {cuisine} </option>
-                                    })
-                                }
-                            </select>
-                            <p>hi</p>
-                            <button className="btn btn-outline-primary mb-3" type="button" onClick={() => handleAddCuisineField()} >+ Cuisine</button>
-
-
-                            <span className="alert-danger">{errors.category && errors.category.message}</span>
-
-
-                        </div>
-                        <label className="mt-3">Description: </label>
-                        <div className="form-group mb-3" >
-                            <textarea type="text" value={form.description} name="description" className="form-control my-3" placeholder="description" onChange={onChangeHandler} rows="3" />
-                        </div>
-                        <span className="alert-danger">{errors.description && errors.description.message}</span>
-                        <label className="mt-3">Instructions: </label>
-                        <div className="form-group mb-3" >
-                            <textarea type="text" value={form.instructions} name="instructions" className="form-control my-3" placeholder="instructions" onChange={onChangeHandler} rows="6" />
-                        </div>
-                        <span className="alert-danger">{errors.instructions && errors.instructions.message}</span>
-                        <div className="form-group mb-3" >
-                            <label className="col-sm-1 my-3">Serving: </label>
-                            <input type="number" value={form.serving} name="serving" className="col-sm-2 my-3" placeholder="serving" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.serving && errors.serving.message}</span>
-                        <div className="form-group mb-3" >
-                            <label className="col-sm-1 my-3">Email: </label>
-                            <input type="text" value={form.email} name="email" className="col-sm-3 my-3" placeholder="email" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.email && errors.email.message}</span>
-                        {/* ********** Ingredients Start ********** */}
-                        <div className="form-group mb-3 mx-3">
-                            {
-                                form.ingredientsList.map((value, i) => (
-                                    <div className="form-group" key={i}>
-                                        <label className="mx-1">Quantity:</label>
-                                        <input
-                                            className="form-group col-sm-1 m-1"
-                                            type="text"
-                                            value={value.quantity}
-                                            name="quantity"
-                                            onChange={(event) => handleAddQuantity(event, i)}
-                                        />
-                                        <label className="mx-2">Unit:</label>
-                                        <select name="categories" className="form-group col-md-2" onChange={(event) => handleAddUnit(event, i)}>
-                                            {
-                                                units.map((unit, i) => {
-                                                    return <option value={unit} key={i}> {unit} </option>
-                                                })
-                                            }
-                                        </select>
-                                        <label className="mx-2">Ingredient:</label>
-                                        <input
-                                            className="form-group col-sm-3 m-2"
-                                            type="text"
-                                            key={i}
-                                            value={value.ingredient}
-                                            name="ingredients"
-                                            onChange={event => handleAddIngredient(event, i)}
-                                        />
-                                        {i ? <button type="button" className="btn btn-outline-danger m-3" onClick={() => handleRemoveField(i)}>Remove</button>
-                                            : null
+                                {/*********** CATEGORIES ***********/}
+                                <div className="form-group mb-3">
+                                    <label className="form-label mb-0">Categories: </label>
+                                    <select name="categories" value={form.category} className="form-select mt-2" onChange={onChangeHandler}>
+                                        {
+                                            categories.map((category, i) => {
+                                                return <option value={category} key={i}> {category} </option>
+                                            })
                                         }
-                                    </div>))}
-                        </div>
-                        <button className="btn btn-outline-primary mb-3" type="button" onClick={() => handleAddIngredientField()} >+ Ingredient</button>
-                        {/* ********** Ingredients End ********** */}
-                        <div className="form-group mb-3" >
-                            <label className="col-sm-1 my-3">Serving: </label>
-                            <input type="text" value={form.imgUrl} name="imgUrl" className="col-sm-9" placeholder="imgUrl" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
-                        <div className="form-group mb-3" >
-                            <label className="col-sm-1 my-3">Rating: </label>
-                            <input type="number" value={form.rating} name="rating" className="col-sm-1" placeholder="rating" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.rating && errors.rating.message}</span>
-                        <div className="form-group" >
-                            <label className="col-sm-1 my-3">Comment: </label>
-                            <textarea type="textarea" value={form.comment} name="comment" className="col-sm-9" placeholder="comment" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.comment && errors.comment.message}</span>
-                        <div className="form-group mb-3" >
-                            <label className="col-sm-1 my-3">Source: </label>
-                            <input type="input" value={form.source} name="source" className="col-sm-9" placeholder="source website" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.comment && errors.comment.message}</span>
-                        <div className="form-group" >
-                            <label className="col-sm-1 my-3">Author: </label>
-                            <input type="input" value={form.author} name="author name" className="col-sm-3" placeholder="author" onChange={onChangeHandler} />
-                        </div>
-                        <span className="alert-danger">{errors.comment && errors.comment.message}</span>
-                        {/* ******* Checkbox TAGS ******* */}
-                        <div className="d-flex flex-row my-5" >
-                            {
-                                form.tags.map((tag, i) => (
-                                    <div className="form-inline mx-3" key={i}>
-                                        <label className="mx-2">{tag.name}</label>
-                                        <input
-                                            type="checkbox"
-                                            checked={tag.isChecked}
-                                            onChange={(event) => handleCheckedTags(i)}
-                                            key={i}
-                                        />
-                                    </div>
-                                ))}
-                        </div>
-                        {/* ******* Checkbox GBOMBS ******* */}
-                        <div className="d-flex flex-row my-3" name="gbombs">
-                            {
-                                form.gbombs.map((gbomb, i) => (
-                                    <div className="form-inline mx-3" key={i}>
-                                        <label className="mx-2">{gbomb.name}</label>
-                                        <input
-                                            type="checkbox"
-                                            value={gbomb.name}
-                                            checked={gbomb.isChecked}
-                                            onChange={(event) => handleCheckedGbombs(i)}
-                                            key={i}
-                                        />
-                                    </div>))}
-                        </div>
-                        <div className="d-flex justify-content-md-center align-items-center">
-                            <input type="submit" className="btn btn-success mx-2 mt-4" />
-                            <Link to={`/recipes/${_id}`}><button className="btn btn-primary mx-2 mt-4">Back</button></Link>
-                        </div>
-                    </form>
+                                    </select>
+                                    <span className="alert-danger">{errors.category && errors.category.message}</span>
+                                </div>
+                                {/*********** CUISINE ***********/}
+                                <div className="form-group mb-3">
+                                    <label className="form-label mb-0">Cuisine: </label>
+                                    <select name="cuisine" value={form.cuisine} className="form-select mt-2" onChange={(e) => onSelectHandler(e)}>
+                                        {
+                                            cuisine.map((cuisine, i) => {
+                                                return <option value={cuisine} key={i}> {cuisine} </option>
+                                            })
+                                        }
+                                    </select>
+                                    <span className="alert-danger">{errors.category && errors.category.message}</span>
+                                </div>
 
-                    {/* **********  Form End ********** */}
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Description: </label>
+                                    <textarea type="text" value={form.description} name="description" className="form-control" placeholder="description" onChange={onChangeHandler} rows="3" />
+                                    <span className="alert-danger">{errors.description && errors.description.message}</span>
+                                </div>
 
-                    <footer className="py-5">
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Instructions: </label>
+                                    <textarea type="text" value={form.instructions} name="instructions" className="form-control" placeholder="instructions" onChange={onChangeHandler} rows="6" />
+                                    <span className="alert-danger">{errors.instructions && errors.instructions.message}</span>
+                                </div>
 
-                    </footer>
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Serving: </label>
+                                    <input type="number" value={form.serving} name="serving" className="form-control" placeholder="serving" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.serving && errors.serving.message}</span>
+                                </div>
 
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Email: </label>
+                                    <input type="text" value={form.email} name="email" className="form-control" placeholder="email" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.email && errors.email.message}</span>
+                                </div>
+                                {/*********** INGREDIENTS START ***********/}
+                                <div className="row form-group">
+                                    <label className="form-label my-2">Ingredients:</label>
+                                    {
+                                        form.ingredientsList.map((value, i) => (
+                                            <div className="" key={i}>
+                                                <label className="mx-1">Quantity:</label>
+                                                <input
+                                                    className="col-sm-1"
+                                                    type="number"
+                                                    value={value.quantity}
+                                                    name="quantity"
+                                                    onChange={(event) => handleAddQuantity(event, i)}
+                                                />
+
+                                                <label className="mx-1">Unit:</label>
+                                                <select name="categories" className="col-1" onChange={(event) => handleAddUnit(event, i)}>
+                                                    {
+                                                        units.map((unit, i) => {
+                                                            return <option value={unit} key={i}> {unit} </option>
+                                                        })
+                                                    }
+                                                </select>
+
+                                                <label className="mx-2">Ingredient:</label>
+                                                <input
+                                                    className="col-sm-2"
+                                                    type="text"
+                                                    key={i}
+                                                    value={value.ingredient}
+                                                    name="ingredients"
+                                                    onChange={event => handleAddIngredient(event, i)}
+                                                />
+
+                                                <button className="col btn btn-outline-primary mx-2 my-1" type="button" onClick={() => handleAddField()} >+Ingredient</button>
+
+                                                {i ? <button type="button" className="col btn btn-outline-danger mx-1" onClick={() => handleRemoveField(i)}>Remove</button>
+                                                    : null
+                                                }
+                                            </div>))}
+                                </div>
+
+                                {/*********** INGREDIENTS END ***********/}
+
+                                <div className="form-group mb-3 mt-4" >
+                                    <label className="form-label">Recipe Image URL: </label>
+                                    <input type="text" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
+                                </div>
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Rating: </label>
+                                    <input type="number" value={form.rating} name="rating" className="form-control" placeholder="rating" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.rating && errors.rating.message}</span>
+                                </div>
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Comment: </label>
+                                    <textarea type="textarea" value={form.comment} name="comment" className="form-control" placeholder="comment" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.comment && errors.comment.message}</span>
+                                </div>
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Source Website: </label>
+                                    <input type="input" value={form.source} name="source" className="form-control" placeholder="source website" onChange={onChangeHandler} />
+                                    <span className="alert-danger">{errors.source && errors.source.message}</span>
+                                </div>
+                                <div className="form-group mb-3" >
+                                    <label className="form-label">Author: </label>
+                                    <input type="input" value={form.author} name="author name" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                                </div>
+                                <span className="alert-danger">{errors.author && errors.author.message}</span>
+                                {/* ******* Checkbox TAGS ******* */}
+                                <div className="d-flex flex-row my-3 text-center" >
+                                    {
+                                        form.tags.map((tag, i) => (
+                                            <div className="form-inline mx-3" key={i}>
+                                                <label>{tag.name}</label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={tag.isChecked}
+                                                    onChange={(event) => handleCheckedTags(i)}
+                                                    key={i}
+                                                />
+                                            </div>
+                                        ))}
+                                </div>
+                                {/* ******* Checkbox GBOMBS ******* */}
+                                <div className="d-flex flex-row my-3 justify-content-center" name="gbombs">
+
+                                    {
+                                        form.gbombs.map((gbomb, i) => (
+                                            <div className="form-inline mx-3 " key={i}>
+                                                <label>{gbomb.name}</label>
+                                                <input
+                                                    type="checkbox"
+                                                    value={gbomb.name}
+                                                    checked={gbomb.isChecked}
+                                                    onChange={(event) => handleCheckedGbombs(i)}
+                                                    key={i}
+                                                    className="mx-2"
+
+                                                />
+                                            </div>))}
+                                </div>
+                                <div className="col-12 d-flex justify-content-center">
+                                    <input type="submit" className="btn btn-success my-3 mx-2 align-center" />
+                                    <Link to={`/recipes/${_id}`}><button className="btn btn-primary my-3 align-center mx-2">Back</button></Link>
+                                </div>
+                            </div>
+                        </form>
+
+                        {/* **********  Form End ********** */}
+                    </div>
                 </div>
             </div >
+            <footer className="py-5">
+
+            </footer>
         </div >
     )
 }

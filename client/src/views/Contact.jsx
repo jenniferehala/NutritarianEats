@@ -20,11 +20,14 @@ function Contact() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setStatus("Sending...");
+        console.log("this handler worked")
 
-        axios.post("http://localhost:8000/api/recipes/contact", form)
+
+        axios.post("http://localhost:8000/api/users/contact", form)
             .then(res => {
+                console.log("this axios call worked")
                 console.log(res);
-                history.push("/recipes/contact")
+                history.push("/users/contact")
                 setSuccess(true)
                 setStatus("Submit");
 

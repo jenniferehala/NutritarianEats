@@ -1,5 +1,5 @@
 const { User } = require("../models/user.model");
-const { Message } = require("../models/user.model");
+const Message = require("../models/message.model");
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -20,9 +20,10 @@ contactEmail.verify((error) => {
     }
 });
 
-// ******* MESSAGE ROUTE *******//
+//******* MESSAGE ROUTE *******//
 
 module.exports.contactUs = (req, res) => {
+    console.log('message body', req.body)
     Message.create(req.body)
         .then(newUser => {
             res.json({ results: newUser })
@@ -64,60 +65,81 @@ module.exports.getAllUsers = (req, res) => {
 // ******* LOGIN ROUTE *******//
 
 module.exports.login = async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-
+    console.log('req.body', req.body);
+    const user = await User.findOne({ email: req.body.email })
     if (user === null) {
-        // email not found in users collection
-        return res.sendStatus(400);
+        return res.json({ error: "User Not Found" });
     }
-
-    // if we made it this far, we found a user with this email address
-    // let's compare the supplied password to the hashed password in the database
-    const correctPassword = await bcrypt.compare(req.body.password, user.password);
-
+    console.log(req.body.password)
+    const correctPassword = await bcrypt.compare(req.body.password, user.password)
     if (!correctPassword) {
-        // password wasn't a match!
-        return res.sendStatus(400);
+        return res.json({ error: "Not correct password" })
     }
 
-    // if we made it this far, the password was correct
     const userToken = jwt.sign({
         id: user._id
     }, process.env.SECRET_KEY);
-
-    // note that the response object allows chained calls to cookie and json
     res
-        .cookie("usertoken", userToken, secret, {
+        .cookie("userToken", userToken, process.env.SECRET_KEY, {
             httpOnly: true
         })
-        .json({ msg: "success!" });
-};
+        .json({ msg: 'success' })
+
+}
 
 // ******* REGISTER ROUTE *******//
 
 
 module.exports.registerUser = (req, res) => {
-    User.create(req.body)
-        .then(user => {
-            const userToken = jwt.sign({
-                id: user._id
-            }, process.env.SECRET_KEY);
-
-            res
-                .cookie("usertoken", userToken, process.env.SECRET_KEY, {
-                    httpOnly: true
-                })
-                .json({ msg: "success!", user: user });
+    console.log("register user: ", req.body)
+    User.find({ email: req.body.email })   //nested promise
+        .then(userWithEmail => {
+            console.log("response when finding user: ", userWithEmail)
+            if (userWithEmail.length === 0) {
+                // console.log(req.body)
+                User.create(req.body)
+                    .then(user => {
+                        const userToken = jwt.sign({
+                            id: user._id
+                        }, process.env.SECRET_KEY);
+                        res
+                            .cookie("usertoken", userToken, process.env.SECRET_KEY, {
+                                httpOnly: true
+                            })
+                            .json({ msg: "successfully created user", user: user });
+                    })
+                    .catch(err => res.json(err))
+            } else {
+                res.json({ errors: { email: { message: "Email is taken!" } } })
+            }
         })
-        .catch(err => res.json(err));
+        .catch(err => console.log("errr!  ", err))
 };
 
 // ******* LOGOUT ROUTE *******//
 
-module.exports.logoutUser = (req, res) => {
-    res.clearCookie('usertoken');
+module.exports.logout = (req, res) => {
+    console.log("this backend worked")
+    res.clearCookie('userToken');
     res.sendStatus(200);
 };
+
+// ******* LOGGED IN ROUTE *******//
+
+module.exports.loggedInUser = (req, res) => {
+    // use the info stored in cookie to get id of user
+    const decodedJWT = jwt.decode(req.cookies.userToken, { complete: true })
+
+    // decodedJWT.payload.id
+    User.findOne({ _id: decodedJWT.payload.id })
+        .then(foundUser => {
+            res.json({ result: foundUser })
+        })
+        .catch(err => {
+            res.json(err)
+        })
+}
+
 
 // ******* USER DELETE ROUTE *******//
 
@@ -126,5 +148,3 @@ module.exports.deleteUser = (req, res) => {
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 };
-
-
