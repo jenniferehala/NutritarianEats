@@ -65,8 +65,7 @@ const Create = (props) => {
                 // window.history.pushState(form, {}, window.location)
                 // document.getElementById("create-form").reset();
                 console.log("this is before clear state: ", res);
-                clearState()
-                // clearState();
+                // clearState()
 
                 console.log("this is after clear State: ", res);
 
