@@ -31,10 +31,7 @@ app.use(session({
 
 require("./server/routes/recipe.routes")(app);
 require("./server/routes/user.routes")(app);
-
 require("./server/config/mongoose.config");
-
-
 
 
 app.listen(port, () => console.log(`running on port ${port} is a new way to be!`))

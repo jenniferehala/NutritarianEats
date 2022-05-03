@@ -3,53 +3,61 @@ import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
+const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
+const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish"];
+const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
+
+
+const initialForm = {
+    title: "",
+    description: "",
+    instructions: "",
+    serving: null,
+    email: "",
+    ingredientsList: [
+        { ingredient: "", quantity: 0, unit: units[0] },
+    ],
+    category: categories[0],
+    cuisine: cuisine[0],
+    cuisineImg: "",
+    imgUrl: "",
+    rating: null,
+    comment: "",
+    source: "",
+    author: "",
+    tags: [
+        { name: "Athletic/Higher caloric", isChecked: false },
+        { name: "Aggressive Weight Loss", isChecked: false },
+        { name: "Kid-Friendly", isChecked: false },
+        { name: "Non-Vegan", isChecked: false },
+        { name: "Diabetes reversal", isChecked: false },
+        { name: "Quick and Easy", isChecked: false },
+    ],
+    gbombs: [
+        { name: "Greens", isChecked: false },
+        { name: "Beans", isChecked: false },
+        { name: "Onions", isChecked: false },
+        { name: "Mushrooms", isChecked: false },
+        { name: "Berries", isChecked: false },
+        { name: "Seeds", isChecked: false }
+    ]
+}
 
 const Create = (props) => {
-    const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
-    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish"];
-    const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
 
     const history = useHistory();
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState(false)
 
-    const [form, setForm] = useState({
-        title: "",
-        description: "",
-        instructions: "",
-        serving: null,
-        email: "",
-        ingredientsList: [
-            { ingredient: "", quantity: 0, unit: units[0] },
-        ],
-        category: categories[0],
-        cuisine: cuisine[0],
-        cuisineImg: "",
-        imgUrl: "",
-        rating: null,
-        comment: "",
-        source: "",
-        author: "",
-        tags: [
-            { name: "Athletic/Higher caloric", isChecked: false },
-            { name: "Aggressive Weight Loss", isChecked: false },
-            { name: "Kid-Friendly", isChecked: false },
-            { name: "Non-Vegan", isChecked: false },
-            { name: "Diabetes reversal", isChecked: false },
-            { name: "Quick and Easy", isChecked: false },
-        ],
-        gbombs: [
-            { name: "Greens", isChecked: false },
-            { name: "Beans", isChecked: false },
-            { name: "Onions", isChecked: false },
-            { name: "Mushrooms", isChecked: false },
-            { name: "Berries", isChecked: false },
-            { name: "Seeds", isChecked: false }
-        ]
-    })
+    const [form, setForm] = useState(initialForm)
 
     const clearState = () => {
-        setForm({})
+        const clearedForm = {
+            ...initialForm, ingredientsList: [
+                { ingredient: "", quantity: 0, unit: units[0] },
+            ]
+        }
+        setForm(clearedForm);
     }
 
 
@@ -62,12 +70,10 @@ const Create = (props) => {
                 console.log(res);
 
                 setSuccess(true);
-                // window.history.pushState(form, {}, window.location)
-                // document.getElementById("create-form").reset();
-                console.log("this is before clear state: ", res);
-                // clearState()
-                // change test
-                console.log("this is after clear State: ", res);
+                document.getElementById("create-form").reset();
+                clearState();
+                window.scrollTo(0, 0)
+                console.log("this is after clear State: ", form);
 
 
             })
