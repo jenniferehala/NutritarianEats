@@ -13,6 +13,7 @@ function Contact() {
     const [form, setForm] = useState({
         name: "",
         email: "",
+        subject: "",
         message: ""
     });
 
@@ -25,8 +26,8 @@ function Contact() {
 
         axios.post("http://localhost:8000/api/users/contact", form)
             .then(res => {
-                console.log("this axios call worked")
-                console.log(res);
+                // console.log("this axios call worked")
+                // console.log(res);
                 history.push("/users/contact")
                 setSuccess(true)
                 setStatus("Submit");
