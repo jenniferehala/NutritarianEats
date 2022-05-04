@@ -38,7 +38,7 @@ const ExploreCuisine = (props) => {
 
                                 return (
                                     <div key={i}>
-                                        <div className="category__img shadow">
+                                        <div className="category__img shadow" key={i}>
                                             <a href={`/cuisine/${item.name}`} className="col text-center category__link">
                                                 <img src={require(`../img/${item.image}`)} alt="People Eating" />
 

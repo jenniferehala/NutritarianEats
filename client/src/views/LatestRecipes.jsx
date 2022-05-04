@@ -24,9 +24,9 @@ const LatestRecipes = (props) => {
                     <h1 className="py-4">Explore Latest Cuisine</h1>
 
                     <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><Link to="/dashboard">Home</Link></li>
-                            <li class="breadcrumb-item active" aria-current="page">Explore Latest Cuisine</li>
+                        <ol className="breadcrumb">
+                            <li className="breadcrumb-item"><Link to="/dashboard">Home</Link></li>
+                            <li className="breadcrumb-item active" aria-current="page">Explore Latest Cuisine</li>
                         </ol>
                     </nav>
 
@@ -35,11 +35,11 @@ const LatestRecipes = (props) => {
                             {
                                 latestRecipes.map((value, i) => {
                                     return <>
-                                        <div>
+                                        <div key={i}>
                                             <Link to={`/recipes/${value._id}`} className="col text-center category__link">
                                                 <div className="category__img category__img--large shadow">
 
-                                                    <img src={value.imgUrl} alt="food pic" Loading="lazy" />
+                                                    <img src={value.imgUrl} alt="food pic" />
                                                 </div>
                                             </Link>
 

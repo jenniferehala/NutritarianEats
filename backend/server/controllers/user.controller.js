@@ -7,8 +7,8 @@ const bcrypt = require('bcrypt');
 const contactEmail = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL,
-        pass: process.env.SECRET_PW,
+        user: "jennifer.ehala@gmail.com",
+        pass: "Charlie7",
     },
 });
 
@@ -23,14 +23,12 @@ contactEmail.verify((error) => {
 //******* MESSAGE ROUTE *******//
 
 module.exports.contactUs = (req, res) => {
-
     console.log('message body', req.body)
     Message.create(req.body)
         .then(newUser => {
             res.json({ results: newUser })
             const name = req.body.name;
             const email = req.body.email;
-            const subject = req.body.subject;
             const message = req.body.message;
             const mail = {
                 from: name,
@@ -38,7 +36,6 @@ module.exports.contactUs = (req, res) => {
                 subject: "Contact Form Submission",
                 html: `<p>Name: ${name}</p>
                 <p>Email: ${email}</p>
-                <p>Subject: ${(subject)}</p>
                 <p>Message: ${message}</p>`,
             };
             contactEmail.sendMail(mail, (error) => {

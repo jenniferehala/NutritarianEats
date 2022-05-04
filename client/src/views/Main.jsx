@@ -151,7 +151,7 @@ const Main = (props) => {
 
                     <section className="pb-4 pt-4">
                         <div className="d-flex mb-2 align-items-center">
-                            <h2>American Recipes</h2>
+                            <h2>North American Recipes</h2>
                             <Link to="/recipes/cuisine/American" className="ms-auto">View More</Link>
                         </div>
                         <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">

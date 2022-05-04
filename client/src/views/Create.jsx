@@ -3,52 +3,53 @@ import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
-const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
-const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish"];
-const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
-
-
-const initialForm = {
-    title: "",
-    description: "",
-    instructions: "",
-    serving: null,
-    email: "",
-    ingredientsList: [
-        { ingredient: "", quantity: 0, unit: units[0] },
-    ],
-    category: categories[0],
-    cuisine: cuisine[0],
-    cuisineImg: "",
-    imgUrl: "",
-    rating: null,
-    comment: "",
-    source: "",
-    author: "",
-    tags: [
-        { name: "Athletic/Higher caloric", isChecked: false },
-        { name: "Aggressive Weight Loss", isChecked: false },
-        { name: "Kid-Friendly", isChecked: false },
-        { name: "Non-Vegan", isChecked: false },
-        { name: "Diabetes reversal", isChecked: false },
-        { name: "Quick and Easy", isChecked: false },
-    ],
-    gbombs: [
-        { name: "Greens", isChecked: false },
-        { name: "Beans", isChecked: false },
-        { name: "Onions", isChecked: false },
-        { name: "Mushrooms", isChecked: false },
-        { name: "Berries", isChecked: false },
-        { name: "Seeds", isChecked: false }
-    ]
-}
 
 const Create = (props) => {
+
+    const category = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish", "Worldwide"];
+    const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
+
+
+    const initialForm = {
+        title: "",
+        description: "",
+        instructions: "",
+        serving: null,
+        email: "",
+        ingredientsList: [
+            { ingredient: "", quantity: 0, unit: units[0] },
+        ],
+        category: category[0],
+        cuisine: cuisine[0],
+        cuisineImg: "",
+        imgUrl: "",
+        rating: null,
+        comment: "",
+        source: "",
+        author: "",
+        tags: [
+            { name: "Athletic/Higher caloric", isChecked: false },
+            { name: "Aggressive Weight Loss", isChecked: false },
+            { name: "Kid-Friendly", isChecked: false },
+            { name: "Non-Vegan", isChecked: false },
+            { name: "Diabetes reversal", isChecked: false },
+            { name: "Quick and Easy", isChecked: false },
+        ],
+        gbombs: [
+            { name: "Greens", isChecked: false },
+            { name: "Beans", isChecked: false },
+            { name: "Onions", isChecked: false },
+            { name: "Mushrooms", isChecked: false },
+            { name: "Berries", isChecked: false },
+            { name: "Seeds", isChecked: false }
+        ]
+    }
+
 
     const history = useHistory();
     const [errors, setErrors] = useState({});
     const [success, setSuccess] = useState(false)
-
     const [form, setForm] = useState(initialForm)
 
     const clearState = () => {
@@ -67,13 +68,12 @@ const Create = (props) => {
         console.log(form)
         axios.post("http://localhost:8000/api/recipes/create", form)
             .then(res => {
-                console.log(res);
-
+                // console.log("this is before clear state: ", form);
                 setSuccess(true);
                 document.getElementById("create-form").reset();
                 clearState();
                 window.scrollTo(0, 0)
-                console.log("this is after clear State: ", form);
+                // console.log("this is after clear State: ", form);
 
 
             })
@@ -91,6 +91,7 @@ const Create = (props) => {
 
 
     const onChangeHandler = (e) => {
+
         setForm({
             ...form,
             [e.target.name]: e.target.value
@@ -99,6 +100,9 @@ const Create = (props) => {
     }
 
     const onSelectHandler = (e) => {
+        if (e.target.name = 'cuisine') {
+            form.cuisineImg = (`${e.target.value}.jpg`)
+        }
         setForm({
             ...form,
             [e.target.name]: e.target.value,
@@ -187,11 +191,11 @@ const Create = (props) => {
                                 </div>
                                 {/*********** CATEGORIES ***********/}
                                 <label className="form-label mb-0">Categories:</label>
-                                <select name="categories" defaultValue={'DEFAULT'} className="form-select mt-2" onChange={onChangeHandler}>
+                                <select name="category" defaultValue={'DEFAULT'} className="form-select mt-2" onChange={onChangeHandler}>
                                     <option value="DEFAULT" disabled> -- Select a Category -- </option>
                                     {
-                                        categories?.map((category, i) => {
-                                            return <option value={category} key={i}> {category} </option>
+                                        category?.map((categories, i) => {
+                                            return <option value={categories} key={i}> {categories} </option>
 
                                         })
                                     }
@@ -205,9 +209,19 @@ const Create = (props) => {
 
                                     {
                                         cuisine?.map((cuisine, i) => {
-                                            return <option value={cuisine} key={i}> {cuisine} </option>
+
+                                            return (
+                                                <>
+
+                                                    <option value={cuisine} key={i}> {cuisine} </option>
+
+                                                </>)
 
                                         })
+
+
+
+
                                     }
                                 </select>
                                 <span className="alert-danger">{errors.category && errors.category.message}</span>
