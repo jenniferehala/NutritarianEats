@@ -1,6 +1,6 @@
 import React from 'react'
 import '../App.css'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
 
@@ -17,20 +17,22 @@ function Contact() {
         message: ""
     });
 
+    const clearState = () => {
+        setForm({});
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setStatus("Sending...");
         console.log("this handler worked")
-
-
         axios.post("http://localhost:8000/api/users/contact", form)
             .then(res => {
-                // console.log("this axios call worked")
-                // console.log(res);
-                history.push("/users/contact")
-                setSuccess(true)
+                history.push("/users/contact");
+                setSuccess(true);
                 setStatus("Submit");
+                document.getElementById("message-form").reset();
+                clearState();
+                window.scrollTo(0, 0);
 
             })
             .catch(err => {
@@ -47,11 +49,9 @@ function Contact() {
         })
     };
 
-
     useEffect(() => {
         document.title = "NutritarianEats - Contact"
     }, [])
-
 
     return (
         <div className="container">
@@ -70,7 +70,7 @@ function Contact() {
                                     Message successfully submitted.
                                 </div>}
 
-                                <form name="contact-form" onSubmit={handleSubmit}>
+                                <form name="contact-form" onSubmit={handleSubmit} id="message-form">
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="md-form mb-0">
@@ -103,27 +103,21 @@ function Contact() {
                                         </div>
                                     </div>
                                     <div className="text-center text-md-left">
-                                        <button type="submit">{status}</button>
+                                        <button type="submit" className="mt-3">{status}</button>
                                     </div>
                                 </form>
                                 {/* FORM END */}
-
-
                             </div>
                         </div>
                     </section>
                 </div>
                 <hr className="featurette-divider my-5  " />
-
                 <footer className="">
-
                     <div className="">Build by: Jen E.</div>
                 </footer>
             </div>
         </div>
-
-
     )
 }
 
-export default Contact
+export default Contact;

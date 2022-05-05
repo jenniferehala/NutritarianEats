@@ -4,7 +4,6 @@ const mongoose = require("mongoose")
 const RecipeSchema = new mongoose.Schema({
 
     title: {
-
         type: String,
         required: [2, "Need title for Recipe!"]
     },
@@ -27,7 +26,6 @@ const RecipeSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [2, "Need email!"]
-
     },
 
     ingredientsList:
@@ -42,11 +40,9 @@ const RecipeSchema = new mongoose.Schema({
                 unit: {
                     type: String,
                     enum: ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
-
                 },
             }
         ],
-
 
     category: {
         type: String,
@@ -93,13 +89,11 @@ const RecipeSchema = new mongoose.Schema({
                 name: {
                     type: String
                 },
-
                 isChecked: {
                     type: Boolean
                 }
             },
         ],
-
 
     gbombs:
         [
@@ -107,17 +101,14 @@ const RecipeSchema = new mongoose.Schema({
                 name: {
                     type: String
                 },
-
                 isChecked: {
                     type: Boolean
                 }
             },
         ],
-
 }, { timestamps: true });
 
 RecipeSchema.index({ title: "text" });
 
 const Recipe = mongoose.model("Recipe", RecipeSchema);
-
 module.exports = { Recipe: Recipe }

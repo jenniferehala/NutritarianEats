@@ -1,7 +1,6 @@
 const UserController = require("../controllers/user.controller");
 const { authenticate } = require('../config/jwt.config');
 
-
 module.exports = app => {
 
     app.post("/api/users/contact", UserController.contactUs);
@@ -12,6 +11,4 @@ module.exports = app => {
     app.get("/api/users/getloggedinuser", UserController.loggedInUser);
     app.delete("/api/users/:_id/delete", UserController.deleteUser);
 
-
-
-}
+};

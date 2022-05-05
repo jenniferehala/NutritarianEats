@@ -8,7 +8,7 @@ const SignIn = () => {
 
     useEffect(() => {
         document.title = "NutritarianEats - SignIn"
-    }, [])
+    }, []);
 
     return (
         <div className="container">
@@ -16,17 +16,14 @@ const SignIn = () => {
                 <div className="row">
                     <div className="col">
                         <h1 className="mb-5">Sign in below </h1>
-
-                        <RegistrationForm></RegistrationForm>
+                        <RegistrationForm />
                     </div>
 
                     <div className="col">
                         <h1 className="mb-5">Already Registered? </h1>
-
-                        <LoginForm></LoginForm>
+                        <LoginForm />
                     </div>
                 </div>
-
                 <footer className="py-5">
                     Build by Jen E.
                 </footer>
@@ -35,4 +32,4 @@ const SignIn = () => {
     )
 }
 
-export default SignIn
+export default SignIn;

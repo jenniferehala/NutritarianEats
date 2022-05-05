@@ -1,11 +1,9 @@
 import React from 'react'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const SearchRecipe = (props) => {
     const { results } = props
-    console.log(props.results);
-
+    // console.log(props.results);
 
     return (
         <div>
@@ -13,7 +11,6 @@ const SearchRecipe = (props) => {
             <div className="container ">
                 <div className="container-xxl px-md-5 bg-white ">
                     <h1 className="py-4">Search Results</h1>
-
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item"><a href="/dashboard">Home</a></li>

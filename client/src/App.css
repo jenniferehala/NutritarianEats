@@ -61,3 +61,11 @@ a {
     /* rtl:remove */
     letter-spacing: -.05rem;
   }
+
+  .star-rating-filled {
+    fill: gold;
+  }
+  
+  .star-rating-blank {
+    fill: #d8d8d8;
+  }

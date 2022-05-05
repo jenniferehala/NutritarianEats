@@ -21,7 +21,6 @@ contactEmail.verify((error) => {
 });
 
 //******* MESSAGE ROUTE *******//
-
 module.exports.contactUs = (req, res) => {
     console.log('message body', req.body)
     Message.create(req.body)
@@ -50,7 +49,6 @@ module.exports.contactUs = (req, res) => {
 };
 
 // ******* USER ROUTES *******//
-
 module.exports.getAllUsers = (req, res) => {
     User.find()
         .then(allUsers => {
@@ -61,9 +59,7 @@ module.exports.getAllUsers = (req, res) => {
         })
 };
 
-
 // ******* LOGIN ROUTE *******//
-
 module.exports.login = async (req, res) => {
     console.log('req.body', req.body);
     const user = await User.findOne({ email: req.body.email })
@@ -75,7 +71,6 @@ module.exports.login = async (req, res) => {
     if (!correctPassword) {
         return res.json({ error: "Not correct password" })
     }
-
     const userToken = jwt.sign({
         id: user._id
     }, process.env.SECRET_KEY);
@@ -84,12 +79,9 @@ module.exports.login = async (req, res) => {
             httpOnly: true
         })
         .json({ msg: 'success' })
-
-}
+};
 
 // ******* REGISTER ROUTE *******//
-
-
 module.exports.registerUser = (req, res) => {
     console.log("register user: ", req.body)
     User.find({ email: req.body.email })   //nested promise
@@ -117,7 +109,6 @@ module.exports.registerUser = (req, res) => {
 };
 
 // ******* LOGOUT ROUTE *******//
-
 module.exports.logout = (req, res) => {
     console.log("this backend worked")
     res.clearCookie('userToken');
@@ -125,11 +116,9 @@ module.exports.logout = (req, res) => {
 };
 
 // ******* LOGGED IN ROUTE *******//
-
 module.exports.loggedInUser = (req, res) => {
     // use the info stored in cookie to get id of user
     const decodedJWT = jwt.decode(req.cookies.userToken, { complete: true })
-
     // decodedJWT.payload.id
     User.findOne({ _id: decodedJWT.payload.id })
         .then(foundUser => {
@@ -138,11 +127,9 @@ module.exports.loggedInUser = (req, res) => {
         .catch(err => {
             res.json(err)
         })
-}
-
+};
 
 // ******* USER DELETE ROUTE *******//
-
 module.exports.deleteUser = (req, res) => {
     User.deleteOne({ _id: req.params._id })
         .then(results => res.json({ results: results }))

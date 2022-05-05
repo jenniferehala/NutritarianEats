@@ -23,8 +23,6 @@ const LoginForm = () => {
                 }
             })
             .catch(err => console.log('error when logging in: ', err))
-
-
     }
 
     return (
@@ -46,4 +44,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default LoginForm;

@@ -50,7 +50,6 @@ const ExploreCuisine = (props) => {
                 </div>
             </div>
             {/* End of container */}
-
             <footer className="py-5">
                 Build by Jen E.
             </footer>

@@ -1,7 +1,4 @@
 const RecipeController = require("../controllers/recipe.controller");
-const { authenticate } = require('../config/jwt.config');
-
-
 
 module.exports = app => {
     app.get("/api/recipes/findAll", RecipeController.findAllRecipe);
@@ -21,4 +18,4 @@ module.exports = app => {
     app.get("/api/recipes/cuisine/findAllCuisine", RecipeController.findAllCuisine);
     app.get("/api/recipes/cuisine/:name", RecipeController.findOneCuisine);
 
-}
+};

@@ -3,7 +3,6 @@ const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 
 // ************ CREATE ***************** //
-
 module.exports.createRecipe = (req, res) => {
     Recipe.create((req.body))
         .then(newRecipes => {
@@ -13,7 +12,6 @@ module.exports.createRecipe = (req, res) => {
 }
 
 // ************ READ ***************** //
-
 module.exports.findOneRecipe = (req, res) => {
     Recipe.findOne({ _id: req.params._id })
         .then(results => res.json({ results: results, cuisineImg: req.body.file }))
@@ -45,7 +43,6 @@ module.exports.randomRecipe = (req, res) => {
 }
 
 // ************ UPDATE ***************** //
-
 module.exports.updateOneRecipe = (req, res) => {
     Recipe.updateOne({ _id: req.params._id }, req.body, { runValidators: true })
         // run update one you give it the query { _id: req.params._id } give it the information to change (req.body)
@@ -55,7 +52,6 @@ module.exports.updateOneRecipe = (req, res) => {
 }
 
 // ************ DELETE ***************** //
-
 module.exports.deleteRecipe = (req, res) => {
     Recipe.deleteOne({ _id: req.params._id })
         .then(results => res.json({ results: results }))
@@ -63,7 +59,6 @@ module.exports.deleteRecipe = (req, res) => {
 }
 
 // ************ SEARCH ***************** //
-
 module.exports.searchRecipe = (req, res) => {
     const searchQuery = req.params.searchTerm
     Recipe.find({ title: { $regex: searchQuery, $options: "i" } })
@@ -74,8 +69,6 @@ module.exports.searchRecipe = (req, res) => {
 }
 
 // ******* CUISINE ROUTES *******//
-
-//limited by 5
 module.exports.findMainCuisine = (req, res) => {
     Recipe.aggregate([
         { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },

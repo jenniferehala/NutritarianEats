@@ -19,8 +19,6 @@ const SingleCuisine = (props) => {
             .catch(err => console.log(err))
     }, [name]);
 
-
-
     return (
         <div >
             <div className="container ">
@@ -44,7 +42,6 @@ const SingleCuisine = (props) => {
                                                     <img src={value.imgUrl} alt="food pic" />
                                                 </div>
                                             </Link>
-
                                             <div className="pt-1">
                                                 {value.title}
                                             </div>
@@ -54,10 +51,11 @@ const SingleCuisine = (props) => {
                             }
                         </div>
                     </section>
+
                 </div>
             </div>
         </div>
     )
 }
 
-export default SingleCuisine
+export default SingleCuisine;

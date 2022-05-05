@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
+
     firstName: {
         type: String,
         required: [true, "First name is required"]
@@ -24,7 +25,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Password is required"],
         minlength: [3, 'Password must be 3 characters or longer']
-
     },
 }, { timestamps: true });
 
@@ -33,7 +33,7 @@ UserSchema.virtual('confirmPassword')
     .get(() => this._confirmPassword)
     .set(value => this._confirmPassword = value);
 // create a virtual field called "confirm" that is used just to validate the password matches confirm ---> 
-// the getter and setter above are just creating temporary fields for _confirm
+// the getter and setter above are creating temporary fields for _confirm
 
 
 // before (pre) running the other validations on the model, validate the user objects password matches
@@ -45,7 +45,6 @@ UserSchema.pre('validate', function (next) {
     next(); // after the above process is done, go to next usual step
 });
 
-
 //before saving user to the db (this means we have passed the validations), hash the users password (encrypt it)
 UserSchema.pre('save', function (next) {
     bcrypt.hash(this.password, 10)
@@ -55,25 +54,5 @@ UserSchema.pre('save', function (next) {
         });
 });
 
-
-
-const MessageSchema = new mongoose.Schema({
-    email: {
-        type: String
-    },
-    name: {
-        type: String
-    },
-    message: {
-        type: String
-    }
-}, { timestamps: true });
-
-
 const User = mongoose.model("User", UserSchema);
-// const Message = mongoose.model("Message", MessageSchema);
-// const Message = mongoose.model("Message", MessageSchema);
-
 module.exports = { User: User }
-// module.exports = User;
-// module.exports = Message;

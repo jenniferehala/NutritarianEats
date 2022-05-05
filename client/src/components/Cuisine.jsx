@@ -11,14 +11,13 @@ const Cuisine = (props) => {
                 <Link to={`/recipes/cuisine/${props.value.name}`} className="col text-center category__link">
                     <img src={require(`../img/${props.value.image}`)} alt="food pic" />
                 </Link>
-
             </div>
+
             <div className="pt-1">
                 {props.value.name}
             </div>
 
         </div >
-
     )
 }
 

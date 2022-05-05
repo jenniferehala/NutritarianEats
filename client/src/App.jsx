@@ -49,17 +49,12 @@ function App() {
         })
     };
 
-
-
-
-
   }
   return (
-
     <div className="App">
-
       <div className="container">
         <div className="container-xxl bg-white shadow-lg">
+
           {/* Beginning of Header */}
           <header className="d-flex flex-wrap align-items-center justify-content-md-between py-3 mb-0 border-bottom">
             <Link to="/dashboard" className="d-flex align-items-center justify-content-center  offset-md-0 col-md-2 mb-2 mb-md-0 text-dark text-decoration-none">
@@ -71,7 +66,6 @@ function App() {
               <Link to="/recipes/about" className="nav-link px-2 link-dark">About</Link>
               < Link to="/users/contact" className="nav-link px-2 link-dark" >Contact</Link>
             </ul>
-
             <div className="col-3">
               <form action="" onSubmit={onSubmitHandler}>
                 <div className="form-group row">
@@ -89,8 +83,6 @@ function App() {
       </div>
       {/* End of Header */}
 
-
-
       <Switch>
         <Route exact path="/dashboard" >
           <Main />
@@ -104,7 +96,6 @@ function App() {
           <SearchRecipe results={state} />
         </Route>
 
-
         <Route exact path="/recipes/create" >
           <Create />
         </Route>
@@ -116,7 +107,6 @@ function App() {
         <Route exact path="/users/contact" >
           <Contact />
         </Route>
-
 
         <Route exact path="/recipes/cuisine/findAllCuisine" >
           <ExploreCuisine />
@@ -134,8 +124,6 @@ function App() {
           <SingleCuisine />
         </Route>
 
-
-
         <Route exact path="/recipes/explore/latest" >
           <LatestRecipes />
         </Route>
@@ -143,12 +131,8 @@ function App() {
         <Route exact path="/recipes/explore/random" >
           <RandomRecipe />
         </Route>
-
-
       </Switch>
     </div >
-
-
   );
 }
 

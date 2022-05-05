@@ -3,9 +3,6 @@ import '../App.css'
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 
-
-
-
 const About = (props) => {
 
     useEffect(() => {
@@ -26,6 +23,7 @@ const About = (props) => {
                         <img src={require('../img/vegan.jpg')} alt="" width="500" height="500" className="featurette-image img-fluid mx-auto" />
                     </div>
                 </div>
+
                 <hr className="featurette-divider" />
                 <div className="row featurette align-items-center">
                     <div className="col-md-7 order-md-2">
@@ -36,6 +34,7 @@ const About = (props) => {
                         <img src={require('../img/nutrition.jpg')} alt="" width="500" height="500" className="featurette-image img-fluid mx-auto" />
                     </div>
                 </div>
+
                 <hr className="featurette-divider" />
                 <div className="row featurette align-items-center">
                     <div className="col-md-7">
@@ -46,9 +45,8 @@ const About = (props) => {
                         <img src={require('../img/arrangement.jpg')} alt="" width="500" height="500" className="featurette-image img-fluid mx-auto" />
                     </div>
                 </div>
+
                 <hr className="featurette-divider" />
-
-
                 <div className="row featurette align-items-center">
                     <div className="col-md-7 order-md-2">
                         <h2 className="featurette-heading">Eat mostly plants. <span className="text-muted">Foods you'll enjoy.</span></h2>
@@ -71,7 +69,6 @@ const About = (props) => {
                 </div>
 
                 <hr className="featurette-divider" />
-
                 <div className="row featurette align-items-center">
                     <div className="col-md-7 order-md-2">
                         <h2 className="featurette-heading">No S. O. S. <span className="text-muted">Salt, Oil, Sugar</span></h2>
@@ -90,15 +87,12 @@ const About = (props) => {
                             Contact us now and you will receive a free beginners guide and a full week meal plan. Click below to get started. </p>
                         <Link to="/users/contact" className="btn btn primary btn-dark btn-lg px-4 me-md-2 mt-4">Contact Us</Link>
                     </div>
-
                     <div className="col-md-5">
                         <img src={require('../img/notepad.jpg')} alt="" width="500" height="500" className="featurette-image img-fluid mx-auto" />
                     </div>
                 </div>
 
                 <hr className="featurette-divider mb-5" />
-
-
                 <footer className="d-flex align-items-center justify-content-between">
                     <div className="col-4 my-2">Build by: Jen E.</div>
                     <div className="">Source:

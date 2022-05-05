@@ -9,7 +9,7 @@ const Edit = (props) => {
     const { _id } = useParams({})
     const history = useHistory();
     const category = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
-    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish", "Worldwide"];
+    const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Worldwide"];
     const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
     const [errors, setErrors] = useState({});
     const [form, setForm] = useState({
@@ -47,17 +47,14 @@ const Edit = (props) => {
         ]
     })
 
-
     useEffect(() => {
         document.title = "NutritarianEats - Edit"
         axios.get(`http://localhost:8000/api/recipes/${_id}`)
             .then(res => {
                 console.log(res.data.results)
-
                 const updatedTags = [...form.tags];
                 const updatedGbombs = [...form.gbombs];
                 const result = res.data.results;
-
                 result.tags.map((tag, i) => {
                     updatedTags.map((existingTag) => {
                         if (existingTag.name === tag.name) {
@@ -65,7 +62,6 @@ const Edit = (props) => {
                         }
                     })
                 })
-
                 result.gbombs.map((gbomb, i) => {
                     updatedGbombs.map((existingGbomb) => {
                         if (existingGbomb.name === gbomb.name) {
@@ -73,14 +69,13 @@ const Edit = (props) => {
                         }
                     })
                 })
-
                 setForm({ ...result, tags: updatedTags, gbombs: updatedGbombs });
             })
             .catch(err => {
                 console.log(err)
                 setErrors(err)
             })
-    }, [_id])
+    }, [_id]);
 
     const onChangeHandler = (e) => {
         setForm({
@@ -162,7 +157,6 @@ const Edit = (props) => {
             });
     }
 
-
     return (
         <div className="container ">
             <div className="container-xxl px-md-5 bg-white p-4">
@@ -195,6 +189,7 @@ const Edit = (props) => {
                                     </select>
                                     <span className="alert-danger">{errors.category && errors.category.message}</span>
                                 </div>
+
                                 {/*********** CUISINE ***********/}
                                 <div className="form-group mb-3">
                                     <label className="form-label mb-0">Cuisine: </label>
@@ -231,6 +226,7 @@ const Edit = (props) => {
                                     <input type="text" value={form.email} name="email" className="form-control" placeholder="email" onChange={onChangeHandler} />
                                     <span className="alert-danger">{errors.email && errors.email.message}</span>
                                 </div>
+
                                 {/*********** INGREDIENTS START ***********/}
                                 <div className="row form-group">
                                     <label className="form-label my-2">Ingredients:</label>
@@ -245,7 +241,6 @@ const Edit = (props) => {
                                                     name="quantity"
                                                     onChange={(event) => handleAddQuantity(event, i)}
                                                 />
-
                                                 <label className="mx-1">Unit:</label>
                                                 <select name="unit" value={value.unit} className="col-sm-1" onChange={(event) => handleAddUnit(event, i)}>
                                                     {
@@ -254,7 +249,6 @@ const Edit = (props) => {
                                                         })
                                                     }
                                                 </select>
-
                                                 <label className="mx-2">Ingredient:</label>
                                                 <input
                                                     className="col-sm-3"
@@ -264,15 +258,12 @@ const Edit = (props) => {
                                                     name="ingredients"
                                                     onChange={event => handleAddIngredient(event, i)}
                                                 />
-
                                                 <button className="col btn btn-outline-primary mx-2 my-1" type="button" onClick={() => handleAddField()} >+Ingredient</button>
-
                                                 {i ? <button type="button" className="col btn btn-outline-danger mx-1" onClick={() => handleRemoveField(i)}>Remove</button>
                                                     : null
                                                 }
                                             </div>))}
                                 </div>
-
                                 {/*********** INGREDIENTS END ***********/}
 
                                 <div className="form-group mb-3 mt-4" >
@@ -300,6 +291,7 @@ const Edit = (props) => {
                                     <input type="input" value={form.author} name="author" className="form-control" placeholder="author" onChange={onChangeHandler} />
                                 </div>
                                 <span className="alert-danger">{errors.author && errors.author.message}</span>
+
                                 {/* ******* Checkbox TAGS ******* */}
                                 <div className="d-flex flex-row my-3 text-center" >
                                     {
@@ -315,6 +307,7 @@ const Edit = (props) => {
                                             </div>
                                         ))}
                                 </div>
+
                                 {/* ******* Checkbox GBOMBS ******* */}
                                 <div className="d-flex flex-row my-3 justify-content-center" name="gbombs">
                                     {
@@ -338,7 +331,6 @@ const Edit = (props) => {
                                 </div>
                             </div>
                         </form>
-
                         {/* **********  Form End ********** */}
                     </div>
                 </div>
