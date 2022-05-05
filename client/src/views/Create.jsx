@@ -181,7 +181,6 @@ const Create = (props) => {
                                     {
                                         category?.map((categories, i) => {
                                             return <option value={categories} key={i}> {categories} </option>
-
                                         })
                                     }
                                 </select>
@@ -266,7 +265,6 @@ const Create = (props) => {
                                                 }
                                             </div>))}
                                 </div>
-
                                 {/*********** INGREDIENTS END ***********/}
 
                                 <div className="form-group mb-3 mt-4" >

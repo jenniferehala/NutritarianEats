@@ -45,7 +45,6 @@ const RandomRecipe = (props) => {
                     </div>
                     <div className="col-12 col-md-8">
 
-                        {/* first row */}
                         <div className="row">
                             <div className="col-12"><h1>{random.title}</h1></div>
                             <div className="col-12 mb-2">
@@ -65,6 +64,7 @@ const RandomRecipe = (props) => {
                             <div className="col-12 my-4"><h4>Description:</h4> {random.description}</div>
 
                             <div className="col-12 mb-4" > Source: <a href={random.source} target="_blank" rel="noreferrer">{random.source}</a></div>
+
                             <div className="col-12 mb-2">
                                 <h5>GBOMBS:</h5>
                                 <ul>
@@ -84,9 +84,7 @@ const RandomRecipe = (props) => {
                                 <div className="col-12"><h4>Instructions:</h4> {random.instructions}</div>
                             </div>
                         </div>
-                        {/* first row end */}
 
-                        {/* second row begin */}
                         <div className="row pt-4">
                             <div className="col-12">
                                 <h4 className="mb-2">Ingredients:</h4>
@@ -127,8 +125,6 @@ const RandomRecipe = (props) => {
                                     : null
                             }
 
-
-
                             <div className="col-12 mt-3 mb-4"> Author: {random.author}</div>
 
                             <div className="mt-3">
@@ -138,7 +134,6 @@ const RandomRecipe = (props) => {
                                 <button onClick={(e) => onDeleteHandler(random._id)} className="btn btn-danger mx-2" >Delete</button>
                             </div>
                         </div>
-                        {/* second row end */}
                     </div>
                 </div>
                 <footer className="py-5">

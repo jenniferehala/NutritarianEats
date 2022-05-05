@@ -48,13 +48,13 @@ const SingleRecipe = (props) => {
                     </div>
                     <div className="col-12 col-md-8">
 
-                        {/* first row */}
                         <div className="row">
                             <div className="col-12"><h1>{recipe.title}</h1></div>
                             <div className="col-12 mb-2">
                                 <i className="bi bi-tag mx-2"></i>
                                 {recipe.cuisine}
                             </div>
+
                             <div className="">
                                 {recipe?.tags?.map((value, i) => {
                                     if (value.isChecked === true) {
@@ -67,9 +67,10 @@ const SingleRecipe = (props) => {
                                 }
                             </div>
 
-                            <div className="col-12 my-4"><h4>Description:</h4> {recipe.description}</div>
+                            <div lassName="col-12 my-4"><h4>Description:</h4> {recipe.description}</div>
 
                             <div className="col-12 mb-4" > Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a></div>
+
                             <div className="col-12 mb-2">
                                 <h5>GBOMBS:</h5>
                                 <ul>
@@ -81,16 +82,16 @@ const SingleRecipe = (props) => {
                                     }
                                 </ul>
                             </div>
+
                             <div className="col-12 mb-1">
                                 <h5 className="mt-2 mb-3">Serving(s): {recipe.serving}</h5>
                             </div>
+
                             <div className="row pt-2">
                                 <div className="col-12"><h4>Instructions:</h4> {recipe.instructions}</div>
                             </div>
                         </div>
-                        {/* first row end */}
 
-                        {/* second row begin */}
                         <div className="row pt-4">
                             <div className="col-12">
                                 <h4 className="mb-2">Ingredients:</h4>
@@ -140,8 +141,6 @@ const SingleRecipe = (props) => {
                                 <button onClick={(e) => onDeleteHandler(_id)} className="btn btn-danger mx-2" >Delete</button>
                             </div>
                         </div>
-                        {/* second row end */}
-
                     </div>
                 </div>
                 <footer className="py-5">

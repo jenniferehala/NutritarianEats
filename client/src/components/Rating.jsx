@@ -8,7 +8,6 @@ const Rating = ({
 
     const renderStar = () => {
         const starsToRender = [];
-
         for (let i = 0; i < maxRating; i++) {
             starsToRender.push(<Star color={i < selectedRating ? "#FDDA0D" : ""} />)
         }
