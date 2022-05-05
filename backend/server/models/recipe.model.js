@@ -6,27 +6,27 @@ const RecipeSchema = new mongoose.Schema({
     title: {
 
         type: String,
-        // required: [2, "Need title for Recipe!"]
+        required: [2, "Need title for Recipe!"]
     },
 
     description: {
         type: String,
-        // required: [2, "Need description!"]
+        required: [2, "Need description!"]
     },
 
     instructions: {
         type: String,
-        // required: [2, "Need instructions!"]
+        required: [2, "Need instructions!"]
     },
 
     serving: {
         type: Number,
-        // min: [1, "you need at least one serving!"]
+        min: [1, "you need at least one serving!"]
     },
 
     email: {
         type: String,
-        // required: [2, "Need email!"]
+        required: [2, "Need email!"]
 
     },
 
@@ -65,12 +65,12 @@ const RecipeSchema = new mongoose.Schema({
 
     imgUrl: {
         type: String,
-        // required: [2, "You need an image!"]
+        required: [2, "You need an image!"]
     },
 
     rating: {
         type: Number,
-        // required: [2, "You need a number!"],
+        required: [2, "You need a number!"],
     },
 
     comment: {
@@ -79,12 +79,12 @@ const RecipeSchema = new mongoose.Schema({
 
     source: {
         type: String,
-        // required: [2, 'This source field is required']
+        required: [2, 'This source field is required']
     },
 
     author: {
         type: String,
-        // required: [2, 'This author field is required']
+        required: [2, 'This author field is required']
     },
 
     tags:
@@ -121,9 +121,3 @@ RecipeSchema.index({ title: "text" });
 const Recipe = mongoose.model("Recipe", RecipeSchema);
 
 module.exports = { Recipe: Recipe }
-
-
-// pass in a string so mongoose has some info about the name of
-// of our collection which is "Recipe", and we are going to pass over the schema "RecipeSchema"
-
-//means any file that imports this, like the controller is going to import it, we will definitely have access to our collection

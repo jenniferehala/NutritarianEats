@@ -2,19 +2,15 @@ const { Recipe } = require("../models/recipe.model");
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 
-
-
 // ************ CREATE ***************** //
 
 module.exports.createRecipe = (req, res) => {
-
     Recipe.create((req.body))
         .then(newRecipes => {
             res.json({ results: newRecipes });
         })
         .catch(err => res.status(400).json({ message: "that didn't work", err }))
 }
-
 
 // ************ READ ***************** //
 
@@ -48,7 +44,6 @@ module.exports.randomRecipe = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-
 // ************ UPDATE ***************** //
 
 module.exports.updateOneRecipe = (req, res) => {
@@ -78,9 +73,9 @@ module.exports.searchRecipe = (req, res) => {
         });
 }
 
-
 // ******* CUISINE ROUTES *******//
 
+//limited by 5
 module.exports.findMainCuisine = (req, res) => {
     Recipe.aggregate([
         { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
@@ -90,7 +85,6 @@ module.exports.findMainCuisine = (req, res) => {
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
-
 module.exports.findAllCuisine = (req, res) => {
     Recipe.aggregate([
         { $group: { _id: "$cuisine", image: { $first: "$cuisineImg" } } },
@@ -99,7 +93,6 @@ module.exports.findAllCuisine = (req, res) => {
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
-
 
 module.exports.findOneCuisine = (req, res) => {
     Recipe.find({ "cuisine": req.params.name })

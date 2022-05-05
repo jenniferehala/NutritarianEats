@@ -27,7 +27,6 @@ const Main = (props) => {
             .then(res => {
                 // console.log(res.data.results);
                 setLatestRecipe(res.data.results);
-
             })
             .catch(err => console.log(err))
     }, []);
@@ -51,7 +50,6 @@ const Main = (props) => {
                     // console.log("this worked")
                     setLoggedInUser(res.data.result)
                     // console.log("this is first name of user: ", loggedInUser.firstName)
-
                 }
             })
             .catch(err => {
@@ -62,8 +60,7 @@ const Main = (props) => {
 
     return (
         <>
-
-            {/* Beginning of Container */}
+            {/* Beginning of container */}
             <div className="container ">
                 <div className="container-xxl px-md-5 bg-white ">
                     <div className="row flex-lg-row-reverse align-items-center pb-4 mb-4 ">
@@ -82,21 +79,17 @@ const Main = (props) => {
                             </div>
                         </div>
                     </div>
-                    {/* Card 1 Ends */}
+
                     {/* Categories Start */}
                     <div className="row row-cols-2 row-cols-sm-6 g-2 g-lg-3 py-4">
-
-
                         {
                             cuisineRecipe.map((item, i) => {
                                 return <Cuisine key={i} value={item} />
                             })
                         }
-
-
                         <Link to="/recipes/cuisine/findAllCuisine" className="col text-center category__link">
                             <div className="category__img shadow">
-                                <img src={require("../img/people_eating3.jpg")} alt="People Eating" />
+                                <img src={require("../img/viewall.jpg")} alt="People Eating" />
                             </div>
                             <div className="pt-1">
                                 View All
@@ -105,92 +98,74 @@ const Main = (props) => {
                     </div>
                     {/* Categories End */}
 
-
-
                     {/* Latest Start */}
-
                     <section className="pb-4 pt-4">
                         <div className="d-flex mb-2 align-items-center">
                             <h2>Latest Recipes</h2>
                             <Link to="/recipes/explore/latest" className="ms-auto">View More</Link>
                         </div>
                         <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
-
                             {
                                 latestRecipe.map((item, i) => {
                                     return <LatestRecipe key={i} recipe={item} />
                                 })
                             }
-
                         </div>
-
                     </section>
                     {/* Latest End */}
 
                     {/* Thai Start */}
-
                     <section className="pb-4 pt-4">
                         <div className="d-flex mb-2 align-items-center">
                             <h2>Thai Recipes</h2>
                             <Link to="/recipes/cuisine/Thai" className="ms-auto">View More</Link>
                         </div>
                         <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
-
                             {
                                 recipe.filter(recipe => recipe.cuisine === 'Thai').slice(0, 5).map((item, i) => {
                                     return <Recipes key={i} recipe={item} />
                                 })
                             }
-
                         </div>
 
                     </section>
                     {/* Thai End */}
 
                     {/* American Start */}
-
                     <section className="pb-4 pt-4">
                         <div className="d-flex mb-2 align-items-center">
                             <h2>North American Recipes</h2>
                             <Link to="/recipes/cuisine/American" className="ms-auto">View More</Link>
                         </div>
                         <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
-
                             {
                                 recipe.filter(recipe => recipe.cuisine === "American").slice(0, 5).map((item, i) => {
                                     return <Recipes key={i} recipe={item} />
                                 })
                             }
-
                         </div>
-
                     </section>
                     {/* American End */}
 
                     {/* Indian Start */}
-
                     <section className="pb-4 pt-4">
                         <div className="d-flex mb-2 align-items-center">
                             <h2>Indian Recipes</h2>
                             <Link to="/recipes/cuisine/Indian" className="ms-auto">View More</Link>
                         </div>
                         <div className="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 py-4">
-
                             {
                                 recipe.filter(recipe => recipe.cuisine === "Indian").slice(0, 5).map((item, i) => {
                                     return <Recipes key={i} recipe={item} />
                                 })
                             }
-
                         </div>
-
                     </section>
                     {/* Indian End */}
 
-
-                    {/* Submit Start */}
+                    {/* Submit Recipe Start */}
                     <section className="px-2 py-3 my-3 text-center ">
-                        <img className="d-block mx-auto mb-4 img-fluid" src={require("../img/bottom2.png")} alt="Publish your recipe for FREE today" width="566" height="208" />
+                        <img className="d-block mx-auto mb-4 img-fluid" src={require("../img/bottom3.png")} alt="Publish your recipe for FREE today" width="566" height="208" />
                         <h1 className="display-5 fw-bold">Publish your recipe for FREE today</h1>
                         <div className="col-lg-6 mx-auto">
                             <p className="lead mb-4">
@@ -201,21 +176,16 @@ const Main = (props) => {
                             </div>
                         </div>
                     </section>
-                    {/* Submit End */}
-
+                    {/* Submit Recipe End */}
 
                 </div>
             </div>
             {/* End of container */}
 
-
             <footer className="py-5">
-
+                Build by Jen E.
             </footer>
-
-
         </>
-
     )
 }
 

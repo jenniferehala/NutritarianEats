@@ -88,7 +88,7 @@ const About = (props) => {
                         <h2 className="featurette-heading">Want to find out more? <span className="text-muted">Yeah, you do.</span></h2>
                         <p className="lead">Schedule your free consultation today.
                             Contact us now and you will receive a free beginners guide and a full week meal plan. Click below to get started. </p>
-                        <Link to="/recipes/contact" className="btn btn primary btn-dark btn-lg px-4 me-md-2 mt-4">Contact Us</Link>
+                        <Link to="/users/contact" className="btn btn primary btn-dark btn-lg px-4 me-md-2 mt-4">Contact Us</Link>
                     </div>
 
                     <div className="col-md-5">

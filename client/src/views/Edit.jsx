@@ -8,7 +8,7 @@ const Edit = (props) => {
 
     const { _id } = useParams({})
     const history = useHistory();
-    const categories = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
+    const category = ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews'];
     const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Turkish", "Worldwide"];
     const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"]
     const [errors, setErrors] = useState({});
@@ -21,12 +21,14 @@ const Edit = (props) => {
         ingredientsList: [
             { ingredient: "", quantity: 0, unit: units[0] },
         ],
-        category: categories[0],
+        category: category[0],
         cuisine: cuisine[0],
         cuisineImg: "",
         imgUrl: "",
         rating: null,
         comment: "",
+        source: "",
+        author: "",
         tags: [
             { name: "Athletic/Higher caloric", isChecked: false },
             { name: "Aggressive Weight Loss", isChecked: false },
@@ -51,6 +53,7 @@ const Edit = (props) => {
         axios.get(`http://localhost:8000/api/recipes/${_id}`)
             .then(res => {
                 console.log(res.data.results)
+
                 const updatedTags = [...form.tags];
                 const updatedGbombs = [...form.gbombs];
                 const result = res.data.results;
@@ -61,7 +64,6 @@ const Edit = (props) => {
                             existingTag.isChecked = tag.isChecked
                         }
                     })
-
                 })
 
                 result.gbombs.map((gbomb, i) => {
@@ -71,17 +73,14 @@ const Edit = (props) => {
                         }
                     })
                 })
-                setForm({ ...result, tags: updatedTags, gbombs: updatedGbombs });
 
+                setForm({ ...result, tags: updatedTags, gbombs: updatedGbombs });
             })
             .catch(err => {
                 console.log(err)
                 setErrors(err)
             })
     }, [_id])
-
-
-
 
     const onChangeHandler = (e) => {
         setForm({
@@ -91,15 +90,11 @@ const Edit = (props) => {
     }
 
     const onSelectHandler = (e) => {
-        if (e.target.name = 'cuisine') {
-            form.cuisineImg = (`${e.target.value}.jpg`)
-        }
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         });
     }
-
 
     const handleAddIngredient = (e, index) => {
         form.ingredientsList[index].ingredient = e.target.value;
@@ -116,13 +111,11 @@ const Edit = (props) => {
         setForm({ ...form })
     }
 
-
     const handleAddField = () => {
         setForm(prev => ({
             ...prev, ingredientsList: [...prev.ingredientsList, { ingredient: "", quantity: 0, unit: units[0] }]
         }))
     }
-
 
     const handleRemoveField = (i) => {
         form.ingredientsList.splice(i, 1);
@@ -142,8 +135,6 @@ const Edit = (props) => {
         }));
     }
 
-
-
     const handleCheckedGbombs = (index) => {
         setForm(prev => ({
             ...prev,
@@ -155,7 +146,6 @@ const Edit = (props) => {
                             { ...rest, isChecked })
                 )]
         }));
-
     }
 
     const onSubmitHandler = (event) => {
@@ -170,7 +160,6 @@ const Edit = (props) => {
                 console.log(err.response.data.err.errors);
                 setErrors(err.response.data.err.errors)
             });
-
     }
 
 
@@ -179,7 +168,7 @@ const Edit = (props) => {
             <div className="container-xxl px-md-5 bg-white p-4">
                 <div className="px-4 py-5 text-center">
                     <h1 className="display-5 fw-bold"> Edit Your Recipe</h1>
-                    <div className="col-lg-6 mx-auto">
+                    <div className="col-lg-7 mx-auto">
                         <h4 className="lead">Update form below.</h4>
                     </div>
                 </div>
@@ -197,9 +186,9 @@ const Edit = (props) => {
                                 {/*********** CATEGORIES ***********/}
                                 <div className="form-group mb-3">
                                     <label className="form-label mb-0">Categories: </label>
-                                    <select name="categories" value={form.category} className="form-select mt-2" onChange={onChangeHandler}>
+                                    <select name="category" value={form.category} className="form-select mt-2" onChange={onChangeHandler}>
                                         {
-                                            categories.map((category, i) => {
+                                            category.map((category, i) => {
                                                 return <option value={category} key={i}> {category} </option>
                                             })
                                         }
@@ -211,12 +200,12 @@ const Edit = (props) => {
                                     <label className="form-label mb-0">Cuisine: </label>
                                     <select name="cuisine" value={form.cuisine} className="form-select mt-2" onChange={(e) => onSelectHandler(e)}>
                                         {
-                                            cuisine.map((cuisine, i) => {
-                                                return <option value={cuisine} key={i}> {cuisine} </option>
+                                            cuisine.map((cuisines, i) => {
+                                                return <option value={cuisines} key={i}> {cuisines} </option>
                                             })
                                         }
                                     </select>
-                                    <span className="alert-danger">{errors.category && errors.category.message}</span>
+                                    <span className="alert-danger">{errors.cuisine && errors.cuisine.message}</span>
                                 </div>
 
                                 <div className="form-group mb-3" >
@@ -258,7 +247,7 @@ const Edit = (props) => {
                                                 />
 
                                                 <label className="mx-1">Unit:</label>
-                                                <select name="categories" className="col-1" onChange={(event) => handleAddUnit(event, i)}>
+                                                <select name="unit" value={value.unit} className="col-sm-1" onChange={(event) => handleAddUnit(event, i)}>
                                                     {
                                                         units.map((unit, i) => {
                                                             return <option value={unit} key={i}> {unit} </option>
@@ -268,7 +257,7 @@ const Edit = (props) => {
 
                                                 <label className="mx-2">Ingredient:</label>
                                                 <input
-                                                    className="col-sm-2"
+                                                    className="col-sm-3"
                                                     type="text"
                                                     key={i}
                                                     value={value.ingredient}
@@ -288,7 +277,7 @@ const Edit = (props) => {
 
                                 <div className="form-group mb-3 mt-4" >
                                     <label className="form-label">Recipe Image URL: </label>
-                                    <input type="text" name="imgUrl" className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
+                                    <input type="text" name="imgUrl" value={form.imgUrl} className="form-control" placeholder="imgUrl" onChange={onChangeHandler} />
                                     <span className="alert-danger">{errors.imgUrl && errors.imgUrl.message}</span>
                                 </div>
                                 <div className="form-group mb-3" >
@@ -308,7 +297,7 @@ const Edit = (props) => {
                                 </div>
                                 <div className="form-group mb-3" >
                                     <label className="form-label">Author: </label>
-                                    <input type="input" value={form.author} name="author name" className="form-control" placeholder="author" onChange={onChangeHandler} />
+                                    <input type="input" value={form.author} name="author" className="form-control" placeholder="author" onChange={onChangeHandler} />
                                 </div>
                                 <span className="alert-danger">{errors.author && errors.author.message}</span>
                                 {/* ******* Checkbox TAGS ******* */}
@@ -328,7 +317,6 @@ const Edit = (props) => {
                                 </div>
                                 {/* ******* Checkbox GBOMBS ******* */}
                                 <div className="d-flex flex-row my-3 justify-content-center" name="gbombs">
-
                                     {
                                         form.gbombs.map((gbomb, i) => (
                                             <div className="form-inline mx-3 " key={i}>
@@ -356,7 +344,7 @@ const Edit = (props) => {
                 </div>
             </div >
             <footer className="py-5">
-
+                Build by Jen E.
             </footer>
         </div >
     )

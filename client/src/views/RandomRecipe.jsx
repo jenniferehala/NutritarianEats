@@ -44,10 +44,13 @@ const RandomRecipe = (props) => {
                                 {random.cuisine}
                             </div>
                             {random?.tags?.map((value, i) => {
-                                return <div className="col-12 mb-2" value={value} key={i} >
-                                    <i className="bi bi-tag mx-2"></i>
-                                    {value.name}
-                                </div>
+                                if (value.isChecked === true) {
+
+                                    return <div className="col-12 mb-2" value={value} key={i} >
+                                        <i className="bi bi-tag mx-2"></i>
+                                        {value.name}
+                                    </div>
+                                }
                             })
                             }
 
@@ -58,7 +61,9 @@ const RandomRecipe = (props) => {
                                 <h5>GBOMBS:</h5>
                                 <ul>
                                     {random?.gbombs?.map((value, i) => {
-                                        return <div className="row" value={value} key={i}>· {value.name} </div>
+                                        if (value.isChecked === true) {
+                                            return <div className="row" value={value} key={i}>· {value.name} </div>
+                                        }
                                     })
                                     }
                                 </ul>

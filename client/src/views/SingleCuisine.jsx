@@ -10,7 +10,7 @@ const SingleCuisine = (props) => {
     const { name } = useParams({})
 
     useEffect(() => {
-        document.title = "NutritarianEats"
+        document.title = (`NutritarianEats - ${name}`)
         axios.get(`http://localhost:8000/api/recipes/cuisine/${name}`)
             .then(res => {
                 console.log(res.data.results);
@@ -26,7 +26,6 @@ const SingleCuisine = (props) => {
             <div className="container ">
                 <div className="container-xxl px-md-5 bg-white ">
                     <h1 className="py-4">{name} Cuisine</h1>
-
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item"><a href="/dashboard">Home</a></li>
@@ -39,33 +38,25 @@ const SingleCuisine = (props) => {
                             {
                                 recipe.map((value, i) => {
                                     return <>
-                                        <div>
+                                        <div key={i}>
                                             <Link to={`/recipes/${value._id}`} className="col text-center category__link">
                                                 <div className="category__img category__img--large shadow">
-
                                                     <img src={value.imgUrl} alt="food pic" />
                                                 </div>
                                             </Link>
 
-
                                             <div className="pt-1">
                                                 {value.title}
                                             </div>
-
-
-
                                         </div >
                                     </>
                                 })
                             }
-
                         </div>
-
                     </section>
                 </div>
             </div>
         </div>
-
     )
 }
 
