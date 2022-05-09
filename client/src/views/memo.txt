@@ -773,9 +773,9 @@ module.exports.findOneCuisine = (req, res) => {
 
 
 
-// async function insertDummyRecipeData() {
-//     try {
-//         await Recipe.insertMany([
+async function insertDummyRecipeData() {
+   try {
+       await Recipe.insertMany([
 
 //             {
 //                 "title": "Chocolate Pecan Smoothie 2",
