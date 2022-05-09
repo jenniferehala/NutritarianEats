@@ -55,7 +55,7 @@ const SingleRecipe = (props) => {
                                 {recipe.cuisine}
                             </div>
 
-                            <div className="">
+                            <div className="mb-2">
                                 {recipe?.tags?.map((value, i) => {
                                     if (value.isChecked === true) {
                                         return <div className="col-12 mb-2" value={value} key={i} >
@@ -67,9 +67,14 @@ const SingleRecipe = (props) => {
                                 }
                             </div>
 
-                            <div lassName="col-12 my-4"><h4>Description:</h4> {recipe.description}</div>
+                            <div className="col-12 my-4">
+                                <h4>Description:</h4>
+                                {recipe.description}
+                            </div>
 
-                            <div className="col-12 mb-4" > Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a></div>
+                            <div className="col-12 mb-4" >
+                                Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a>
+                            </div>
 
                             <div className="col-12 mb-2">
                                 <h5>GBOMBS:</h5>
