@@ -7,8 +7,8 @@ const bcrypt = require('bcrypt');
 const contactEmail = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: "jennifer.ehala@gmail.com",
-        pass: "Charlie7",
+        user: process.env.EMAIL,
+        pass: process.env.SECRET_PW,
     },
 });
 

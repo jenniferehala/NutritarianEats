@@ -3,6 +3,10 @@ const mongoose = require("mongoose")
 
 const RecipeSchema = new mongoose.Schema({
 
+    _id: {
+        type: String
+    },
+
     title: {
         type: String,
         required: [2, "Need title for Recipe!"]

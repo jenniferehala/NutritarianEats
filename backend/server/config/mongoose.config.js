@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/vegan_recipes", {
+mongoose.connect("mongodb://localhost/veganrecipes", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

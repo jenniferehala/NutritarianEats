@@ -9,14 +9,18 @@ const SingleRecipe = (props) => {
     const history = useHistory({})
     const [recipe, setRecipe] = useState([]);
     const { _id } = useParams({})
-    const stars = [1, 2, 3, 4, 5];
 
     useEffect(() => {
         document.title = "NutritarianEats"
+        console.log(_id)
         axios.get(`http://localhost:8000/api/recipes/${_id}`)
+
             .then(res => {
-                console.log(res.data.results);
+                console.log('before set state', recipe)
+                console.log('this is the axios call results', res.data.results);
                 setRecipe(res.data.results);
+                console.log('after set state', recipe)
+
             })
             .catch(err => console.log(err))
     }, [_id]);
@@ -55,7 +59,7 @@ const SingleRecipe = (props) => {
                                 {recipe.cuisine}
                             </div>
 
-                            <div className="mb-2">
+                            <div className="">
                                 {recipe?.tags?.map((value, i) => {
                                     if (value.isChecked === true) {
                                         return <div className="col-12 mb-2" value={value} key={i} >
@@ -67,14 +71,9 @@ const SingleRecipe = (props) => {
                                 }
                             </div>
 
-                            <div className="col-12 my-4">
-                                <h4>Description:</h4>
-                                {recipe.description}
-                            </div>
+                            <div className="col-12 my-4"><h4>Description:</h4> {recipe.description}</div>
 
-                            <div className="col-12 mb-4" >
-                                Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a>
-                            </div>
+                            <div className="col-12 mb-4" > Source: <a href={recipe.source} target="_blank" rel="noreferrer">{recipe.source}</a></div>
 
                             <div className="col-12 mb-2">
                                 <h5>GBOMBS:</h5>
@@ -123,13 +122,13 @@ const SingleRecipe = (props) => {
 
                             {
                                 recipe.comment ?
-                                    <div class="card mb-4 mt-1">
-                                        <div class="card-body">
+                                    <div className="card mb-4 mt-1">
+                                        <div className="card-body">
                                             <p>Comment(s):</p>
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <p class="small text-muted mb-0">{recipe.comment}</p>
-                                                    <i class="far fa-thumbs-up mx-2 fa-xs text-black"></i>
+                                            <div className="d-flex justify-content-between">
+                                                <div className="d-flex flex-row align-items-center">
+                                                    <p className="small text-muted mb-0">{recipe.comment}</p>
+                                                    <i className="far fa-thumbs-up mx-2 fa-xs text-black"></i>
                                                 </div>
                                             </div>
                                         </div>
