@@ -11,7 +11,6 @@ const Create = (props) => {
     const cuisine = ['French', 'Indian', 'American', 'Thai', 'Mexican', 'Spanish', 'Chinese', 'Japanese', 'Italian', 'Greek', "Mediterranean", "Worldwide"];
     const units = ["none", "block(s)", "bushel(s)", "clove(s)", "can(s)", "drop(s)", "smidgen", "pinch", "dash", "teaspoon(s)", "tablespoon(s)", "fl oz(s)", "ounce(s)", "cup(s)", "pint(s)", "quart(s)", "gallon(s)", "pound(s)", "milliliter(s)", "liter(s)"];
     const initialForm = {
-        // _id: "",
         title: "",
         description: "",
         instructions: "",
