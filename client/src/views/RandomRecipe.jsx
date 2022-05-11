@@ -118,13 +118,13 @@ const RandomRecipe = (props) => {
 
                             {
                                 random.comment ?
-                                    <div class="card mb-4 mt-1">
-                                        <div class="card-body">
+                                    <div className="card mb-4 mt-1">
+                                        <div className="card-body">
                                             <p>Comment(s):</p>
-                                            <div class="d-flex justify-content-between">
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <p class="small text-muted mb-0">{random.comment}</p>
-                                                    <i class="far fa-thumbs-up mx-2 fa-xs text-black"></i>
+                                            <div className="d-flex justify-content-between">
+                                                <div className="d-flex flex-row align-items-center">
+                                                    <p className="small text-muted mb-0">{random.comment}</p>
+                                                    <i className="far fa-thumbs-up mx-2 fa-xs text-black"></i>
                                                 </div>
                                             </div>
                                         </div>

@@ -34,7 +34,7 @@ const Main = (props) => {
     useEffect(() => {
         axios.get("http://localhost:8000/api/recipes/findAll")
             .then(res => {
-                // console.log(res.data.results);
+                console.log(res.data.results);
                 setRecipe(res.data.results);
             })
             .catch(err => console.log(err))

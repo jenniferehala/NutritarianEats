@@ -295,11 +295,12 @@ const Edit = (props) => {
                                 {/* ******* Checkbox TAGS ******* */}
                                 <div className="d-flex flex-row my-3 text-center" >
                                     {
-                                        form.tags.map((tag, i) => (
+                                        form.tags?.map((tag, i) => (
                                             <div className="form-inline mx-3" key={i}>
                                                 <label>{tag.name}</label>
                                                 <input
                                                     type="checkbox"
+                                                    value={tag.name}
                                                     checked={tag.isChecked}
                                                     onChange={(event) => handleCheckedTags(i)}
                                                     key={i}
@@ -311,7 +312,7 @@ const Edit = (props) => {
                                 {/* ******* Checkbox GBOMBS ******* */}
                                 <div className="d-flex flex-row my-3 justify-content-center" name="gbombs">
                                     {
-                                        form.gbombs.map((gbomb, i) => (
+                                        form.gbombs?.map((gbomb, i) => (
                                             <div className="form-inline mx-3 " key={i}>
                                                 <label>{gbomb.name}</label>
                                                 <input
@@ -326,7 +327,7 @@ const Edit = (props) => {
                                             </div>))}
                                 </div>
                                 <div className="col-12 d-flex justify-content-center">
-                                    <input type="submit" className="btn btn-success my-3 mx-2 align-center" />
+                                    <input type="submit" value='Submit' className="btn btn-success my-3 mx-2 align-center" />
                                     <Link to={`/recipes/${_id}`}><button className="btn btn-primary my-3 align-center mx-2">Back</button></Link>
                                 </div>
                             </div>

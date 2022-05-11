@@ -40,7 +40,7 @@ const LatestRecipes = (props) => {
                                                     <img src={value.imgUrl} alt="food pic" />
                                                 </div>
                                             </Link>
-                                            <div className="pt-1">
+                                            <div className="pt-1" >
                                                 {value.title}
                                             </div>
                                         </div >

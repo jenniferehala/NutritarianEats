@@ -1,9 +1,13 @@
 const { Recipe } = require("../models/recipe.model");
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 // ************ CREATE ***************** //
 module.exports.createRecipe = (req, res) => {
+    conosle.log("created Recipe")
+    req.body._id = ObjectId();
+    console.log(req.body)
     Recipe.create((req.body))
         .then(newRecipes => {
             res.json({ results: newRecipes });
@@ -14,29 +18,30 @@ module.exports.createRecipe = (req, res) => {
 // ************ READ ***************** //
 
 module.exports.findOneRecipe = (req, res) => {
-    console.log("ChangeMe id to find", req.params._id)
-    console.log(req.body._id)
-    Recipe.findOne({ _id: req.params._id })
-        .then(results => res.json({ results: results }))
+    console.log("Find One", req.params._id)
+    console.log(ObjectId(req.params._id));
+    // { campaign_id: new ObjectId(campaign._id) };
+    Recipe.findOne({ _id: new ObjectId(req.params._id) })
+        .then(results => res.json({ results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
 
 module.exports.findAllRecipe = (req, res) => {
-    console.log(req.body)
+    console.log("find all recipes")
     Recipe.find({})
         .then(results => res.json({ results: results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
 module.exports.latestRecipe = (req, res) => {
-    Recipe.find({}).sort({ _id: -1 }).limit(5)
+    Recipe.find({}).sort({ $natural: -1 }).limit(5)
         .then(latest => res.json({ results: latest }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
 
 module.exports.allLatestRecipes = (req, res) => {
-    Recipe.find({}).sort({ _id: -1 })
+    Recipe.find({}).sort({ $natural: -1 })
         .then(latest => res.json({ results: latest }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }

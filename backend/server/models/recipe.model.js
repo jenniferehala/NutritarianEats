@@ -9,27 +9,27 @@ const RecipeSchema = new mongoose.Schema({
 
     title: {
         type: String,
-        required: [2, "Need title for Recipe!"]
+        // required: [2, "Need title for Recipe!"]
     },
 
     description: {
         type: String,
-        required: [2, "Need description!"]
+        // required: [2, "Need description!"]
     },
 
     instructions: {
         type: String,
-        required: [2, "Need instructions!"]
+        // required: [2, "Need instructions!"]
     },
 
     serving: {
         type: Number,
-        min: [1, "you need at least one serving!"]
+        // min: [1, "you need at least one serving!"]
     },
 
     email: {
         type: String,
-        required: [2, "Need email!"]
+        // required: [2, "Need email!"]
     },
 
     ingredientsList:
@@ -50,7 +50,7 @@ const RecipeSchema = new mongoose.Schema({
 
     category: {
         type: String,
-        required: [true, "This category field is required!"],
+        // required: [true, "This category field is required!"],
         minLength: [2, "you need at least 2 characters!"],
         enum: ['Breakfast', 'Burgers, Pizza, Wraps and Chips', 'Desserts', 'Main Dishes - Vegan', 'Non-Vegan', 'Dressings, Dips and Sauces', 'Salads', 'Smoothies, Blended Salads and Juices', 'Soups and Stews']
     },
@@ -65,12 +65,12 @@ const RecipeSchema = new mongoose.Schema({
 
     imgUrl: {
         type: String,
-        required: [2, "You need an image!"]
+        // required: [2, "You need an image!"]
     },
 
     rating: {
         type: Number,
-        required: [2, "You need a number!"],
+        // required: [2, "You need a number!"],
     },
 
     comment: {
@@ -79,12 +79,12 @@ const RecipeSchema = new mongoose.Schema({
 
     source: {
         type: String,
-        required: [2, 'This source field is required']
+        // required: [2, 'This source field is required']
     },
 
     author: {
         type: String,
-        required: [2, 'This author field is required']
+        // required: [2, 'This author field is required']
     },
 
     tags:
