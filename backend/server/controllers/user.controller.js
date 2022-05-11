@@ -1,24 +1,38 @@
 const { User } = require("../models/user.model");
 const Message = require("../models/message.model");
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const OAuth2 = google.auth.OAuth2;
 
-const contactEmail = nodemailer.createTransport({
+
+const myOAuth2Client = new OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground"
+)
+// built in function
+myOAuth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN
+});
+
+const myAccessToken = myOAuth2Client.getAccessToken()
+let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
+        type: 'OAuth2',
         user: process.env.EMAIL,
-        pass: process.env.SECRET_PW,
-    },
-});
-
-contactEmail.verify((error) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("Ready to Send");
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: myAccessToken,
+        tls: {
+            rejectUnauthorized: false
+        }
     }
 });
+
 
 //******* MESSAGE ROUTE *******//
 module.exports.contactUs = (req, res) => {
@@ -28,20 +42,25 @@ module.exports.contactUs = (req, res) => {
             res.json({ results: newUser })
             const name = req.body.name;
             const email = req.body.email;
+            const subject = req.body.subject;
             const message = req.body.message;
-            const mail = {
-                from: name,
-                to: "jennifer.ehala@gmail.com",
+            const mailOptions = {
+                from: email,
+                to: process.env.EMAIL,
                 subject: "Contact Form Submission",
-                html: `<p>Name: ${name}</p>
+                html:
+                    `<p>Name: ${name}</p>
                 <p>Email: ${email}</p>
+                <p>Subject: ${subject}</p>
                 <p>Message: ${message}</p>`,
             };
-            contactEmail.sendMail(mail, (error) => {
+            transporter.sendMail(mailOptions, (error, res) => {
                 if (error) {
                     res.json({ status: "ERROR" });
                 } else {
                     res.json({ status: "Message Sent" });
+                    // console.log('this is the response: ', res);
+                    transporter.close();
                 }
             });
         })

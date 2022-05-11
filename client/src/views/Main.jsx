@@ -71,7 +71,7 @@ const Main = (props) => {
                             <h3 className="mb-3">Welcome {loggedInUser.firstName}!</h3>
                             <h1 className="display-5 fw-bold mt-3"> Delicious Nutritarian Recipes to support your optimal health.</h1>
                             <p className="lead">
-                                Get ready to change your life. Explore our wide variety of nutritarian recipes including: Breakfast, Burgers, Desserts, Vegan Main Dishes, Non-Vegan Main Dishes, Dressings, Salads, Smoothies, Soups, and Stews
+                                Get ready to change your life. Explore our wide variety of nutritarian recipes including: Breakfast, Burgers, Desserts, Vegan Main Dishes, Non-Vegan Main Dishes, Dressings, Salads, Smoothies, Soups, and Stews.
                             </p>
                             <div className="d-grid gap-2 d-md-flex justify content-md-start">
                                 <Link to="/recipes/explore/latest" className="btn btn primary btn-dark btn-lg px-4 me-md-2">Explore Latest</Link>
