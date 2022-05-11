@@ -20,8 +20,7 @@ module.exports.createRecipe = (req, res) => {
 module.exports.findOneRecipe = (req, res) => {
     console.log("Find One", req.params._id)
     console.log(ObjectId(req.params._id));
-    // { campaign_id: new ObjectId(campaign._id) };
-    Recipe.findOne({ _id: new ObjectId(req.params._id) })
+    Recipe.findOne({ _id: ObjectId(req.params._id) })
         .then(results => res.json({ results }))
         .catch(err => res.status(400).json({ message: "that didn't quite work.", err }));
 }
