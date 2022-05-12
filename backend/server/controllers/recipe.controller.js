@@ -5,7 +5,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 // ************ CREATE ***************** //
 module.exports.createRecipe = (req, res) => {
-    conosle.log("created Recipe")
+    console.log("created Recipe")
     req.body._id = ObjectId();
     console.log(req.body)
     Recipe.create((req.body))
