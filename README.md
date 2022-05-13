@@ -128,7 +128,7 @@ This is an example of how to list things you need to use the software and how to
   
 https://user-images.githubusercontent.com/87871681/168390340-03c542f1-a63e-45c8-b1cc-7d3eb6616e2b.mov
 
-
+<br />
   
 - [ ] Home Page
   <p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine. </p>
@@ -137,17 +137,27 @@ https://user-images.githubusercontent.com/87871681/168390340-03c542f1-a63e-45c8-
 https://user-images.githubusercontent.com/87871681/168390652-75a7899e-a95c-4f50-bd56-cde0dea44615.mov
 
 
-
-
+<br />
 
 - [ ] Randomizing Feature
    <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
 https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-9ebb-f84a74e619e9.mov
 
   
+- [ ] Rating Feature
+  <p> A star rating component was used to display on a single details page. Making sure the limit was five stars and would display the correct amount of yellow stars versus the grey stars indicating an empty rating. 
+
+<br />
+  
+- [ ] Create Feature
+    <p> Create page allows user to create their own recipe which is protected by requirement validations to make sure each field is used. The handlers for adding and removing multiple ingredients allows for easier viewing and reading when entering and displaying data on the details page.
 
 
-See the [open issues](https://github.com/jenniferehala/NutritarianEats/issues) for a full list of proposed features (and known issues).
+https://user-images.githubusercontent.com/87871681/168392604-4d54b7e7-0fe2-446a-bde1-e9d670e47539.mov
+
+
+
+  See the [open issues](https://github.com/jenniferehala/NutritarianEats/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -174,7 +184,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-Jennifer Ehala - [@jenniferehala](https://twitter.com/jenniferehala) - jennifer.ehalal@gmail.com
+Jennifer Ehala - [@jenniferehala](https://twitter.com/jenniferehala) - jennifer.ehala@gmail.com
 
 Project Link: [https://github.com/jenniferehala/NutritarianEats](https://github.com/jenniferehala/NutritarianEats)
 
