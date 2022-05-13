@@ -1,22 +1,8 @@
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
 
 
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -30,10 +16,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/jenniferehala/NutritarianEats">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://user-images.githubusercontent.com/87871681/168386875-f130757d-54b7-4bb5-b81f-49c550101faa.png" alt="Logo" width="180" height="180">
   </a>
 
-<h3 align="center">NutritarianEats</h3>
+  
+  
+  
+<h3 align="center">Nutritarian Eats</h3>
 
   <p align="center">
     The NutritarianEats website is a tool for users to create their favorite recipes, either inspired by others or create new recipes for themselves, and have a repository of this information at their fingertips. Many nutritarian recipes are hard to come by and need a paid subscription to access. This website is free to use and access so that everyone can incorporate healthy living into their every day food choices.
@@ -68,7 +57,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -82,9 +70,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<img width="1419" alt="Screen Shot 2022-05-13 at 4 48 15 PM" src="https://user-images.githubusercontent.com/87871681/168387278-3ce92bba-4353-4cea-b5e4-d31d76781bf6.png">
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `jenniferehala`, `NutritarianEats`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+Families and individuals continue to pursue healthy lifestyles and healthy living, and even create diet plans to help them with their diet goals. As people face constant messaging on what healthy foods are, finding appropriate online resources is important for their optimal health. NutritarianEats was inspired to facilitate access to healthy recipes at no cost. A repository of free nutritarian recipes.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -92,14 +80,12 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [Next.js](https://nextjs.org/)
 * [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
+* [Express](https://expressjs.com/)
+* [Node.js](https://nodejs.org/en/)
+* [MongoDB](https://www.mongodb.com/)
+* [Mongoose](https://mongoosejs.com/)
 * [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -121,30 +107,15 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+
+1. Clone the repo
    ```sh
    git clone https://github.com/jenniferehala/NutritarianEats.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -154,6 +125,36 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Roadmap
 
 - [ ] Feature 1
+<h2> Login/Registration </h2>
+
+
+
+https://user-images.githubusercontent.com/87871681/168342918-8e99c62f-22da-4c48-b7be-39f977421e08.mov
+
+
+
+<p> Login and Registration with validations such as validating unique email address and validating that both 
+  passwords match that were input by the user to confirm. </p>
+  
+  <h2> Home Page </h2>
+  
+
+https://user-images.githubusercontent.com/87871681/168345504-afc3acd6-7661-46b8-b067-101e3fe3ec4a.mov
+
+<p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine </p>
+
+
+  <h2> Random Feature </h2>
+  
+
+https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-9ebb-f84a74e619e9.mov
+
+
+  <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
+  
+
+
+
 - [ ] Feature 2
 - [ ] Feature 3
     - [ ] Nested Feature
@@ -227,37 +228,10 @@ Project Link: [https://github.com/jenniferehala/NutritarianEats](https://github.
 [license-url]: https://github.com/jenniferehala/NutritarianEats/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: "https://user-images.githubusercontent.com/87871681/168387278-3ce92bba-4353-4cea-b5e4-d31d76781bf6.png">
 
 
 <!--  *********************************** -->
 
-<h2> Login/Registration </h2>
-
-
-
-https://user-images.githubusercontent.com/87871681/168342918-8e99c62f-22da-4c48-b7be-39f977421e08.mov
-
-
-
-<p> Login and Registration with validations such as validating unique email address and validating that both 
-  passwords match that were input by the user to confirm. </p>
-  
-  <h2> Home Page </h2>
-  
-
-https://user-images.githubusercontent.com/87871681/168345504-afc3acd6-7661-46b8-b067-101e3fe3ec4a.mov
-
-<p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine </p>
-
-
-  <h2> Random Feature </h2>
-  
-
-https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-9ebb-f84a74e619e9.mov
-
-
-  <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
-  
 
 
