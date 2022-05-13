@@ -131,7 +131,7 @@ https://user-images.githubusercontent.com/87871681/168390340-03c542f1-a63e-45c8-
 <br />
   
 - [ ] Home Page
-  <p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine. </p>
+  <p> Classic homepage layout with a navbar, functional search bar, hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine. </p>
 
 
 https://user-images.githubusercontent.com/87871681/168390652-75a7899e-a95c-4f50-bd56-cde0dea44615.mov
@@ -149,14 +149,10 @@ https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-
 - [ ] Rating Feature
   <p> A star rating component was used to display on a single details page. Making sure the limit was five stars and would display the correct amount of yellow stars versus the grey stars indicating an empty rating. </p>
   
-  
-  
 
 https://user-images.githubusercontent.com/87871681/168393129-550c8e46-cdc0-453a-9af2-c4b2065cb578.mov
 
 
-  
-  
 
 <br />
   
@@ -166,7 +162,18 @@ https://user-images.githubusercontent.com/87871681/168393129-550c8e46-cdc0-453a-
 
 https://user-images.githubusercontent.com/87871681/168392604-4d54b7e7-0fe2-446a-bde1-e9d670e47539.mov
 
+<br />
 
+- [ ] Search Feature
+  <p> Searching for recipes is made easy by the search bar in the navigation section that is visible and functional on every page on the website. It uses regex search match to find and match the keyword entered in the input.  </p>
+  
+  
+
+https://user-images.githubusercontent.com/87871681/168394749-6c08ad29-d8f8-4e34-9fba-8545b4763d8b.mov
+
+
+  
+  
 
   See the [open issues](https://github.com/jenniferehala/NutritarianEats/issues) for a full list of proposed features (and known issues).
 
@@ -200,8 +207,6 @@ Jennifer Ehala - [@jenniferehala](https://twitter.com/jenniferehala) - jennifer.
 Project Link: [https://github.com/jenniferehala/NutritarianEats](https://github.com/jenniferehala/NutritarianEats)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 
 
