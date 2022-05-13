@@ -18,3 +18,10 @@ https://user-images.githubusercontent.com/87871681/168345504-afc3acd6-7661-46b8-
 
 <p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine </p>
 
+
+  <h2> Random Feature </h2>
+  
+  <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
+  
+
+
