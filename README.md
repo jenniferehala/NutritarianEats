@@ -129,7 +129,6 @@ https://user-images.githubusercontent.com/87871681/168342918-8e99c62f-22da-4c48-
   passwords match that were input by the user to confirm. </p>
   
   - [ ] Feature 2
-  
   <h4> Home Page </h4>
 https://user-images.githubusercontent.com/87871681/168345504-afc3acd6-7661-46b8-b067-101e3fe3ec4a.mov
 <p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine </p>
@@ -169,7 +168,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- CONTACT -->
 ## Contact
 
-Jennifer Ehala - [@twitter_handle](https://twitter.com/jenniferehala) - jennifer.ehalal@gmail.com
+Jennifer Ehala - [@jenniferehala](https://twitter.com/jenniferehala) - jennifer.ehalal@gmail.com
 
 Project Link: [https://github.com/jenniferehala/NutritarianEats](https://github.com/jenniferehala/NutritarianEats)
 
