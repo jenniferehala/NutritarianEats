@@ -9,7 +9,7 @@ https://user-images.githubusercontent.com/87871681/168342918-8e99c62f-22da-4c48-
 
 
 <p> Login and Registration with validations such as validating unique email address and validating that both 
-  passwords match that wre input by the user to confirm. </p>
+  passwords match that were input by the user to confirm. </p>
   
   <h2> Home Page </h2>
   
