@@ -143,14 +143,25 @@ https://user-images.githubusercontent.com/87871681/168390652-75a7899e-a95c-4f50-
    <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
 https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-9ebb-f84a74e619e9.mov
 
-  
+<br />
+
+
 - [ ] Rating Feature
-  <p> A star rating component was used to display on a single details page. Making sure the limit was five stars and would display the correct amount of yellow stars versus the grey stars indicating an empty rating. 
+  <p> A star rating component was used to display on a single details page. Making sure the limit was five stars and would display the correct amount of yellow stars versus the grey stars indicating an empty rating. </p>
+  
+  
+  
+
+https://user-images.githubusercontent.com/87871681/168393129-550c8e46-cdc0-453a-9af2-c4b2065cb578.mov
+
+
+  
+  
 
 <br />
   
 - [ ] Create Feature
-    <p> Create page allows user to create their own recipe which is protected by requirement validations to make sure each field is used. The handlers for adding and removing multiple ingredients allows for easier viewing and reading when entering and displaying data on the details page.
+    <p> Create page allows user to create their own recipe which is protected by requirement validations to make sure each field is used. The handlers for adding and removing multiple ingredients allows for easier viewing and reading when entering and displaying data on the details page.</p>
 
 
 https://user-images.githubusercontent.com/87871681/168392604-4d54b7e7-0fe2-446a-bde1-e9d670e47539.mov
