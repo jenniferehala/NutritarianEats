@@ -161,7 +161,7 @@ https://user-images.githubusercontent.com/87871681/168393129-550c8e46-cdc0-453a-
 <br />
   
 - [ ] Create Feature
-    <p> Create page allows user to create their own recipe which is protected by requirement validations to make sure each field is used. The handlers for adding and removing multiple ingredients allows for easier viewing and reading when entering and displaying data on the details page.</p>
+    <p> Create page allows user to create their own recipe which is protected by requirement validations to make sure each field is used. The ingredients section is a nested feature with each unique key pair value within the ingredients list object. The handlers for adding and removing multiple ingredients allows for easier viewing and reading when entering and displaying data on the details page.</p>
 
 
 https://user-images.githubusercontent.com/87871681/168392604-4d54b7e7-0fe2-446a-bde1-e9d670e47539.mov
