@@ -59,9 +59,7 @@
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -72,7 +70,7 @@
 
 <img width="1419" alt="Screen Shot 2022-05-13 at 4 48 15 PM" src="https://user-images.githubusercontent.com/87871681/168387278-3ce92bba-4353-4cea-b5e4-d31d76781bf6.png">
 
-Families and individuals continue to pursue healthy lifestyles and healthy living, and even create diet plans to help them with their diet goals. As people face constant messaging on what healthy foods are, finding appropriate online resources is important for their optimal health. NutritarianEats was inspired to facilitate access to healthy recipes at no cost. A repository of free nutritarian recipes.
+As a society, we continue to pursue healthy lifestyles and healthy living, and even create diet plans to help with our diet goals. As people face constant messaging on what healthy foods are, finding appropriate online resources is important for their optimal health. NutritarianEats was inspired to facilitate access to healthy recipes at no cost. A repository of free nutritarian recipes.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -125,39 +123,24 @@ This is an example of how to list things you need to use the software and how to
 ## Roadmap
 
 - [ ] Feature 1
-<h2> Login/Registration </h2>
-
-
-
+<h4> Login/Registration </h4>
 https://user-images.githubusercontent.com/87871681/168342918-8e99c62f-22da-4c48-b7be-39f977421e08.mov
-
-
-
 <p> Login and Registration with validations such as validating unique email address and validating that both 
   passwords match that were input by the user to confirm. </p>
   
-  <h2> Home Page </h2>
+  - [ ] Feature 2
   
-
+  <h4> Home Page </h4>
 https://user-images.githubusercontent.com/87871681/168345504-afc3acd6-7661-46b8-b067-101e3fe3ec4a.mov
-
 <p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine </p>
 
 
-  <h2> Random Feature </h2>
-  
-
+- [ ] Feature 3
+  <h4> Random Feature </h4>
 https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-9ebb-f84a74e619e9.mov
-
-
   <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
   
 
-
-
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
 
 See the [open issues](https://github.com/jenniferehala/NutritarianEats/issues) for a full list of proposed features (and known issues).
 
@@ -183,19 +166,10 @@ Don't forget to give the project a star! Thanks again!
 
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Jennifer Ehala - [@twitter_handle](https://twitter.com/jenniferehala) - jennifer.ehalal@gmail.com
 
 Project Link: [https://github.com/jenniferehala/NutritarianEats](https://github.com/jenniferehala/NutritarianEats)
 
@@ -203,14 +177,6 @@ Project Link: [https://github.com/jenniferehala/NutritarianEats](https://github.
 
 
 
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
