@@ -122,22 +122,28 @@ This is an example of how to list things you need to use the software and how to
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-<h4> Login/Registration </h4>
-https://user-images.githubusercontent.com/87871681/168342918-8e99c62f-22da-4c48-b7be-39f977421e08.mov
-<p> Login and Registration with validations such as validating unique email address and validating that both 
+- [ ] Login/Registration 
+  <p> Login and Registration with validations such as validating unique email address and validating that both 
   passwords match that were input by the user to confirm. </p>
   
-  - [ ] Feature 2
-  <h4> Home Page </h4>
-https://user-images.githubusercontent.com/87871681/168345504-afc3acd6-7661-46b8-b067-101e3fe3ec4a.mov
-<p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine </p>
+https://user-images.githubusercontent.com/87871681/168390340-03c542f1-a63e-45c8-b1cc-7d3eb6616e2b.mov
 
 
-- [ ] Feature 3
-  <h4> Random Feature </h4>
+  
+- [ ] Home Page
+  <p> Classic layout with hyperlinks to latest recipes, random recipes, and grouped recipes by cuisine. </p>
+
+
+https://user-images.githubusercontent.com/87871681/168390652-75a7899e-a95c-4f50-bd56-cde0dea44615.mov
+
+
+
+
+
+- [ ] Randomizing Feature
+   <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
 https://user-images.githubusercontent.com/87871681/168362188-37b1be82-feb1-418b-9ebb-f84a74e619e9.mov
-  <p> Random feature allows user to go through the database with the on click function to randomize recipes. </p>
+
   
 
 
