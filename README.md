@@ -32,6 +32,8 @@
     <br />
     <a href="https://youtu.be/f2GPT2cmJBs">View Demo</a>
     ·
+        <a href="http://3.80.118.230/">View Website</a>
+    .
     <a href="https://github.com/jenniferehala/NutritarianEats/issues">Report Bug</a>
     ·
     <a href="https://github.com/jenniferehala/NutritarianEats/issues">Request Feature</a>
